@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{% block title %}NavSahaay Foundation{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/site.css') }}">
+</head>
+
+<body>
+    <header>
+        <div class="wrap nav">
+            <a href="{{ url_for('main.home') }}" class="brand">
+                <img src="{{ url_for('static', filename='images/logo.jpeg') }}"
+                     alt="NavSahaay Foundation logo">
+
+                <div>
+                    <span>NavSahaay Foundation</span>
+                    <small>Helping Hands, Better Tomorrow</small>
+                </div>
+            </a>
+            
+            <nav><a href="{{ url_for('main.home') }}#about">About</a><a
+                    href="{{ url_for('main.home') }}#programs">Programs</a><a
+                    href="{{ url_for('main.home') }}#events">Events</a><a
+                    href="{{ url_for('main.home') }}#donate">Donate</a>{% if current_user.is_authenticated %}<a
+                    href="{{ url_for('admin.dashboard') }}">Admin</a><a href="{{ url_for('auth.logout') }}">Logout</a>{%
+                else %}<a href="{{ url_for('auth.login') }}">Admin Login</a>{% endif %}</nav>
+        </div>
+    </header>
+    {% with messages=get_flashed_messages(with_categories=true) %}{% if messages %}<div class="wrap flashes">{% for
+        cat,msg in messages %}<div class="flash {{cat}}">{{msg}}</div>{% endfor %}</div>{% endif %}{% endwith %}
+    {% block content %}{% endblock %}
+    <footer>
+        <div class="wrap">© 2026 NavSahaay Foundation · Local development version</div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,131 @@
+{% extends "base.html" %}{% block content %}
+<section class="hero">
+    <div class="wrap hero-grid">
+        <div><!--<small>Helping Hands, Better Tomorrow</small>-->
+            <h1>Small acts.<br><em>Measurable change.</em></h1>
+            <p>Creating access, dignity and opportunity through community-focused programs.</p><a class="btn"
+                href="#donate">Donate Now</a> <a class="btn ghost" href="#volunteer">Volunteer</a>
+        </div>
+        <div class="hero-box"><b>NAVSAHAAY FOUNDATION</b>
+            <p>Serve. Empower. Transform.</p>
+            <div class="pillars"><span>Education</span><span>Healthcare</span><span>Environment</span><span>Feeding
+                    People</span></div>
+        </div>
+    </div>
+</section>
+<section id="about" class="section">
+    <div class="wrap two">
+        <div><small>WHO WE ARE</small>
+            <h2>Serving people with purpose.</h2>
+            <p>Shivoham Foundation works around four connected priorities: learning, healthcare, environmental action
+                and food support.</p>
+        </div>
+        <div class="card"><b>VISION</b>
+            <h3>A stronger, healthier and more sustainable community where opportunity is accessible to all.</h3>
+            <b>MISSION</b>
+            <h3>Turn community support into practical programs and measurable outcomes.</h3>
+        </div>
+    </div>
+</section>
+<section id="programs" class="section pale">
+    <div class="wrap"><small>OUR PROGRAMS</small>
+        <h2>Four pillars. One purpose.</h2>
+        <div class="grid4">
+            <div class="card">
+                <h3>Education</h3>
+                <p>Learning access, resources, mentoring and opportunity.</p>
+            </div>
+            <div class="card">
+                <h3>Healthcare</h3>
+                <p>Healthcare access, awareness and community wellbeing.</p>
+            </div>
+            <div class="card">
+                <h3>Environment</h3>
+                <p>Greener communities, awareness and restoration.</p>
+            </div>
+            <div class="card">
+                <h3>Feeding People</h3>
+                <p>Food support delivered with dignity.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="events" class="section dark">
+    <div class="wrap"><small>EVENTS</small>
+        <h2>Upcoming events.</h2>
+        <div class="grid3">{% for e in events %}<div class="event"><small>{{e.event_date.strftime('%d %b %Y')}}</small>
+                <h3>{{e.title}}</h3>
+                <p>{{e.cause}} · {{e.location}}</p>
+                <p>{{e.description}}</p>
+            </div>{% endfor %}</div>
+    </div>
+</section>
+<section id="donate" class="section pale">
+    <div class="wrap two">
+        <div><small>DONATE</small>
+            <h2>Choose your impact.</h2>
+            <!--<p>This local version records donation requests in MySQL. No external payment gateway is connected.</p>
+            <div class="impact"><b>₹500</b> Example impact — replace with verified program cost.<br><b>₹1,000</b>
+                Example impact — replace with verified program cost.<br><b>₹2,500</b> Example impact — replace with
+                verified program cost.</div>-->
+        </div>
+        <form class="card form" method="post" action="{{url_for('main.donate')}}"><input type="hidden" name="csrf_token"
+                value="{{csrf_token()}}"><label>Frequency<select name="frequency">
+                    <option value="MONTHLY">Monthly</option>
+                    <option value="ONE_TIME">One-time</option>
+                    <option value="YEARLY">Yearly</option>
+                </select></label><label>Amount ₹<input name="amount" type="number" min="100"
+                    required></label><label>Cause<select name="cause">
+                    <option>General Fund</option>
+                    <option>Education</option>
+                    <option>Healthcare</option>
+                    <option>Environment</option>
+                    <option>Feeding People</option>
+                </select></label><label>Name<input name="donor_name" required></label><label>Email<input name="email"
+                    type="email" required></label><label>Phone<input name="phone"
+                    required></label><label>Address<textarea name="address" required></textarea></label><label>PAN
+                (optional)<input name="pan"></label><label><input type="checkbox" name="anonymous"> Donate
+                anonymously</label><button class="btn">Create Donation Request</button>
+            <p class="note">Wait for real payment processor.</p>
+        </form>
+    </div>
+</section>
+<section id="volunteer" class="section">
+    <div class="wrap two">
+        <div><small>VOLUNTEER</small>
+            <h2>Give your time and skills.</h2>
+            <p>Register for education, healthcare, environment or feeding initiatives.</p>
+        </div>
+        <form class="card form" method="post" action="{{url_for('main.volunteer')}}"><input type="hidden"
+                name="csrf_token" value="{{csrf_token()}}"><label>Name<input name="name"
+                    required></label><label>Email<input name="email" type="email" required></label><label>Phone<input
+                    name="phone" required></label><label>City<input name="city" required></label><label>Age<input
+                    name="age" type="number" min="1" required></label><label>Interest<select name="interest">
+                    <option>Education</option>
+                    <option>Healthcare</option>
+                    <option>Environment</option>
+                    <option>Feeding People</option>
+                </select></label><label>Availability<select name="availability">
+                    <option>Weekday</option>
+                    <option>Weekend</option>
+                    <option>Remote</option>
+                    <option>Flexible</option>
+                </select></label><label>Skills<textarea name="skills"></textarea></label><label>Experience<textarea
+                    name="experience"></textarea></label><label>How did you hear about us?<input
+                    name="source"></label><button class="btn">Register</button></form>
+    </div>
+</section>
+<section id="contact" class="section pale">
+    <div class="wrap two">
+        <div><small>CONTACT</small>
+            <h2>Let's work together.</h2>
+            <p>Email.</p>
+        </div>
+        <form class="card form" method="post" action="{{url_for('main.contact')}}"><input type="hidden"
+                name="csrf_token" value="{{csrf_token()}}"><label>Name<input name="name"
+                    required></label><label>Email<input name="email" type="email" required></label><label>Subject<input
+                    name="subject" required></label><label>Message<textarea name="message" rows="5"
+                    required></textarea></label><button class="btn">Send Inquiry</button></form>
+    </div>
+</section>
+{% endblock %}

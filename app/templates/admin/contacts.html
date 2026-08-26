@@ -1,0 +1,1 @@
+{% extends "admin/base.html" %}{% block admin_content %}<h1>Contact Enquiries</h1><table><tr><th>Name</th><th>Email</th><th>Subject</th><th>Message</th><th>Status</th></tr>{% for c in contacts %}<tr><td>{{c.name}}</td><td>{{c.email}}</td><td>{{c.subject}}</td><td>{{c.message}}</td><td>{{c.status}}</td></tr>{% endfor %}</table>{% endblock %}
