@@ -1,6 +1,6 @@
-# Shivoham Foundation — Flask + MySQL Local Full-Stack Project
+# NavSahaay Foundation — Flask + MySQL Local Full-Stack Project
 
-This project is a **local-only full-stack implementation** based on the supplied Shivoham Website Strategy & Technical Specification.
+This project is a **local-only full-stack implementation** based on the Strategy & Technical Specification.
 
 ## Stack
 
@@ -177,7 +177,7 @@ audit_logs
 
 The supplied specification says not to publish unverified registration, PAN, 80G/12A/FCRA/CSR-1 details. Those values are deliberately not fabricated in this project.
 
-Likewise, the local receipt generator is a technical prototype. It must not be represented as an official 80G tax receipt until Shivoham's actual legal/tax workflow is configured and verified.
+Likewise, the local receipt generator is a technical prototype. It must not be represented as an official 80G tax receipt until NavSahaay's actual legal/tax workflow is configured and verified.
 
 ## Next development stages
 
