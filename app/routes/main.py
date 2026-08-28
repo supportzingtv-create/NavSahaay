@@ -7,18 +7,16 @@ main_bp = Blueprint("main", __name__)
 
 @main_bp.route("/")
 def home():
+    # Attempt to get events, but don't crash if DB is unavailable
+    events = []
     try:
-        # Check if events can be fetched
-        events = Event.get_all(active_only=True)
-        # Limit to 3 for home page
-        events = events[:3] if events else []
-        return render_template("home.html", events=events)
+        all_events = Event.get_all(active_only=True)
+        if all_events:
+            events = all_events[:3]
     except Exception as e:
-        # If it's a database connection error, provide a hint
-        import logging
-        logging.error(f"Home Route Error: {e}")
-        # For now, return a more descriptive error if in dev or just a generic one
-        return f"Website is online but database is not responding. Please check Vercel Logs. Error: {e}", 500
+        print(f"Error fetching events: {e}")
+
+    return render_template("home.html", events=events)
 
 @main_bp.route("/donate", methods=["POST"])
 def donate():
@@ -37,12 +35,8 @@ def donate():
         frequency=request.form["frequency"], cause=request.form["cause"],
         anonymous=bool(request.form.get("anonymous")), status="PENDING"
     )
-    try:
-        donation.save()
-        flash(f"Donation request created: {donation.donation_id}.", "success")
-    except Exception as e:
-        flash(f"Error saving donation: {e}", "error")
-
+    donation.save()
+    flash(f"Donation request created: {donation.donation_id}.", "success")
     return redirect(url_for("main.home") + "#donate")
 
 @main_bp.route("/volunteer", methods=["POST"])
@@ -59,22 +53,15 @@ def volunteer():
                    age=age, interest=request.form["interest"], availability=request.form["availability"],
                    skills=request.form.get("skills"), experience=request.form.get("experience"),
                    source=request.form.get("source"))
-    try:
-        v.save()
-        flash(f"Volunteer registration received: {v.reference_id}", "success")
-    except Exception as e:
-        flash(f"Error registering volunteer: {e}", "error")
-
+    v.save()
+    flash(f"Volunteer registration received: {v.reference_id}", "success")
     return redirect(url_for("main.home") + "#volunteer")
 
 @main_bp.route("/contact", methods=["POST"])
 def contact():
     c=Contact(name=request.form["name"], email=request.form["email"], subject=request.form["subject"], message=request.form["message"])
-    try:
-        c.save()
-        flash("Your inquiry has been received.", "success")
-    except Exception as e:
-        flash(f"Error sending inquiry: {e}", "error")
+    c.save()
+    flash("Your inquiry has been received.", "success")
     return redirect(url_for("main.home") + "#contact")
 
 @main_bp.route("/events/<string:event_id>/register", methods=["POST"])
@@ -83,13 +70,10 @@ def event_register(event_id):
     event = Event.get_by_id(event_id)
     if not event: return jsonify({"error":"Event not found"}), 404
 
-    try:
-        regs = event.registrations
-        if event.capacity and len(regs) >= event.capacity:
-            return jsonify({"error":"Event capacity reached"}), 409
+    regs = event.registrations
+    if event.capacity and len(regs) >= event.capacity:
+        return jsonify({"error":"Event capacity reached"}), 409
 
-        r=EventRegistration(event_id=event.id,name=request.form["name"],email=request.form["email"],phone=request.form["phone"])
-        r.save()
-        return jsonify({"message":"Registration successful"})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    r=EventRegistration(event_id=event.id,name=request.form["name"],email=request.form["email"],phone=request.form["phone"])
+    r.save()
+    return jsonify({"message":"Registration successful"})

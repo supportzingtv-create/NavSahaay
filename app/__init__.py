@@ -10,7 +10,15 @@ csrf = CSRFProtect()
 
 def create_app():
     app = Flask(__name__)
-    app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "local-dev-secret")
+
+    # Ensure SECRET_KEY is never None or empty
+    secret = os.getenv("SECRET_KEY")
+    if not secret:
+        secret = "shivoham-fallback-secret-key-12345"
+
+    app.config["SECRET_KEY"] = secret
+    app.secret_key = secret
+
     app.config["UPLOAD_FOLDER"] = os.path.join(app.root_path, "..", "uploads")
     os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
@@ -32,12 +40,14 @@ def create_app():
     def inject_globals():
         return {"site_name": "Shivoham Foundation"}
 
-    # Safer seeding - only if not in a serverless environment or if needed
+    # Initialize database connection
     try:
-        from app.services.seed import seed_admin_and_events
-        seed_admin_and_events()
+        from app.firebase import db
+        if db:
+            from app.services.seed import seed_admin_and_events
+            seed_admin_and_events()
     except Exception as e:
-        print(f"Seed Error: {e}")
+        app.logger.error(f"Database initialization failed: {e}")
 
     return app
 
