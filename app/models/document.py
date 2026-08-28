@@ -1,10 +1,40 @@
-from app import db
+from app.firebase import db
+from datetime import datetime
 
-class Document(db.Model):
-    __tablename__ = "documents"
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(220), nullable=False)
-    category = db.Column(db.String(100), nullable=False)
-    filename = db.Column(db.String(255), nullable=False)
-    description = db.Column(db.Text)
-    uploaded_at = db.Column(db.DateTime, server_default=db.func.now())
+class Document:
+    def __init__(self, id=None, title=None, category=None, filename=None, description=None, uploaded_at=None):
+        self.id = id
+        self.title = title
+        self.category = category
+        self.filename = filename
+        self.description = description
+        self.uploaded_at = uploaded_at or datetime.now()
+
+    def to_dict(self):
+        return {
+            "title": self.title,
+            "category": self.category,
+            "filename": self.filename,
+            "description": self.description,
+            "uploaded_at": self.uploaded_at
+        }
+
+    @staticmethod
+    def get_by_id(doc_id):
+        doc = db.collection("documents").document(doc_id).get()
+        if doc.exists:
+            return Document(id=doc.id, **doc.to_dict())
+        return None
+
+    @staticmethod
+    def get_all():
+        docs = db.collection("documents").order_by("uploaded_at", direction="DESCENDING").stream()
+        return [Document(id=doc.id, **doc.to_dict()) for doc in docs]
+
+    def save(self):
+        if self.id:
+            db.collection("documents").document(self.id).set(self.to_dict())
+        else:
+            _, doc_ref = db.collection("documents").add(self.to_dict())
+            self.id = doc_ref.id
+        return self

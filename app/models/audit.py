@@ -1,10 +1,28 @@
-from app import db
+from app.firebase import db
+from datetime import datetime
 
-class AuditLog(db.Model):
-    __tablename__ = "audit_logs"
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
-    action = db.Column(db.String(160), nullable=False)
-    entity = db.Column(db.String(80), nullable=True)
-    entity_id = db.Column(db.String(80), nullable=True)
-    created_at = db.Column(db.DateTime, server_default=db.func.now())
+class AuditLog:
+    def __init__(self, id=None, user_id=None, action=None, entity=None, entity_id=None, created_at=None):
+        self.id = id
+        self.user_id = user_id
+        self.action = action
+        self.entity = entity
+        self.entity_id = entity_id
+        self.created_at = created_at or datetime.now()
+
+    def to_dict(self):
+        return {
+            "user_id": self.user_id,
+            "action": self.action,
+            "entity": self.entity,
+            "entity_id": self.entity_id,
+            "created_at": self.created_at
+        }
+
+    def save(self):
+        if self.id:
+            db.collection("audit_logs").document(self.id).set(self.to_dict())
+        else:
+            _, doc_ref = db.collection("audit_logs").add(self.to_dict())
+            self.id = doc_ref.id
+        return self

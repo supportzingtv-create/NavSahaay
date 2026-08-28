@@ -5,14 +5,15 @@ api_bp=Blueprint("api",__name__)
 
 @api_bp.get("/events")
 def events():
-    return jsonify([{"id":e.id,"title":e.title,"cause":e.cause,"date":e.event_date.isoformat(),"location":e.location,"description":e.description} for e in Event.query.filter_by(active=True).order_by(Event.event_date).all()])
+    return jsonify([{"id":e.id,"title":e.title,"cause":e.cause,"date":e.event_date.isoformat(),"location":e.location,"description":e.description} for e in Event.get_all(active_only=True)])
 
 @api_bp.get("/stats")
 def stats():
-    from sqlalchemy import func
+    all_donations = Donation.get_all()
+    total_amount = sum(float(d.amount) for d in all_donations)
     return jsonify({
-        "donations": Donation.query.count(),
-        "donation_amount": float(Donation.query.with_entities(func.coalesce(func.sum(Donation.amount),0)).scalar()),
-        "volunteers": Volunteer.query.count(),
-        "events": Event.query.filter_by(active=True).count()
+        "donations": len(all_donations),
+        "donation_amount": total_amount,
+        "volunteers": Volunteer.count(),
+        "events": Event.count()
     })

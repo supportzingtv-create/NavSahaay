@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, send_from_directory
 from flask_login import login_required, current_user
-from app import db
 from app.models import Donation, Volunteer, Event, Contact, Document, AuditLog
 from app.utils.security import roles_required
 from werkzeug.utils import secure_filename
@@ -12,54 +11,56 @@ admin_bp=Blueprint("admin",__name__)
 @login_required
 def dashboard():
     return render_template("admin/dashboard.html",
-        donation_count=Donation.query.count(), volunteer_count=Volunteer.query.count(),
-        event_count=Event.query.count(), contact_count=Contact.query.count(),
-        recent_donations=Donation.query.order_by(Donation.created_at.desc()).limit(8).all())
+        donation_count=Donation.count(), volunteer_count=Volunteer.count(),
+        event_count=Event.count(), contact_count=Contact.count(),
+        recent_donations=Donation.get_recent(8))
 
 @admin_bp.route("/donations")
 @login_required
 def donations():
-    return render_template("admin/donations.html", donations=Donation.query.order_by(Donation.created_at.desc()).all())
+    return render_template("admin/donations.html", donations=Donation.get_all())
 
-@admin_bp.route("/donations/<int:id>/verify", methods=["POST"])
+@admin_bp.route("/donations/<string:id>/verify", methods=["POST"])
 @login_required
 @roles_required("SUPER_ADMIN","FINANCE")
 def verify_donation(id):
-    d=db.session.get(Donation,id)
+    d=Donation.get_by_id(id)
     if not d: return ("Not found",404)
     d.status="VERIFIED"
     if not d.receipt_number:
-        d.receipt_number=f"SHV-RCP-{d.id:06d}"
-    db.session.add(AuditLog(user_id=current_user.id,action="VERIFY_DONATION",entity="Donation",entity_id=str(id)))
-    db.session.commit()
+        d.receipt_number=f"SHV-RCP-{d.id[:8].upper()}"
+    AuditLog(user_id=current_user.id,action="VERIFY_DONATION",entity="Donation",entity_id=str(id)).save()
+    d.save()
     flash("Donation verified and receipt number assigned.","success")
     return redirect(url_for("admin.donations"))
 
-@admin_bp.route("/donations/<int:id>/receipt")
+@admin_bp.route("/donations/<string:id>/receipt")
 @login_required
 def receipt(id):
     from app.services.receipt_service import build_receipt
-    d=db.session.get(Donation,id)
+    d=Donation.get_by_id(id)
     if not d: return ("Not found",404)
     return build_receipt(d), 200, {"Content-Type":"application/pdf","Content-Disposition":f"attachment; filename={d.receipt_number or d.donation_id}.pdf"}
 
 @admin_bp.route("/volunteers")
 @login_required
 def volunteers():
-    return render_template("admin/volunteers.html", volunteers=Volunteer.query.order_by(Volunteer.created_at.desc()).all())
+    return render_template("admin/volunteers.html", volunteers=Volunteer.get_all())
 
-@admin_bp.route("/volunteers/<int:id>/status", methods=["POST"])
+@admin_bp.route("/volunteers/<string:id>/status", methods=["POST"])
 @login_required
 @roles_required("SUPER_ADMIN","EDITOR")
 def volunteer_status(id):
-    v=db.session.get(Volunteer,id)
-    v.status=request.form["status"]; db.session.commit()
+    v=Volunteer.get_by_id(id)
+    if v:
+        v.status=request.form["status"]
+        v.save()
     return redirect(url_for("admin.volunteers"))
 
 @admin_bp.route("/events")
 @login_required
 def events():
-    return render_template("admin/events.html", events=Event.query.order_by(Event.event_date.asc()).all())
+    return render_template("admin/events.html", events=Event.get_all())
 
 @admin_bp.route("/events/new", methods=["GET","POST"])
 @login_required
@@ -71,22 +72,22 @@ def new_event():
                 event_date=datetime.fromisoformat(request.form["event_date"]),
                 location=request.form["location"],description=request.form["description"],
                 capacity=int(request.form["capacity"]) if request.form.get("capacity") else None)
-        db.session.add(e); db.session.commit()
+        e.save()
         return redirect(url_for("admin.events"))
     return render_template("admin/event_form.html")
 
-@admin_bp.route("/events/<int:id>/delete", methods=["POST"])
+@admin_bp.route("/events/<string:id>/delete", methods=["POST"])
 @login_required
 @roles_required("SUPER_ADMIN")
 def delete_event(id):
-    e=db.session.get(Event,id)
-    if e: db.session.delete(e); db.session.commit()
+    e=Event.get_by_id(id)
+    if e: e.delete()
     return redirect(url_for("admin.events"))
 
 @admin_bp.route("/contacts")
 @login_required
 def contacts():
-    return render_template("admin/contacts.html", contacts=Contact.query.order_by(Contact.created_at.desc()).all())
+    return render_template("admin/contacts.html", contacts=Contact.get_all())
 
 @admin_bp.route("/documents", methods=["GET","POST"])
 @login_required
@@ -100,13 +101,13 @@ def documents():
         path=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),"uploads",filename)
         f.save(path)
         d=Document(title=request.form["title"],category=request.form["category"],filename=filename,description=request.form.get("description"))
-        db.session.add(d); db.session.commit()
+        d.save()
         flash("Document uploaded.","success")
-    return render_template("admin/documents.html", documents=Document.query.order_by(Document.uploaded_at.desc()).all())
+    return render_template("admin/documents.html", documents=Document.get_all())
 
-@admin_bp.route("/documents/<int:id>/download")
+@admin_bp.route("/documents/<string:id>/download")
 def download_document(id):
-    d=db.session.get(Document,id)
+    d=Document.get_by_id(id)
     if not d:return ("Not found",404)
     folder=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),"uploads")
     return send_from_directory(folder,d.filename,as_attachment=True)

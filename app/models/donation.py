@@ -1,19 +1,72 @@
-from app import db
+from app.firebase import db
+from datetime import datetime
 
-class Donation(db.Model):
-    __tablename__ = "donations"
-    id = db.Column(db.Integer, primary_key=True)
-    donation_id = db.Column(db.String(40), unique=True, nullable=False, index=True)
-    receipt_number = db.Column(db.String(50), unique=True, nullable=True)
-    donor_name = db.Column(db.String(160), nullable=False)
-    email = db.Column(db.String(160), nullable=False)
-    phone = db.Column(db.String(30), nullable=False)
-    address = db.Column(db.Text, nullable=False)
-    pan = db.Column(db.String(20), nullable=True)
-    amount = db.Column(db.Numeric(12,2), nullable=False)
-    frequency = db.Column(db.Enum("ONE_TIME", "MONTHLY", "YEARLY"), nullable=False)
-    cause = db.Column(db.String(80), nullable=False)
-    anonymous = db.Column(db.Boolean, default=False)
-    payment_method = db.Column(db.String(50), default="MANUAL")
-    status = db.Column(db.Enum("PENDING", "VERIFIED", "CANCELLED"), default="PENDING")
-    created_at = db.Column(db.DateTime, server_default=db.func.now())
+class Donation:
+    def __init__(self, id=None, donation_id=None, receipt_number=None, donor_name=None,
+                 email=None, phone=None, address=None, pan=None, amount=0,
+                 frequency="ONE_TIME", cause=None, anonymous=False,
+                 payment_method="MANUAL", status="PENDING", created_at=None):
+        self.id = id
+        self.donation_id = donation_id
+        self.receipt_number = receipt_number
+        self.donor_name = donor_name
+        self.email = email
+        self.phone = phone
+        self.address = address
+        self.pan = pan
+        self.amount = amount
+        self.frequency = frequency
+        self.cause = cause
+        self.anonymous = anonymous
+        self.payment_method = payment_method
+        self.status = status
+        self.created_at = created_at or datetime.now()
+
+    def to_dict(self):
+        return {
+            "donation_id": self.donation_id,
+            "receipt_number": self.receipt_number,
+            "donor_name": self.donor_name,
+            "email": self.email,
+            "phone": self.phone,
+            "address": self.address,
+            "pan": self.pan,
+            "amount": self.amount,
+            "frequency": self.frequency,
+            "cause": self.cause,
+            "anonymous": self.anonymous,
+            "payment_method": self.payment_method,
+            "status": self.status,
+            "created_at": self.created_at
+        }
+
+    @staticmethod
+    def get_by_id(donation_id_str):
+        doc = db.collection("donations").document(donation_id_str).get()
+        if doc.exists:
+            return Donation(id=doc.id, **doc.to_dict())
+        return None
+
+    @staticmethod
+    def count():
+        # Firestore doesn't have a direct count() like SQL, but for small datasets we can stream
+        # For production, we might want a counter document.
+        return len(db.collection("donations").get())
+
+    @staticmethod
+    def get_recent(limit=8):
+        docs = db.collection("donations").order_by("created_at", direction="DESCENDING").limit(limit).stream()
+        return [Donation(id=doc.id, **doc.to_dict()) for doc in docs]
+
+    @staticmethod
+    def get_all():
+        docs = db.collection("donations").order_by("created_at", direction="DESCENDING").stream()
+        return [Donation(id=doc.id, **doc.to_dict()) for doc in docs]
+
+    def save(self):
+        if self.id:
+            db.collection("donations").document(self.id).set(self.to_dict())
+        else:
+            _, doc_ref = db.collection("donations").add(self.to_dict())
+            self.id = doc_ref.id
+        return self

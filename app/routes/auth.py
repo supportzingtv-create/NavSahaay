@@ -7,7 +7,7 @@ auth_bp=Blueprint("auth",__name__)
 @auth_bp.route("/login", methods=["GET","POST"])
 def login():
     if request.method=="POST":
-        user=User.query.filter_by(email=request.form["email"]).first()
+        user=User.get_by_email(request.form["email"])
         if user and user.active and user.check_password(request.form["password"]):
             login_user(user)
             return redirect(url_for("admin.dashboard"))

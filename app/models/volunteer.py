@@ -1,18 +1,62 @@
-from app import db
+from app.firebase import db
+from datetime import datetime
 
-class Volunteer(db.Model):
-    __tablename__ = "volunteers"
-    id = db.Column(db.Integer, primary_key=True)
-    reference_id = db.Column(db.String(40), unique=True, nullable=False)
-    name = db.Column(db.String(160), nullable=False)
-    email = db.Column(db.String(160), nullable=False)
-    phone = db.Column(db.String(30), nullable=False)
-    city = db.Column(db.String(100), nullable=False)
-    age = db.Column(db.Integer, nullable=False)
-    interest = db.Column(db.String(80), nullable=False)
-    availability = db.Column(db.String(50), nullable=False)
-    skills = db.Column(db.Text)
-    experience = db.Column(db.Text)
-    source = db.Column(db.String(120))
-    status = db.Column(db.Enum("NEW", "CONTACTED", "APPROVED", "REJECTED"), default="NEW")
-    created_at = db.Column(db.DateTime, server_default=db.func.now())
+class Volunteer:
+    def __init__(self, id=None, reference_id=None, name=None, email=None, phone=None,
+                 city=None, age=None, interest=None, availability=None, skills=None,
+                 experience=None, source=None, status="NEW", created_at=None):
+        self.id = id
+        self.reference_id = reference_id
+        self.name = name
+        self.email = email
+        self.phone = phone
+        self.city = city
+        self.age = age
+        self.interest = interest
+        self.availability = availability
+        self.skills = skills
+        self.experience = experience
+        self.source = source
+        self.status = status
+        self.created_at = created_at or datetime.now()
+
+    def to_dict(self):
+        return {
+            "reference_id": self.reference_id,
+            "name": self.name,
+            "email": self.email,
+            "phone": self.phone,
+            "city": self.city,
+            "age": self.age,
+            "interest": self.interest,
+            "availability": self.availability,
+            "skills": self.skills,
+            "experience": self.experience,
+            "source": self.source,
+            "status": self.status,
+            "created_at": self.created_at
+        }
+
+    @staticmethod
+    def get_by_id(vol_id):
+        doc = db.collection("volunteers").document(vol_id).get()
+        if doc.exists:
+            return Volunteer(id=doc.id, **doc.to_dict())
+        return None
+
+    @staticmethod
+    def count():
+        return len(db.collection("volunteers").get())
+
+    @staticmethod
+    def get_all():
+        docs = db.collection("volunteers").order_by("created_at", direction="DESCENDING").stream()
+        return [Volunteer(id=doc.id, **doc.to_dict()) for doc in docs]
+
+    def save(self):
+        if self.id:
+            db.collection("volunteers").document(self.id).set(self.to_dict())
+        else:
+            _, doc_ref = db.collection("volunteers").add(self.to_dict())
+            self.id = doc_ref.id
+        return self

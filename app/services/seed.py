@@ -1,16 +1,18 @@
 import os
 from datetime import datetime, timedelta
-from app import db
 from app.models import User, Event
 
 def seed_admin_and_events():
     email = os.getenv("ADMIN_EMAIL", "admin@shivoham.local")
     password = os.getenv("ADMIN_PASSWORD", "Admin@123")
-    if not User.query.filter_by(email=email).first():
-        u = User(name="Shivoham Administrator", email=email, role="SUPER_ADMIN")
+
+    if not User.get_by_email(email):
+        u = User(id=None, name="Shivoham Administrator", email=email, role="SUPER_ADMIN")
         u.set_password(password)
-        db.session.add(u)
-    if Event.query.count() == 0:
+        u.save()
+        print(f"Seeded admin: {email}")
+
+    if Event.count() == 0:
         now = datetime.now()
         events = [
             Event(title="Community Learning Drive", cause="Education", event_date=now+timedelta(days=18),
@@ -20,5 +22,6 @@ def seed_admin_and_events():
             Event(title="Community Health Camp", cause="Healthcare", event_date=now+timedelta(days=46),
                   location="To be confirmed", description="Health awareness and screening initiative.", capacity=100),
         ]
-        db.session.add_all(events)
-    db.session.commit()
+        for e in events:
+            e.save()
+        print("Seeded initial events.")
