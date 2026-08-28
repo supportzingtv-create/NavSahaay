@@ -1,4 +1,3 @@
-from app.firebase import db
 from datetime import datetime
 
 class Document:
@@ -21,6 +20,8 @@ class Document:
 
     @staticmethod
     def get_by_id(doc_id):
+        from app.firebase import db
+        if not doc_id or db is None: return None
         doc = db.collection("documents").document(doc_id).get()
         if doc.exists:
             return Document(id=doc.id, **doc.to_dict())
@@ -28,10 +29,14 @@ class Document:
 
     @staticmethod
     def get_all():
+        from app.firebase import db
+        if db is None: return []
         docs = db.collection("documents").order_by("uploaded_at", direction="DESCENDING").stream()
         return [Document(id=doc.id, **doc.to_dict()) for doc in docs]
 
     def save(self):
+        from app.firebase import db
+        if db is None: return None
         if self.id:
             db.collection("documents").document(self.id).set(self.to_dict())
         else:

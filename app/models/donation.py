@@ -1,4 +1,3 @@
-from app.firebase import db
 from datetime import datetime
 
 class Donation:
@@ -42,6 +41,8 @@ class Donation:
 
     @staticmethod
     def get_by_id(donation_id_str):
+        from app.firebase import db
+        if not donation_id_str or db is None: return None
         doc = db.collection("donations").document(donation_id_str).get()
         if doc.exists:
             return Donation(id=doc.id, **doc.to_dict())
@@ -49,21 +50,27 @@ class Donation:
 
     @staticmethod
     def count():
-        # Firestore doesn't have a direct count() like SQL, but for small datasets we can stream
-        # For production, we might want a counter document.
+        from app.firebase import db
+        if db is None: return 0
         return len(db.collection("donations").get())
 
     @staticmethod
     def get_recent(limit=8):
+        from app.firebase import db
+        if db is None: return []
         docs = db.collection("donations").order_by("created_at", direction="DESCENDING").limit(limit).stream()
         return [Donation(id=doc.id, **doc.to_dict()) for doc in docs]
 
     @staticmethod
     def get_all():
+        from app.firebase import db
+        if db is None: return []
         docs = db.collection("donations").order_by("created_at", direction="DESCENDING").stream()
         return [Donation(id=doc.id, **doc.to_dict()) for doc in docs]
 
     def save(self):
+        from app.firebase import db
+        if db is None: return None
         if self.id:
             db.collection("donations").document(self.id).set(self.to_dict())
         else:

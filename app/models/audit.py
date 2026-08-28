@@ -1,4 +1,3 @@
-from app.firebase import db
 from datetime import datetime
 
 class AuditLog:
@@ -20,6 +19,8 @@ class AuditLog:
         }
 
     def save(self):
+        from app.firebase import db
+        if db is None: return None
         if self.id:
             db.collection("audit_logs").document(self.id).set(self.to_dict())
         else:

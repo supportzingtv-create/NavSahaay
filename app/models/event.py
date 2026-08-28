@@ -1,4 +1,3 @@
-from app.firebase import db
 from datetime import datetime
 
 class Event:
@@ -28,12 +27,15 @@ class Event:
 
     @property
     def registrations(self):
-        if not self.id: return []
+        from app.firebase import db
+        if not self.id or db is None: return []
         docs = db.collection("events").document(self.id).collection("registrations").stream()
         return [EventRegistration(id=doc.id, **doc.to_dict()) for doc in docs]
 
     @staticmethod
     def get_by_id(event_id):
+        from app.firebase import db
+        if not event_id or db is None: return None
         doc = db.collection("events").document(event_id).get()
         if doc.exists:
             return Event(id=doc.id, **doc.to_dict())
@@ -41,10 +43,14 @@ class Event:
 
     @staticmethod
     def count():
+        from app.firebase import db
+        if db is None: return 0
         return len(db.collection("events").get())
 
     @staticmethod
     def get_all(active_only=False):
+        from app.firebase import db
+        if db is None: return []
         query = db.collection("events")
         if active_only:
             query = query.where("active", "==", True)
@@ -52,6 +58,8 @@ class Event:
         return [Event(id=doc.id, **doc.to_dict()) for doc in docs]
 
     def save(self):
+        from app.firebase import db
+        if db is None: return None
         if self.id:
             db.collection("events").document(self.id).set(self.to_dict())
         else:
@@ -60,7 +68,8 @@ class Event:
         return self
 
     def delete(self):
-        if self.id:
+        from app.firebase import db
+        if self.id and db is not None:
             db.collection("events").document(self.id).delete()
 
 class EventRegistration:
@@ -81,7 +90,8 @@ class EventRegistration:
         }
 
     def save(self):
-        if not self.event_id: raise ValueError("event_id is required")
+        from app.firebase import db
+        if not self.event_id or db is None: raise ValueError("event_id and db are required")
         if self.id:
             db.collection("events").document(self.event_id).collection("registrations").document(self.id).set(self.to_dict())
         else:

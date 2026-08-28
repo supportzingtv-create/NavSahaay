@@ -1,4 +1,3 @@
-from app.firebase import db
 from datetime import datetime
 
 class Volunteer:
@@ -39,6 +38,8 @@ class Volunteer:
 
     @staticmethod
     def get_by_id(vol_id):
+        from app.firebase import db
+        if not vol_id or db is None: return None
         doc = db.collection("volunteers").document(vol_id).get()
         if doc.exists:
             return Volunteer(id=doc.id, **doc.to_dict())
@@ -46,14 +47,20 @@ class Volunteer:
 
     @staticmethod
     def count():
+        from app.firebase import db
+        if db is None: return 0
         return len(db.collection("volunteers").get())
 
     @staticmethod
     def get_all():
+        from app.firebase import db
+        if db is None: return []
         docs = db.collection("volunteers").order_by("created_at", direction="DESCENDING").stream()
         return [Volunteer(id=doc.id, **doc.to_dict()) for doc in docs]
 
     def save(self):
+        from app.firebase import db
+        if db is None: return None
         if self.id:
             db.collection("volunteers").document(self.id).set(self.to_dict())
         else:

@@ -1,4 +1,3 @@
-from app.firebase import db
 from datetime import datetime
 
 class Contact:
@@ -23,14 +22,20 @@ class Contact:
 
     @staticmethod
     def count():
+        from app.firebase import db
+        if db is None: return 0
         return len(db.collection("contacts").get())
 
     @staticmethod
     def get_all():
+        from app.firebase import db
+        if db is None: return []
         docs = db.collection("contacts").order_by("created_at", direction="DESCENDING").stream()
         return [Contact(id=doc.id, **doc.to_dict()) for doc in docs]
 
     def save(self):
+        from app.firebase import db
+        if db is None: return None
         if self.id:
             db.collection("contacts").document(self.id).set(self.to_dict())
         else:

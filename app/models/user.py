@@ -1,6 +1,5 @@
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from app.firebase import db
 from datetime import datetime
 
 class User(UserMixin):
@@ -31,22 +30,33 @@ class User(UserMixin):
 
     @staticmethod
     def get_by_id(user_id):
-        if not user_id: return None
-        doc = db.collection("users").document(user_id).get()
-        if doc.exists:
-            data = doc.to_dict()
-            return User(id=doc.id, **data)
+        from app.firebase import db
+        if not user_id or db is None: return None
+        try:
+            doc = db.collection("users").document(user_id).get()
+            if doc.exists:
+                data = doc.to_dict()
+                return User(id=doc.id, **data)
+        except:
+            pass
         return None
 
     @staticmethod
     def get_by_email(email):
-        docs = db.collection("users").where("email", "==", email).limit(1).stream()
-        for doc in docs:
-            data = doc.to_dict()
-            return User(id=doc.id, **data)
+        from app.firebase import db
+        if db is None: return None
+        try:
+            docs = db.collection("users").where("email", "==", email).limit(1).stream()
+            for doc in docs:
+                data = doc.to_dict()
+                return User(id=doc.id, **data)
+        except:
+            pass
         return None
 
     def save(self):
+        from app.firebase import db
+        if db is None: return None
         if self.id:
             db.collection("users").document(self.id).set(self.to_dict())
         else:
