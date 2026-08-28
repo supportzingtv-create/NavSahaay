@@ -79,9 +79,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-3 md:justify-start md:space-x-10">
                 <div class="flex justify-start lg:w-0 lg:flex-1">
-                    <a href="{{ url_for('main.home') }}" class="flex items-center space-x-3">
-                        <img class="h-10 w-auto" src="{{ url_for('static', filename='images/logo1.png') }}" alt="NavSahaay Logo">
-                        <div>
+                    <a href="{{ url_for('main.home') }}" class="flex items-center space-x-4">
+                        <img class="h-16 w-auto object-contain" src="{{ url_for('static', filename='images/logo1.png') }}" alt="NavSahaay Logo" style="image-rendering: -webkit-optimize-contrast;">
+                        <div class="leading-tight">
                             <span class="text-xl font-black text-gray-900 tracking-tighter">NAVSAHAAY</span>
                             <span class="block text-[10px] font-bold text-primary-600 uppercase tracking-widest -mt-1">Foundation</span>
                         </div>
@@ -103,6 +103,8 @@
                     </div>
                     <a href="{{ url_for('main.home') }}#about" class="text-sm font-bold text-gray-700 hover:text-primary-600 transition-colors">About</a>
                     <a href="{{ url_for('main.home') }}#events" class="text-sm font-bold text-gray-700 hover:text-primary-600 transition-colors">Events</a>
+
+                    <a href="{{ url_for('admin.dashboard') }}" class="text-sm font-bold text-gray-700 hover:text-primary-600 transition-colors">Admin Panel</a>
 
                     <a href="{{ url_for('main.home') }}#donate" class="text-sm font-bold text-primary-600 hover:text-primary-700 border-2 border-primary-600 rounded-full px-5 py-2 hover:bg-primary-50 transition-all">Donate Monthly</a>
 
