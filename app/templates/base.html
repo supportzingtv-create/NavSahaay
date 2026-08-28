@@ -65,8 +65,8 @@
 </head>
 <body class="font-sans text-gray-900 antialiased bg-white">
     <!-- Top Ticker -->
-    <div class="ticker-wrap hidden md:block">
-        <div class="ticker text-xs font-bold uppercase tracking-widest">
+    <div class="ticker-wrap hidden sm:block">
+        <div class="ticker text-[10px] sm:text-xs font-bold uppercase tracking-widest">
             <span>Someone just donated ₹500 for Child Education</span> &nbsp; | &nbsp;
             <span>Ramesh K. donated ₹2000 for Food Support</span> &nbsp; | &nbsp;
             <span>Anita S. donated ₹150 for Plant a Tree</span> &nbsp; | &nbsp;
@@ -80,7 +80,7 @@
             <div class="flex justify-between items-center py-3 md:justify-start md:space-x-10">
                 <div class="flex justify-start lg:w-0 lg:flex-1">
                     <a href="{{ url_for('main.home') }}" class="flex items-center space-x-3">
-                        <img class="h-10 w-auto rounded-lg shadow-sm" src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="NavSahaay Logo">
+                        <img class="h-10 w-auto" src="{{ url_for('static', filename='images/logo1.png') }}" alt="NavSahaay Logo">
                         <div>
                             <span class="text-xl font-black text-gray-900 tracking-tighter">NAVSAHAAY</span>
                             <span class="block text-[10px] font-bold text-primary-600 uppercase tracking-widest -mt-1">Foundation</span>
@@ -161,7 +161,7 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
                 <div class="col-span-1 md:col-span-2">
                     <div class="flex items-center space-x-3 mb-8">
-                        <img class="h-12 w-auto rounded-xl brightness-110 shadow-lg" src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="NavSahaay Logo">
+                        <img class="h-12 w-auto brightness-110" src="{{ url_for('static', filename='images/logo1.png') }}" alt="NavSahaay Logo">
                         <div>
                             <span class="text-2xl font-black text-white tracking-tighter">NAVSAHAAY</span>
                             <span class="block text-xs font-bold text-primary-500 uppercase tracking-widest -mt-1">Foundation</span>

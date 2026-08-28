@@ -3,7 +3,7 @@
 {% block content %}
 <!-- Hero Slider Section -->
 <section class="relative bg-white overflow-hidden">
-    <div class="swiper hero-swiper h-[600px] md:h-[800px]">
+    <div class="swiper hero-swiper h-[450px] sm:h-[600px] md:h-[800px]">
         <div class="swiper-wrapper">
             {% for item in slider_items %}
             <div class="swiper-slide relative">
@@ -21,14 +21,14 @@
                                 <span class="flex h-2 w-2 rounded-full bg-white animate-pulse"></span>
                                 <span class="text-xs font-black uppercase tracking-widest text-white">Direct Impact</span>
                             </div>
-                            <h1 class="text-5xl md:text-7xl font-serif font-black mb-6 leading-[1.1]">
+                            <h1 class="text-3xl sm:text-5xl md:text-7xl font-serif font-black mb-4 sm:mb-6 leading-[1.1]">
                                 {{ item.title | safe }}
                             </h1>
-                            <p class="text-xl md:text-2xl font-medium mb-10 leading-relaxed text-gray-100">
+                            <p class="text-base sm:text-xl md:text-2xl font-medium mb-6 sm:mb-10 leading-relaxed text-gray-100 line-clamp-3 sm:line-clamp-none">
                                 {{ item.caption }}
                             </p>
-                            <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
-                                <a href="#causes" class="inline-flex items-center justify-center px-10 py-5 border border-transparent text-lg font-black rounded-2xl text-white bg-primary-600 hover:bg-primary-700 shadow-2xl transition-all transform hover:-translate-y-1 uppercase tracking-widest">
+                            <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-3 sm:space-y-0">
+                                <a href="#causes" class="inline-flex items-center justify-center px-6 sm:px-10 py-3 sm:py-5 border border-transparent text-sm sm:text-lg font-black rounded-xl sm:rounded-2xl text-white bg-primary-600 hover:bg-primary-700 shadow-2xl transition-all transform hover:-translate-y-1 uppercase tracking-widest text-center">
                                     Donate Now
                                 </a>
                                 <a href="#how-it-works" class="inline-flex items-center justify-center px-10 py-5 border-2 border-white text-lg font-black rounded-2xl text-white bg-transparent hover:bg-white hover:text-gray-900 transition-all uppercase tracking-widest">
@@ -49,24 +49,24 @@
 </section>
 
 <!-- Impact Counters -->
-<section class="bg-gray-50 py-12 border-y border-gray-100">
+<section class="bg-gray-50 py-8 sm:py-12 border-y border-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div class="text-center group">
-                <p class="text-5xl font-serif font-black text-primary-600 mb-2 group-hover:scale-110 transition-transform">6.5L+</p>
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Active Donors</p>
+        <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+            <div class="text-center group border-b sm:border-b-0 sm:border-r border-gray-200 pb-6 sm:pb-0">
+                <p class="text-3xl sm:text-5xl font-serif font-black text-primary-600 mb-1 group-hover:scale-110 transition-transform">6.5L+</p>
+                <p class="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Active Donors</p>
             </div>
-            <div class="text-center group">
-                <p class="text-5xl font-serif font-black text-gray-900 mb-2 group-hover:scale-110 transition-transform">₹43Cr+</p>
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Donations Raised</p>
+            <div class="text-center group border-b xs:border-b-0 sm:border-r border-gray-200 pb-6 xs:pb-0">
+                <p class="text-3xl sm:text-5xl font-serif font-black text-gray-900 mb-1 group-hover:scale-110 transition-transform">₹43Cr+</p>
+                <p class="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Donations Raised</p>
             </div>
-            <div class="text-center group">
-                <p class="text-5xl font-serif font-black text-primary-600 mb-2 group-hover:scale-110 transition-transform">115L+</p>
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Meals Served</p>
+            <div class="text-center group border-b sm:border-b-0 sm:border-r border-gray-200 pb-6 sm:pb-0 mt-6 xs:mt-0">
+                <p class="text-3xl sm:text-5xl font-serif font-black text-primary-600 mb-1 group-hover:scale-110 transition-transform">115L+</p>
+                <p class="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Meals Served</p>
             </div>
-            <div class="text-center group">
-                <p class="text-5xl font-serif font-black text-gray-900 mb-2 group-hover:scale-110 transition-transform">6.7L+</p>
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Lives Impacted</p>
+            <div class="text-center group mt-6 md:mt-0">
+                <p class="text-3xl sm:text-5xl font-serif font-black text-gray-900 mb-1 group-hover:scale-110 transition-transform">6.7L+</p>
+                <p class="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Lives Impacted</p>
             </div>
         </div>
     </div>
@@ -172,9 +172,9 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-12 lg:mt-0 grid grid-cols-2 gap-4">
-                <img class="rounded-2xl shadow-2xl transform translate-y-8" src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=300&q=80" alt="Proof 1">
-                <img class="rounded-2xl shadow-2xl" src="https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&w=300&q=80" alt="Proof 2">
+            <div class="mt-12 lg:mt-0 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <img class="rounded-2xl shadow-2xl transform sm:translate-y-8 h-48 sm:h-auto w-full object-cover" src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=300&q=80" alt="Proof 1">
+                <img class="rounded-2xl shadow-2xl h-48 sm:h-auto w-full object-cover" src="https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&w=300&q=80" alt="Proof 2">
             </div>
         </div>
     </div>
