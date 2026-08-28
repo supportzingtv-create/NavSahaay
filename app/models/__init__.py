@@ -5,3 +5,4 @@ from .event import Event, EventRegistration
 from .contact import Contact
 from .document import Document
 from .audit import AuditLog
+from .settings import Setting

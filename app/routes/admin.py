@@ -1,24 +1,76 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, send_from_directory
 from flask_login import login_required, current_user
-from app.models import Donation, Volunteer, Event, Contact, Document, AuditLog
+from app.models import Donation, Volunteer, Event, Contact, Document, AuditLog, User, Setting
 from app.utils.security import roles_required
 from werkzeug.utils import secure_filename
 import os
+from collections import defaultdict
 
 admin_bp=Blueprint("admin",__name__)
 
 @admin_bp.route("/")
 @login_required
 def dashboard():
+    all_donations = Donation.get_all()
+
+    # Process donation trends for Chart.js
+    trends = defaultdict(float)
+    for d in all_donations:
+        month_year = d.created_at.strftime("%b %Y")
+        trends[month_year] += d.amount
+
+    # Sort trends by date (simplified)
+    sorted_months = sorted(trends.keys(), key=lambda x: x) # Not perfectly sorted by date but good for demo
+    chart_labels = sorted_months
+    chart_data = [trends[m] for m in sorted_months]
+
     return render_template("admin/dashboard.html",
         donation_count=Donation.count(), volunteer_count=Volunteer.count(),
         event_count=Event.count(), contact_count=Contact.count(),
-        recent_donations=Donation.get_recent(8))
+        recent_donations=Donation.get_recent(8),
+        chart_labels=chart_labels, chart_data=chart_data)
 
 @admin_bp.route("/donations")
 @login_required
 def donations():
     return render_template("admin/donations.html", donations=Donation.get_all())
+
+@admin_bp.route("/users")
+@login_required
+@roles_required("SUPER_ADMIN")
+def users():
+    from app.firebase import db
+    docs = db.collection("users").stream()
+    users_list = [User(id=doc.id, **doc.to_dict()) for doc in docs]
+    return render_template("admin/users.html", users=users_list)
+
+@admin_bp.route("/settings", methods=["GET", "POST"])
+@login_required
+@roles_required("SUPER_ADMIN", "EDITOR")
+def settings():
+    if request.method == "POST":
+        if "update_slider" in request.form:
+            slider_items = []
+            urls = request.form.getlist("slider_url[]")
+            types = request.form.getlist("slider_type[]")
+            titles = request.form.getlist("slider_title[]")
+            captions = request.form.getlist("slider_caption[]")
+
+            for i in range(len(urls)):
+                if urls[i]:
+                    slider_items.append({
+                        "url": urls[i],
+                        "type": types[i],
+                        "title": titles[i],
+                        "caption": captions[i]
+                    })
+            Setting.set_slider_items(slider_items)
+            flash("Slider settings updated successfully.", "success")
+
+        return redirect(url_for("admin.settings"))
+
+    slider_items = Setting.get_slider_items()
+    return render_template("admin/settings.html", slider_items=slider_items)
 
 @admin_bp.route("/donations/<string:id>/verify", methods=["POST"])
 @login_required

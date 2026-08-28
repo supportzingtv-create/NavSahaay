@@ -6,6 +6,7 @@
     <title>Admin Dashboard | NavSahaay Foundation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -35,6 +36,12 @@
                 <a href="{{ url_for('admin.events') }}" class="block px-4 py-2.5 rounded-lg hover:bg-gray-800 transition-colors {% if request.endpoint == 'admin.events' %}bg-gray-800 text-white font-semibold{% else %}text-gray-400{% endif %}">Events</a>
                 <a href="{{ url_for('admin.contacts') }}" class="block px-4 py-2.5 rounded-lg hover:bg-gray-800 transition-colors {% if request.endpoint == 'admin.contacts' %}bg-gray-800 text-white font-semibold{% else %}text-gray-400{% endif %}">Contacts</a>
                 <a href="{{ url_for('admin.documents') }}" class="block px-4 py-2.5 rounded-lg hover:bg-gray-800 transition-colors {% if request.endpoint == 'admin.documents' %}bg-gray-800 text-white font-semibold{% else %}text-gray-400{% endif %}">Documents</a>
+
+                <div class="mt-8 pt-8 border-t border-gray-800">
+                    <p class="px-4 text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">Management</p>
+                    <a href="{{ url_for('admin.users') }}" class="block px-4 py-2.5 rounded-lg hover:bg-gray-800 transition-colors {% if request.endpoint == 'admin.users' %}bg-gray-800 text-white font-semibold{% else %}text-gray-400{% endif %}">User Management</a>
+                    <a href="{{ url_for('admin.settings') }}" class="block px-4 py-2.5 rounded-lg hover:bg-gray-800 transition-colors {% if request.endpoint == 'admin.settings' %}bg-gray-800 text-white font-semibold{% else %}text-gray-400{% endif %}">Site Management</a>
+                </div>
             </nav>
         </aside>
 

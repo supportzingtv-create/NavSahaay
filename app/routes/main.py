@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from datetime import datetime
-from app.models import Donation, Volunteer, Event, Contact
+from app.models import Donation, Volunteer, Event, Contact, Setting
 import secrets
 
 main_bp = Blueprint("main", __name__)
@@ -9,14 +9,33 @@ main_bp = Blueprint("main", __name__)
 def home():
     # Attempt to get events, but don't crash if DB is unavailable
     events = []
+    slider_items = []
     try:
         all_events = Event.get_all(active_only=True)
         if all_events:
             events = all_events[:3]
-    except Exception as e:
-        print(f"Error fetching events: {e}")
 
-    return render_template("home.html", events=events)
+        slider_items = Setting.get_slider_items()
+        if not slider_items:
+            # Fallback default slider
+            slider_items = [
+                {
+                    "type": "image",
+                    "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070",
+                    "title": "Empowering Communities",
+                    "caption": "Join us in our mission to create a sustainable impact through collective action."
+                },
+                {
+                    "type": "image",
+                    "url": "https://images.unsplash.com/photo-1509059852496-f3822ae057bf?q=80&w=2080",
+                    "title": "Education for All",
+                    "caption": "Providing resources and support to ensure every child has access to quality education."
+                }
+            ]
+    except Exception as e:
+        print(f"Error fetching home data: {e}")
+
+    return render_template("home.html", events=events, slider_items=slider_items)
 
 @main_bp.route("/donate", methods=["POST"])
 def donate():

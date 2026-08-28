@@ -1,0 +1,95 @@
+{% extends "admin/base.html" %}
+
+{% block header_title %}Site Management{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
+        <h3 class="text-xl font-bold mb-6">Hero Slider Settings</h3>
+        <p class="text-sm text-gray-500 mb-8">Manage the images and videos shown on the home page hero section.</p>
+
+        <form method="post" action="{{ url_for('admin.settings') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="update_slider" value="1">
+
+            <div id="slider-items" class="space-y-8">
+                {% for item in slider_items %}
+                <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative slider-item">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Media URL</label>
+                            <input name="slider_url[]" value="{{ item.url }}" placeholder="https://..." class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Media Type</label>
+                            <select name="slider_type[]" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+                                <option value="image" {% if item.type == 'image' %}selected{% endif %}>Image</option>
+                                <option value="video" {% if item.type == 'video' %}selected{% endif %}>Video</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Title</label>
+                            <input name="slider_title[]" value="{{ item.title }}" placeholder="Main Heading" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Caption</label>
+                            <textarea name="slider_caption[]" placeholder="Subtext..." rows="2" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">{{ item.caption }}</textarea>
+                        </div>
+                    </div>
+                    <button type="button" onclick="this.parentElement.remove()" class="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 shadow-lg">
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="mt-8 flex items-center justify-between">
+                <button type="button" onclick="addSlide()" class="text-sm font-bold text-primary-600 hover:text-primary-700 flex items-center">
+                    <svg class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                    Add Another Slide
+                </button>
+                <button type="submit" class="bg-gray-900 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-black transition-all shadow-xl">
+                    Save Site Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<template id="slide-template">
+    <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative slider-item">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Media URL</label>
+                <input name="slider_url[]" placeholder="https://..." class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Media Type</label>
+                <select name="slider_type[]" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+                    <option value="image">Image</option>
+                    <option value="video">Video</option>
+                </select>
+            </div>
+            <div class="md:col-span-2">
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Title</label>
+                <input name="slider_title[]" placeholder="Main Heading" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+            </div>
+            <div class="md:col-span-2">
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Caption</label>
+                <textarea name="slider_caption[]" placeholder="Subtext..." rows="2" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none"></textarea>
+            </div>
+        </div>
+        <button type="button" onclick="this.parentElement.remove()" class="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 shadow-lg">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+    </div>
+</template>
+
+<script>
+function addSlide() {
+    const template = document.getElementById('slide-template');
+    const clone = template.content.cloneNode(true);
+    document.getElementById('slider-items').appendChild(clone);
+}
+</script>
+{% endblock %}

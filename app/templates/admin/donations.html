@@ -1,1 +1,96 @@
-{% extends "admin/base.html" %}{% block admin_content %}<h1>Donations</h1><table><tr><th>ID</th><th>Donor</th><th>Amount</th><th>Frequency</th><th>Cause</th><th>Status</th><th>Action</th></tr>{% for d in donations %}<tr><td>{{d.donation_id}}</td><td>{{"Anonymous" if d.anonymous else d.donor_name}}</td><td>₹{{d.amount}}</td><td>{{d.frequency}}</td><td>{{d.cause}}</td><td>{{d.status}}</td><td>{% if d.status=="PENDING" %}<form method="post" action="{{url_for('admin.verify_donation',id=d.id)}}"><input type="hidden" name="csrf_token" value="{{csrf_token()}}"><button>Verify</button></form>{% endif %}{% if d.receipt_number %}<a href="{{url_for('admin.receipt',id=d.id)}}">Receipt</a>{% endif %}</td></tr>{% endfor %}</table>{% endblock %}
+{% extends "admin/base.html" %}
+
+{% block header_title %}Donation Management{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-white sticky top-0 z-10">
+        <div>
+            <h3 class="text-lg font-bold">Detailed Donation Records</h3>
+            <p class="text-xs text-gray-400 font-medium">Manage and verify all financial contributions.</p>
+        </div>
+        <div class="flex space-x-2">
+            <button class="bg-gray-100 text-gray-600 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors">Export CSV</button>
+            <button class="bg-primary-600 text-white px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-primary-700 transition-colors shadow-lg">New Manual Record</button>
+        </div>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left">
+            <thead>
+                <tr class="bg-gray-50 text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                    <th class="px-8 py-4">Transaction ID</th>
+                    <th class="px-8 py-4">Donor Information</th>
+                    <th class="px-8 py-4">Amount</th>
+                    <th class="px-8 py-4">Cause & Frequency</th>
+                    <th class="px-8 py-4">Status</th>
+                    <th class="px-8 py-4 text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                {% for d in donations %}
+                <tr class="hover:bg-gray-50 transition-colors group">
+                    <td class="px-8 py-4">
+                        <p class="text-xs font-mono font-bold text-gray-900">{{ d.donation_id }}</p>
+                        <p class="text-[10px] text-gray-400 mt-1 uppercase font-bold">{{ d.created_at.strftime('%d %b %Y, %H:%M') }}</p>
+                    </td>
+                    <td class="px-8 py-4">
+                        <p class="font-bold text-gray-900">
+                            {% if d.anonymous %}
+                            <span class="text-gray-400 italic">Anonymous Donor</span>
+                            {% else %}
+                            {{ d.donor_name }}
+                            {% endif %}
+                        </p>
+                        <p class="text-xs text-gray-400">{{ d.email }}</p>
+                        {% if d.pan %}
+                        <p class="text-[9px] font-bold text-primary-600 uppercase tracking-tighter mt-1">PAN: {{ d.pan }}</p>
+                        {% endif %}
+                    </td>
+                    <td class="px-8 py-4">
+                        <p class="text-xl font-black text-gray-900">₹{{ d.amount }}</p>
+                        <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest">{{ d.payment_method }}</p>
+                    </td>
+                    <td class="px-8 py-4">
+                        <p class="text-sm font-bold text-gray-700">{{ d.cause }}</p>
+                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{{ d.frequency }}</p>
+                    </td>
+                    <td class="px-8 py-4">
+                        <span class="px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest
+                            {% if d.status == 'VERIFIED' %}bg-green-100 text-green-700
+                            {% elif d.status == 'PENDING' %}bg-orange-100 text-orange-700
+                            {% else %}bg-red-100 text-red-700{% endif %}">
+                            {{ d.status }}
+                        </span>
+                        {% if d.receipt_number %}
+                        <p class="text-[9px] text-gray-400 mt-2 font-mono">{{ d.receipt_number }}</p>
+                        {% endif %}
+                    </td>
+                    <td class="px-8 py-4 text-right">
+                        <div class="flex justify-end space-x-2">
+                            {% if d.status == 'PENDING' %}
+                            <form method="post" action="{{ url_for('admin.verify_donation', id=d.id) }}">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button class="bg-green-600 text-white p-2 rounded-lg hover:bg-green-700 transition-colors shadow-md" title="Verify Donation">
+                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                </button>
+                            </form>
+                            {% endif %}
+
+                            {% if d.status == 'VERIFIED' %}
+                            <a href="{{ url_for('admin.receipt', id=d.id) }}" class="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition-colors shadow-md" title="Download Receipt">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            </a>
+                            {% endif %}
+
+                            <button class="bg-gray-100 text-gray-400 p-2 rounded-lg hover:bg-gray-200 transition-colors">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path></svg>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

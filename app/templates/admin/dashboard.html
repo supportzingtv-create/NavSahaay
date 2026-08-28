@@ -37,6 +37,48 @@
     </div>
 </div>
 
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+    <div class="lg:col-span-2 bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+        <h3 class="text-lg font-bold mb-6">Donation Trends</h3>
+        <div class="h-64">
+            <canvas id="donationChart"></canvas>
+        </div>
+    </div>
+
+    <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+        <h3 class="text-lg font-bold mb-6">Impact Summary</h3>
+        <div class="space-y-6">
+            <div>
+                <div class="flex justify-between text-sm mb-2">
+                    <span class="text-gray-500">Education Support</span>
+                    <span class="font-bold">75%</span>
+                </div>
+                <div class="w-full bg-gray-100 rounded-full h-2">
+                    <div class="bg-primary-600 h-2 rounded-full" style="width: 75%"></div>
+                </div>
+            </div>
+            <div>
+                <div class="flex justify-between text-sm mb-2">
+                    <span class="text-gray-500">Food Drives</span>
+                    <span class="font-bold">60%</span>
+                </div>
+                <div class="w-full bg-gray-100 rounded-full h-2">
+                    <div class="bg-green-600 h-2 rounded-full" style="width: 60%"></div>
+                </div>
+            </div>
+            <div>
+                <div class="flex justify-between text-sm mb-2">
+                    <span class="text-gray-500">Tree Plantation</span>
+                    <span class="font-bold">45%</span>
+                </div>
+                <div class="w-full bg-gray-100 rounded-full h-2">
+                    <div class="bg-blue-600 h-2 rounded-full" style="width: 45%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
     <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center">
         <h3 class="text-lg font-bold">Recent Donations</h3>
@@ -76,4 +118,34 @@
         </table>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('donationChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ chart_labels | tojson }},
+                datasets: [{
+                    label: 'Donations (₹)',
+                    data: {{ chart_data | tojson }},
+                    borderColor: '#ea580c',
+                    backgroundColor: 'rgba(234, 88, 12, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    });
+</script>
 {% endblock %}
