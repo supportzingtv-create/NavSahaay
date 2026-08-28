@@ -1,61 +1,41 @@
-# Migration Plan: MySQL to Firebase Firestore
+# Implementation Plan: NGO Website Redesign (Inspired by Thaagam.org)
 
-This plan outlines the steps to migrate the NavSahaay Flask application from a local MySQL database to Google Cloud Firestore (Firebase).
+This plan aims to elevate the NavSahaay Foundation website by incorporating high-impact design and transparency features found in top NGO websites like Thaagam.org.
 
 ## User Review Required
 
 > [!IMPORTANT]
-> - **Firebase Service Account**: You will need to create a Firebase project, enable Firestore, and download a Service Account JSON key.
-> - **Environment Variables**: The `FIREBASE_SERVICE_ACCOUNT_JSON` environment variable must be set in Vercel (and locally in `.env`) with the content of the service account file.
-> - **ID Changes**: Firestore uses string document IDs. Some URLs that previously used integer IDs (like `/admin/donations/<int:id>/verify`) will be updated to use strings.
+> - **Specific Impact Items**: We will transition from general causes to specific "Impact Packages" (e.g., "Plant a tree for ₹70").
+> - **Trust Signals**: We need to confirm if NavSahaay has 80G certification to highlight it prominently.
 
 ## Proposed Changes
 
-### Dependencies & Configuration
+### 1. Enhanced UI/UX (Tailwind CSS)
 
-#### [MODIFY] [requirements.txt](file:///Users/apple/AndroidStudioProjects/NavSahaay/requirements.txt)
-- Add `firebase-admin`.
-- Remove `Flask-SQLAlchemy`, `PyMySQL`, `Flask-Migrate`.
+#### [MODIFY] [base.html](file:///Users/apple/AndroidStudioProjects/NavSahaay/app/templates/base.html)
+- Add a sticky "Donate Monthly" button in the header.
+- Implement a floating "Quick Donate" widget.
+- Update footer with trust logos (80G, ISO, etc. - placeholders for now).
 
-#### [MODIFY] [.env.example](file:///Users/apple/AndroidStudioProjects/NavSahaay/.env.example) and [.env](file:///Users/apple/AndroidStudioProjects/NavSahaay/.env)
-- Remove `DATABASE_URL`.
-- Add `FIREBASE_SERVICE_ACCOUNT_JSON`.
+#### [MODIFY] [home.html](file:///Users/apple/AndroidStudioProjects/NavSahaay/app/templates/home.html)
+- **Hero Redesign**: Focus on urgency and transparency.
+- **Impact Ticker**: Add an animated counter for Donors, Funds, and Lives Impacted.
+- **Specific Causes/Packages**: Create a grid of specific items people can fund (e.g., Meal for a child, School kit).
+- **Recent Activity Feed**: A scrolling section showing "Someone just donated ₹500".
+- **Transparency Section**: Highlight the "Photo/Video Proof" promise.
 
-### Firebase Integration
+### 2. Functional Improvements
 
-#### [NEW] [firebase.py](file:///Users/apple/AndroidStudioProjects/NavSahaay/app/firebase.py)
-- Initialize Firebase Admin SDK using the service account JSON from environment variables.
-- Export the Firestore client (`db`).
+#### [MODIFY] [models/donation.py](file:///Users/apple/AndroidStudioProjects/NavSahaay/app/models/donation.py)
+- Add a field for `package_id` or `package_name` to track specific item donations.
 
-#### [MODIFY] [__init__.py](file:///Users/apple/AndroidStudioProjects/NavSahaay/app/__init__.py)
-- Remove SQLAlchemy and Migrate initialization.
-- Import and initialize Firebase.
-
-### Models Refactor
-
-#### [MODIFY] [app/models/](file:///Users/apple/AndroidStudioProjects/NavSahaay/app/models/)
-- Refactor all models (`User`, `Donation`, `Volunteer`, etc.) to use Firestore for persistence.
-- Models will now act as Data Access Objects (DAOs) or simple data classes with static methods for Firestore queries.
-
-### Routes & Services Update
-
-#### [MODIFY] [app/routes/](file:///Users/apple/AndroidStudioProjects/NavSahaay/app/routes/)
-- Update `auth.py`, `main.py`, `admin.py`, and `api.py` to use Firestore methods instead of `SQLAlchemy` queries.
-- Update route parameters from `<int:id>` to `<string:id>` where applicable.
-
-#### [MODIFY] [app/services/seed.py](file:///Users/apple/AndroidStudioProjects/NavSahaay/app/services/seed.py)
-- Update seeding logic to work with Firestore.
+#### [MODIFY] [routes/main.py](file:///Users/apple/AndroidStudioProjects/NavSahaay/app/routes/main.py)
+- Update the `donate` route to handle specific package selections.
 
 ## Verification Plan
 
-### Automated Tests
-- Run existing `pytest` suite (after updating tests to use Firestore mocks or a test database).
-
 ### Manual Verification
-1. Start the Flask app locally.
-2. Verify that the admin user is seeded into Firestore.
-3. Test login/logout.
-4. Test submitting a donation request and verifying it in the admin dashboard.
-5. Test volunteer registration.
-6. Test contact form submission.
-7. Test event registration.
+1. Open the home page and verify the new "Impact Items" grid.
+2. Test the specific package donation flow.
+3. Verify that the "Live Ticker" correctly reflects data (can be mocked or fetched from Firestore).
+4. Check mobile responsiveness for the new complex grid layouts.
