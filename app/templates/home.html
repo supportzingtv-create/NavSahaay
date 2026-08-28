@@ -214,6 +214,27 @@
     <!-- ... existing transparency code ... -->
 </section>
 
+<!-- Scrolling Marquee Section (Big Orange Bar) -->
+<section class="bg-primary-600 py-10 overflow-hidden border-y-8 border-primary-700 shadow-2xl relative z-20">
+    <div class="flex whitespace-nowrap animate-marquee-fast items-center space-x-12">
+        <span class="text-6xl md:text-9xl font-black text-white uppercase tracking-wider font-['Bebas_Neue']">NAVSAHAAY FOUNDATION</span>
+        <span class="text-6xl md:text-9xl font-black text-primary-200 uppercase tracking-wider font-['Bebas_Neue'] opacity-30">NAVSAHAAY FOUNDATION</span>
+        <span class="text-6xl md:text-9xl font-black text-white uppercase tracking-wider font-['Bebas_Neue']">NAVSAHAAY FOUNDATION</span>
+        <span class="text-6xl md:text-9xl font-black text-primary-200 uppercase tracking-wider font-['Bebas_Neue'] opacity-30">NAVSAHAAY FOUNDATION</span>
+    </div>
+</section>
+
+<style>
+    @keyframes marquee-fast {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+    .animate-marquee-fast {
+        animation: marquee-fast 15s linear infinite;
+        width: max-content;
+    }
+</style>
+
 <!-- SDG Section (Refined & Clean UI) -->
 <section class="py-24 bg-[#0a1128] text-white overflow-hidden relative">
     <!-- Decorative background element -->
