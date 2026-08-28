@@ -77,13 +77,15 @@
     <!-- Navbar -->
     <header class="sticky top-0 w-full z-50 glass-nav border-b border-gray-100 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-2 md:justify-start md:space-x-8">
+            <div class="flex justify-between items-center h-16 md:h-20">
                 <div class="flex justify-start lg:w-0 lg:flex-1">
-                    <a href="{{ url_for('main.home') }}" class="flex items-center space-x-3">
-                        <img class="h-14 sm:h-16 w-auto object-contain transition-all duration-300" src="{{ url_for('static', filename='images/logo1.png') }}" alt="NavSahaay Logo" style="image-rendering: -webkit-optimize-contrast;">
+                    <a href="{{ url_for('main.home') }}" class="flex items-center space-x-3 group">
+                        <div class="h-12 w-12 sm:h-14 sm:w-14 flex-shrink-0 bg-white p-1 rounded-xl shadow-sm border border-gray-50 group-hover:scale-105 transition-transform">
+                            <img class="h-full w-full object-contain" src="{{ url_for('static', filename='images/logo1.png') }}" alt="NavSahaay Logo" style="image-rendering: -webkit-optimize-contrast;">
+                        </div>
                         <div class="leading-none">
-                            <span class="text-xl sm:text-2xl font-black text-gray-900 tracking-tighter uppercase">NAVSAHAAY</span>
-                            <span class="block text-[10px] font-bold text-primary-600 uppercase tracking-[0.2em] mt-0.5">Foundation</span>
+                            <span class="text-lg sm:text-xl font-black text-gray-900 tracking-tighter uppercase">NAVSAHAAY</span>
+                            <span class="block text-[8px] sm:text-[10px] font-bold text-primary-600 uppercase tracking-[0.3em] mt-0.5">Foundation</span>
                         </div>
                     </a>
                 </div>

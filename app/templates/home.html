@@ -3,7 +3,7 @@
 {% block content %}
 <!-- Hero Slider Section -->
 <section class="relative bg-white overflow-hidden">
-    <div class="swiper hero-swiper h-[300px] sm:h-[450px] md:h-[550px]">
+    <div class="swiper hero-swiper h-[250px] sm:h-[400px] md:h-[500px]">
         <div class="swiper-wrapper">
             {% for item in slider_items %}
             <div class="swiper-slide relative">
@@ -14,17 +14,38 @@
                 {% else %}
                 <img src="{{ item.url }}" alt="Foundation Work" class="absolute inset-0 w-full h-full object-cover">
                 {% endif %}
-                <!-- Gradient overlay removed to keep it clear for photos/videos -->
-                <div class="absolute inset-0 bg-black/10"></div>
             </div>
             {% endfor %}
         </div>
         <!-- Swiper Controls -->
         <div class="swiper-pagination"></div>
-        <div class="swiper-button-next !text-white !after:text-xl"></div>
-        <div class="swiper-button-prev !text-white !after:text-xl"></div>
+        <div class="swiper-button-next !text-white !after:text-lg"></div>
+        <div class="swiper-button-prev !text-white !after:text-lg"></div>
     </div>
 </section>
+
+<!-- Scrolling Marquee Section (Orange Bar) -->
+<section class="bg-primary-600 py-6 overflow-hidden border-y-4 border-primary-700 shadow-inner">
+    <div class="flex whitespace-nowrap animate-marquee items-center space-x-12">
+        <span class="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter opacity-90">NAVSAHAAY FOUNDATION</span>
+        <span class="text-3xl md:text-5xl font-black text-primary-200 uppercase tracking-tighter opacity-40">NAVSAHAAY FOUNDATION</span>
+        <span class="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter opacity-90">NAVSAHAAY FOUNDATION</span>
+        <span class="text-3xl md:text-5xl font-black text-primary-200 uppercase tracking-tighter opacity-40">NAVSAHAAY FOUNDATION</span>
+        <span class="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter opacity-90">NAVSAHAAY FOUNDATION</span>
+        <span class="text-3xl md:text-5xl font-black text-primary-200 uppercase tracking-tighter opacity-40">NAVSAHAAY FOUNDATION</span>
+    </div>
+</section>
+
+<style>
+    @keyframes marquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+        animation: marquee 20s linear infinite;
+        width: max-content;
+    }
+</style>
 
 <!-- Impact Counters -->
 <section class="bg-gray-50 py-8 sm:py-12 border-y border-gray-100">
@@ -193,57 +214,60 @@
     <!-- ... existing transparency code ... -->
 </section>
 
-<!-- SDG Section (Refined UI) -->
-<section class="py-24 bg-[#0a1128] text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-            <p class="text-primary-500 font-black tracking-[0.3em] uppercase text-[10px] mb-4">Global Commitment</p>
-            <h2 class="text-3xl md:text-5xl font-serif font-black leading-tight">Achieving Sustainable Development Goals</h2>
-            <div class="h-1 w-20 bg-primary-600 mx-auto mt-6"></div>
+<!-- SDG Section (Refined & Clean UI) -->
+<section class="py-24 bg-[#0a1128] text-white overflow-hidden relative">
+    <!-- Decorative background element -->
+    <div class="absolute -top-24 -left-24 w-96 h-96 bg-primary-600/10 rounded-full blur-[120px]"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center mb-20">
+            <p class="text-primary-500 font-black tracking-[0.4em] uppercase text-[10px] mb-4">International Impact</p>
+            <h2 class="text-4xl md:text-6xl font-serif font-black leading-tight italic">Global Mission Goals</h2>
+            <div class="h-1 w-20 bg-primary-600 mx-auto mt-8 opacity-50"></div>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
             <!-- Goal 3 -->
-            <div class="group bg-white/5 border border-white/10 p-8 rounded-[2rem] text-center hover:bg-white/10 transition-all duration-300">
-                <div class="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                    <span class="text-2xl">❤️</span>
+            <div class="group relative bg-white/5 backdrop-blur-sm border border-white/10 p-10 rounded-[2.5rem] text-center hover:bg-primary-600/20 hover:border-primary-600/30 transition-all duration-500 hover:-translate-y-2">
+                <div class="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-inner group-hover:scale-110 transition-transform">
+                    <span class="text-3xl filter grayscale group-hover:grayscale-0 transition-all">❤️</span>
                 </div>
-                <p class="text-[10px] font-black uppercase tracking-widest text-green-400">Health & Well Being</p>
+                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-300 group-hover:text-white transition-colors">Health & Wellbeing</p>
             </div>
             <!-- Goal 5 -->
-            <div class="group bg-white/5 border border-white/10 p-8 rounded-[2rem] text-center hover:bg-white/10 transition-all duration-300">
-                <div class="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                    <span class="text-2xl">♀️</span>
+            <div class="group relative bg-white/5 backdrop-blur-sm border border-white/10 p-10 rounded-[2.5rem] text-center hover:bg-primary-600/20 hover:border-primary-600/30 transition-all duration-500 hover:-translate-y-2">
+                <div class="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-inner group-hover:scale-110 transition-transform">
+                    <span class="text-3xl filter grayscale group-hover:grayscale-0 transition-all">♀️</span>
                 </div>
-                <p class="text-[10px] font-black uppercase tracking-widest text-red-400">Gender Equality</p>
+                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-300 group-hover:text-white transition-colors">Gender Equality</p>
             </div>
             <!-- Goal 4 -->
-            <div class="group bg-white/5 border border-white/10 p-8 rounded-[2rem] text-center hover:bg-white/10 transition-all duration-300">
-                <div class="w-12 h-12 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                    <span class="text-2xl">🎓</span>
+            <div class="group relative bg-white/5 backdrop-blur-sm border border-white/10 p-10 rounded-[2.5rem] text-center hover:bg-primary-600/20 hover:border-primary-600/30 transition-all duration-500 hover:-translate-y-2">
+                <div class="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-inner group-hover:scale-110 transition-transform">
+                    <span class="text-3xl filter grayscale group-hover:grayscale-0 transition-all">🎓</span>
                 </div>
-                <p class="text-[10px] font-black uppercase tracking-widest text-yellow-400">Quality Education</p>
+                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-300 group-hover:text-white transition-colors">Quality Education</p>
             </div>
             <!-- Goal 8 -->
-            <div class="group bg-white/5 border border-white/10 p-8 rounded-[2rem] text-center hover:bg-white/10 transition-all duration-300">
-                <div class="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                    <span class="text-2xl">📈</span>
+            <div class="group relative bg-white/5 backdrop-blur-sm border border-white/10 p-10 rounded-[2.5rem] text-center hover:bg-primary-600/20 hover:border-primary-600/30 transition-all duration-500 hover:-translate-y-2">
+                <div class="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-inner group-hover:scale-110 transition-transform">
+                    <span class="text-3xl filter grayscale group-hover:grayscale-0 transition-all">📈</span>
                 </div>
-                <p class="text-[10px] font-black uppercase tracking-widest text-blue-400">Decent Work</p>
+                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-300 group-hover:text-white transition-colors">Decent Work</p>
             </div>
             <!-- Goal 10 -->
-            <div class="group bg-white/5 border border-white/10 p-8 rounded-[2rem] text-center hover:bg-white/10 transition-all duration-300">
-                <div class="w-12 h-12 bg-pink-500/20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                    <span class="text-2xl">⚖️</span>
+            <div class="group relative bg-white/5 backdrop-blur-sm border border-white/10 p-10 rounded-[2.5rem] text-center hover:bg-primary-600/20 hover:border-primary-600/30 transition-all duration-500 hover:-translate-y-2">
+                <div class="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-inner group-hover:scale-110 transition-transform">
+                    <span class="text-3xl filter grayscale group-hover:grayscale-0 transition-all">⚖️</span>
                 </div>
-                <p class="text-[10px] font-black uppercase tracking-widest text-pink-400">Reduced Inequalities</p>
+                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-300 group-hover:text-white transition-colors">Equal Rights</p>
             </div>
             <!-- Goal 17 -->
-            <div class="group bg-white/5 border border-white/10 p-8 rounded-[2rem] text-center hover:bg-white/10 transition-all duration-300">
-                <div class="w-12 h-12 bg-teal-500/20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                    <span class="text-2xl">🤝</span>
+            <div class="group relative bg-white/5 backdrop-blur-sm border border-white/10 p-10 rounded-[2.5rem] text-center hover:bg-primary-600/20 hover:border-primary-600/30 transition-all duration-500 hover:-translate-y-2">
+                <div class="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-inner group-hover:scale-110 transition-transform">
+                    <span class="text-3xl filter grayscale group-hover:grayscale-0 transition-all">🤝</span>
                 </div>
-                <p class="text-[10px] font-black uppercase tracking-widest text-teal-400">Partnerships</p>
+                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-300 group-hover:text-white transition-colors">Partnerships</p>
             </div>
         </div>
     </div>
