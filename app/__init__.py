@@ -32,13 +32,19 @@ def create_app():
     def inject_globals():
         return {"site_name": "Shivoham Foundation"}
 
-    # Initialize Firestore and seed if necessary
-    from app.services.seed import seed_admin_and_events
-    seed_admin_and_events()
+    # Safer seeding - only if not in a serverless environment or if needed
+    try:
+        from app.services.seed import seed_admin_and_events
+        seed_admin_and_events()
+    except Exception as e:
+        print(f"Seed Error: {e}")
 
     return app
 
 @login_manager.user_loader
 def load_user(user_id):
     from app.models.user import User
-    return User.get_by_id(user_id)
+    try:
+        return User.get_by_id(user_id)
+    except:
+        return None
