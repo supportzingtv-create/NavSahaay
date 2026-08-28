@@ -1,7 +1,56 @@
-{% extends "base.html" %}{% block title %}Admin Login{% endblock %}{% block content %}<section class="login">
-    <form class="card form" method="post"><input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-        <h2>Admin Login</h2><label>Email<input name="email" type="email" required></label><label>Password<input
-                name="password" type="password" required></label><button class="btn">Login</button>
-        <p class="note">Default local credentials are configured in .env.example.</p>
-    </form>
-</section>{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login | NavSahaay Foundation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-sans antialiased min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full">
+        <div class="text-center mb-10">
+            <a href="{{ url_for('main.home') }}" class="inline-flex items-center space-x-3 mb-6">
+                <img class="h-12 w-12 rounded-xl shadow-lg" src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Logo">
+                <span class="text-2xl font-bold text-gray-900 tracking-tight">NavSahaay</span>
+            </a>
+            <h2 class="text-3xl font-extrabold text-gray-900">Admin Login</h2>
+            <p class="mt-2 text-sm text-gray-500">Secure access for foundation staff</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="mb-6 p-4 rounded-xl bg-red-50 border border-red-100 text-red-800 text-sm font-medium">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="bg-white p-10 rounded-3xl shadow-xl border border-gray-100">
+            <form method="post" action="{{ url_for('auth.login') }}" class="space-y-6">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Email Address</label>
+                    <input name="email" type="email" required class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-blue-600 transition-all" placeholder="admin@navsahaay.org">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Password</label>
+                    <input name="password" type="password" required class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-blue-600 transition-all" placeholder="••••••••">
+                </div>
+
+                <button class="w-full py-4 rounded-2xl bg-gray-900 hover:bg-black font-bold text-white shadow-xl transition-all transform active:scale-95">
+                    Sign In
+                </button>
+            </form>
+            
+            <div class="mt-8 pt-8 border-t border-gray-100 text-center">
+                <a href="{{ url_for('main.home') }}" class="text-xs font-bold text-blue-600 uppercase tracking-widest hover:underline decoration-blue-200 underline-offset-4">&larr; Back to Website</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

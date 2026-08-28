@@ -1,1 +1,79 @@
-{% extends "admin/base.html" %}{% block admin_content %}<h1>Dashboard</h1><div class="grid4"><div class="card"><b>Donations</b><h2>{{donation_count}}</h2></div><div class="card"><b>Volunteers</b><h2>{{volunteer_count}}</h2></div><div class="card"><b>Events</b><h2>{{event_count}}</h2></div><div class="card"><b>Contacts</b><h2>{{contact_count}}</h2></div></div><h2>Recent donations</h2><table><tr><th>ID</th><th>Donor</th><th>Amount</th><th>Status</th></tr>{% for d in recent_donations %}<tr><td>{{d.donation_id}}</td><td>{{"Anonymous" if d.anonymous else d.donor_name}}</td><td>₹{{d.amount}}</td><td>{{d.status}}</td></tr>{% endfor %}</table>{% endblock %}
+{% extends "admin/base.html" %}
+
+{% block header_title %}Overview Dashboard{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <p class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-1">Total Donations</p>
+        <div class="flex items-end justify-between">
+            <h3 class="text-3xl font-extrabold text-gray-900">{{ donation_count }}</h3>
+            <span class="text-green-500 text-xs font-bold bg-green-50 px-2 py-1 rounded-lg">+12%</span>
+        </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <p class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-1">Volunteers</p>
+        <div class="flex items-end justify-between">
+            <h3 class="text-3xl font-extrabold text-gray-900">{{ volunteer_count }}</h3>
+            <span class="text-blue-500 text-xs font-bold bg-blue-50 px-2 py-1 rounded-lg">Active</span>
+        </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <p class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-1">Total Events</p>
+        <div class="flex items-end justify-between">
+            <h3 class="text-3xl font-extrabold text-gray-900">{{ event_count }}</h3>
+            <span class="text-orange-500 text-xs font-bold bg-orange-50 px-2 py-1 rounded-lg">Upcoming</span>
+        </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <p class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-1">Total Inquiries</p>
+        <div class="flex items-end justify-between">
+            <h3 class="text-3xl font-extrabold text-gray-900">{{ contact_count }}</h3>
+            <span class="text-purple-500 text-xs font-bold bg-purple-50 px-2 py-1 rounded-lg">Pending</span>
+        </div>
+    </div>
+</div>
+
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center">
+        <h3 class="text-lg font-bold">Recent Donations</h3>
+        <a href="{{ url_for('admin.donations') }}" class="text-sm font-semibold text-blue-600 hover:text-blue-700 underline decoration-blue-100">View All</a>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left">
+            <thead>
+                <tr class="bg-gray-50 text-xs font-bold text-gray-400 uppercase tracking-widest">
+                    <th class="px-8 py-4">Donor Name</th>
+                    <th class="px-8 py-4">Amount</th>
+                    <th class="px-8 py-4">Cause</th>
+                    <th class="px-8 py-4">Status</th>
+                    <th class="px-8 py-4 text-right">Date</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                {% for d in recent_donations %}
+                <tr class="hover:bg-gray-50 transition-colors group">
+                    <td class="px-8 py-4">
+                        <p class="font-bold text-gray-900">{{ d.donor_name }}</p>
+                        <p class="text-xs text-gray-400">{{ d.email }}</p>
+                    </td>
+                    <td class="px-8 py-4 font-bold text-gray-900">₹{{ d.amount }}</td>
+                    <td class="px-8 py-4 text-sm font-medium text-gray-500">{{ d.cause }}</td>
+                    <td class="px-8 py-4">
+                        <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest {% if d.status == 'VERIFIED' %}bg-green-100 text-green-700{% else %}bg-orange-100 text-orange-700{% endif %}">
+                            {{ d.status }}
+                        </span>
+                    </td>
+                    <td class="px-8 py-4 text-right text-xs font-bold text-gray-400 uppercase tracking-tighter">
+                        {{ d.created_at.strftime('%d %b %Y') }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

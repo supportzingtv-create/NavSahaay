@@ -1,40 +1,160 @@
-<!doctype html>
-<html lang="en">
-
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>{% block title %}NavSahaay Foundation{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/site.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}NavSahaay Foundation | Helping Hands, Better Tomorrow{% endblock %}</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter and Playfair Display -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
 </head>
-
-<body>
-    <header>
-        <div class="wrap nav">
-            <a href="{{ url_for('main.home') }}" class="brand">
-                <img src="{{ url_for('static', filename='images/logo.jpeg') }}"
-                     alt="NavSahaay Foundation logo">
-
-                <div>
-                    <span>NavSahaay Foundation</span>
-                    <small>Helping Hands, Better Tomorrow</small>
+<body class="font-sans text-gray-900 antialiased bg-white">
+    <!-- Navbar -->
+    <header class="fixed w-full z-50 glass-nav border-b border-gray-100 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4 md:justify-start md:space-x-10">
+                <div class="flex justify-start lg:w-0 lg:flex-1">
+                    <a href="{{ url_for('main.home') }}" class="flex items-center space-x-3">
+                        <img class="h-10 w-auto rounded-lg shadow-sm" src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="NavSahaay Logo">
+                        <div class="hidden sm:block">
+                            <span class="text-xl font-bold text-gray-900 tracking-tight">NavSahaay</span>
+                            <span class="block text-xs font-medium text-primary-600 uppercase tracking-wider">Foundation</span>
+                        </div>
+                    </a>
                 </div>
-            </a>
-            
-            <nav><a href="{{ url_for('main.home') }}#about">About</a><a
-                    href="{{ url_for('main.home') }}#programs">Programs</a><a
-                    href="{{ url_for('main.home') }}#events">Events</a><a
-                    href="{{ url_for('main.home') }}#donate">Donate</a>{% if current_user.is_authenticated %}<a
-                    href="{{ url_for('admin.dashboard') }}">Admin</a><a href="{{ url_for('auth.logout') }}">Logout</a>{%
-                else %}<a href="{{ url_for('auth.login') }}">Admin Login</a>{% endif %}</nav>
+
+                <nav class="hidden md:flex space-x-8 items-center">
+                    <a href="{{ url_for('main.home') }}#about" class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">About</a>
+                    <a href="{{ url_for('main.home') }}#programs" class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">Programs</a>
+                    <a href="{{ url_for('main.home') }}#events" class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">Events</a>
+                    <a href="{{ url_for('main.home') }}#donate" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-full shadow-sm text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 transition-all transform hover:scale-105">Donate Now</a>
+
+                    {% if current_user.is_authenticated %}
+                        <div class="h-4 w-px bg-gray-200"></div>
+                        <a href="{{ url_for('admin.dashboard') }}" class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">Admin</a>
+                        <a href="{{ url_for('auth.logout') }}" class="text-sm font-medium text-red-600 hover:text-red-700 transition-colors">Logout</a>
+                    {% else %}
+                        <a href="{{ url_for('auth.login') }}" class="text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors">Login</a>
+                    {% endif %}
+                </nav>
+
+                <div class="md:hidden">
+                    <button type="button" class="text-gray-500 hover:text-gray-900 focus:outline-none" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-100 px-4 py-4 space-y-3 shadow-lg">
+            <a href="{{ url_for('main.home') }}#about" class="block text-base font-medium text-gray-600">About</a>
+            <a href="{{ url_for('main.home') }}#programs" class="block text-base font-medium text-gray-600">Programs</a>
+            <a href="{{ url_for('main.home') }}#events" class="block text-base font-medium text-gray-600">Events</a>
+            <a href="{{ url_for('main.home') }}#donate" class="block text-base font-bold text-primary-600">Donate Now</a>
         </div>
     </header>
-    {% with messages=get_flashed_messages(with_categories=true) %}{% if messages %}<div class="wrap flashes">{% for
-        cat,msg in messages %}<div class="flash {{cat}}">{{msg}}</div>{% endfor %}</div>{% endif %}{% endwith %}
-    {% block content %}{% endblock %}
-    <footer>
-        <div class="wrap">© 2026 NavSahaay Foundation · Local development version</div>
-    </footer>
-</body>
 
+    <main class="pt-20">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+                    {% for category, message in messages %}
+                        <div class="p-4 rounded-lg flex items-center shadow-sm {% if category == 'success' %}bg-green-50 text-green-800{% else %}bg-red-50 text-red-800{% endif %}">
+                            <span class="text-sm font-medium">{{ message }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <img class="h-10 w-auto rounded-lg brightness-110" src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="NavSahaay Logo">
+                        <span class="text-xl font-bold text-white">NavSahaay Foundation</span>
+                    </div>
+                    <p class="text-gray-400 leading-relaxed max-w-sm">Dedicated to creating access, dignity, and opportunity through community-focused programs. Join us in making a difference.</p>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-semibold mb-6">Quick Links</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="#about" class="hover:text-primary-500 transition-colors">Who We Are</a></li>
+                        <li><a href="#programs" class="hover:text-primary-500 transition-colors">Our Programs</a></li>
+                        <li><a href="#volunteer" class="hover:text-primary-500 transition-colors">Volunteer With Us</a></li>
+                        <li><a href="#contact" class="hover:text-primary-500 transition-colors">Contact Support</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-semibold mb-6">Contact Us</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex items-start space-x-3">
+                            <svg class="h-5 w-5 text-primary-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            <span>contact@navsahaay.org</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <svg class="h-5 w-5 text-primary-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span>Serving Community, India</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center text-xs font-medium uppercase tracking-widest text-gray-500">
+                <p>&copy; 2026 NavSahaay Foundation. All Rights Reserved.</p>
+                <div class="mt-4 md:mt-0 space-x-6">
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
 </html>

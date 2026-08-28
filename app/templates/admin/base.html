@@ -1,1 +1,67 @@
-{% extends "base.html" %}{% block content %}<div class="admin-wrap"><aside><h3>Admin</h3><a href="{{url_for('admin.dashboard')}}">Dashboard</a><a href="{{url_for('admin.donations')}}">Donations</a><a href="{{url_for('admin.volunteers')}}">Volunteers</a><a href="{{url_for('admin.events')}}">Events</a><a href="{{url_for('admin.contacts')}}">Contacts</a><a href="{{url_for('admin.documents')}}">Documents</a></aside><main class="admin-main">{% block admin_content %}{% endblock %}</main></div>{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Dashboard | NavSahaay Foundation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans antialiased text-gray-900">
+    <div class="min-h-screen flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gray-900 text-white flex-shrink-0 hidden md:block">
+            <div class="p-6">
+                <a href="{{ url_for('main.home') }}" class="flex items-center space-x-3">
+                    <img class="h-8 w-8 rounded-lg" src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Logo">
+                    <span class="text-lg font-bold">NavSahaay</span>
+                </a>
+            </div>
+            <nav class="mt-6 px-4 space-y-2">
+                <a href="{{ url_for('admin.dashboard') }}" class="block px-4 py-2.5 rounded-lg hover:bg-gray-800 transition-colors {% if request.endpoint == 'admin.dashboard' %}bg-gray-800 text-white font-semibold{% else %}text-gray-400{% endif %}">Dashboard</a>
+                <a href="{{ url_for('admin.donations') }}" class="block px-4 py-2.5 rounded-lg hover:bg-gray-800 transition-colors {% if request.endpoint == 'admin.donations' %}bg-gray-800 text-white font-semibold{% else %}text-gray-400{% endif %}">Donations</a>
+                <a href="{{ url_for('admin.volunteers') }}" class="block px-4 py-2.5 rounded-lg hover:bg-gray-800 transition-colors {% if request.endpoint == 'admin.volunteers' %}bg-gray-800 text-white font-semibold{% else %}text-gray-400{% endif %}">Volunteers</a>
+                <a href="{{ url_for('admin.events') }}" class="block px-4 py-2.5 rounded-lg hover:bg-gray-800 transition-colors {% if request.endpoint == 'admin.events' %}bg-gray-800 text-white font-semibold{% else %}text-gray-400{% endif %}">Events</a>
+                <a href="{{ url_for('admin.contacts') }}" class="block px-4 py-2.5 rounded-lg hover:bg-gray-800 transition-colors {% if request.endpoint == 'admin.contacts' %}bg-gray-800 text-white font-semibold{% else %}text-gray-400{% endif %}">Contacts</a>
+                <a href="{{ url_for('admin.documents') }}" class="block px-4 py-2.5 rounded-lg hover:bg-gray-800 transition-colors {% if request.endpoint == 'admin.documents' %}bg-gray-800 text-white font-semibold{% else %}text-gray-400{% endif %}">Documents</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col min-w-0">
+            <header class="bg-white border-b border-gray-200 px-8 py-4 flex justify-between items-center sticky top-0 z-10">
+                <h1 class="text-xl font-bold">{% block header_title %}Dashboard{% endblock %}</h1>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm font-medium text-gray-500">{{ current_user.name }}</span>
+                    <a href="{{ url_for('auth.logout') }}" class="text-sm font-semibold text-red-600 hover:text-red-700">Logout</a>
+                </div>
+            </header>
+            
+            <main class="p-8">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="mb-6 p-4 rounded-xl border {% if category == 'success' %}bg-green-50 border-green-100 text-green-800{% else %}bg-red-50 border-red-100 text-red-800{% endif %}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+</body>
+</html>

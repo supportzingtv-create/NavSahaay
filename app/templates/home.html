@@ -1,131 +1,400 @@
-{% extends "base.html" %}{% block content %}
-<section class="hero">
-    <div class="wrap hero-grid">
-        <div><!--<small>Helping Hands, Better Tomorrow</small>-->
-            <h1>Small acts.<br><em>Measurable change.</em></h1>
-            <p>Creating access, dignity and opportunity through community-focused programs.</p><a class="btn"
-                href="#donate">Donate Now</a> <a class="btn ghost" href="#volunteer">Volunteer</a>
-        </div>
-        <div class="hero-box"><b>NAVSAHAAY FOUNDATION</b>
-            <p>Serve. Empower. Transform.</p>
-            <div class="pillars"><span>Education</span><span>Healthcare</span><span>Environment</span><span>Feeding
-                    People</span></div>
-        </div>
-    </div>
-</section>
-<section id="about" class="section">
-    <div class="wrap two">
-        <div><small>WHO WE ARE</small>
-            <h2>Serving people with purpose.</h2>
-            <p>Shivoham Foundation works around four connected priorities: learning, healthcare, environmental action
-                and food support.</p>
-        </div>
-        <div class="card"><b>VISION</b>
-            <h3>A stronger, healthier and more sustainable community where opportunity is accessible to all.</h3>
-            <b>MISSION</b>
-            <h3>Turn community support into practical programs and measurable outcomes.</h3>
-        </div>
-    </div>
-</section>
-<section id="programs" class="section pale">
-    <div class="wrap"><small>OUR PROGRAMS</small>
-        <h2>Four pillars. One purpose.</h2>
-        <div class="grid4">
-            <div class="card">
-                <h3>Education</h3>
-                <p>Learning access, resources, mentoring and opportunity.</p>
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative bg-white overflow-hidden py-20 lg:py-32">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+            <div class="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left lg:flex lg:flex-col lg:justify-center">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold tracking-widest text-primary-700 bg-primary-50 uppercase mb-6">
+                    Serving Humanity Since 2026
+                </span>
+                <h1 class="text-5xl md:text-6xl font-serif font-extrabold text-gray-900 leading-tight mb-6">
+                    Small Acts, <span class="text-primary-600 italic">Measurable</span> Change.
+                </h1>
+                <p class="text-lg text-gray-600 mb-10 leading-relaxed">
+                    We are dedicated to providing access, dignity, and opportunity to those in need. Join our community-focused initiatives to create a better tomorrow for everyone.
+                </p>
+                <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
+                    <a href="#donate" class="inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-bold rounded-xl text-white bg-primary-600 hover:bg-primary-700 shadow-xl transition-all transform hover:-translate-y-1">
+                        Donate Now
+                    </a>
+                    <a href="#volunteer" class="inline-flex items-center justify-center px-8 py-4 border-2 border-primary-600 text-base font-bold rounded-xl text-primary-700 bg-white hover:bg-primary-50 transition-all">
+                        Join as Volunteer
+                    </a>
+                </div>
             </div>
-            <div class="card">
-                <h3>Healthcare</h3>
-                <p>Healthcare access, awareness and community wellbeing.</p>
-            </div>
-            <div class="card">
-                <h3>Environment</h3>
-                <p>Greener communities, awareness and restoration.</p>
-            </div>
-            <div class="card">
-                <h3>Feeding People</h3>
-                <p>Food support delivered with dignity.</p>
+
+            <div class="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center">
+                <div class="relative mx-auto w-full rounded-3xl shadow-2xl overflow-hidden group">
+                    <img class="w-full transition-transform duration-700 group-hover:scale-105" src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Helping hands">
+                    <div class="absolute inset-0 bg-primary-900 mix-blend-multiply opacity-20"></div>
+                    <div class="absolute bottom-6 left-6 right-6 p-6 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/20">
+                        <div class="flex items-center space-x-4">
+                            <div class="h-12 w-12 bg-primary-600 rounded-full flex items-center justify-center shadow-lg">
+                                <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-gray-900 uppercase tracking-tighter">Current Goal</p>
+                                <p class="text-lg font-serif font-bold text-primary-700 leading-tight">Helping 10,000 families this year</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
-<section id="events" class="section dark">
-    <div class="wrap"><small>EVENTS</small>
-        <h2>Upcoming events.</h2>
-        <div class="grid3">{% for e in events %}<div class="event"><small>{{e.event_date.strftime('%d %b %Y')}}</small>
-                <h3>{{e.title}}</h3>
-                <p>{{e.cause}} · {{e.location}}</p>
-                <p>{{e.description}}</p>
-            </div>{% endfor %}</div>
+
+<!-- Stats Section -->
+<section class="bg-primary-600 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div class="space-y-2">
+                <p class="text-4xl font-extrabold text-white font-serif">5k+</p>
+                <p class="text-primary-100 font-medium uppercase tracking-widest text-xs">Donations</p>
+            </div>
+            <div class="space-y-2">
+                <p class="text-4xl font-extrabold text-white font-serif">100+</p>
+                <p class="text-primary-100 font-medium uppercase tracking-widest text-xs">Volunteers</p>
+            </div>
+            <div class="space-y-2">
+                <p class="text-4xl font-extrabold text-white font-serif">20+</p>
+                <p class="text-primary-100 font-medium uppercase tracking-widest text-xs">Active Projects</p>
+            </div>
+            <div class="space-y-2">
+                <p class="text-4xl font-extrabold text-white font-serif">50k</p>
+                <p class="text-primary-100 font-medium uppercase tracking-widest text-xs">Lives Impacted</p>
+            </div>
+        </div>
     </div>
 </section>
-<section id="donate" class="section pale">
-    <div class="wrap two">
-        <div><small>DONATE</small>
-            <h2>Choose your impact.</h2>
-            <!--<p>This local version records donation requests in MySQL. No external payment gateway is connected.</p>
-            <div class="impact"><b>₹500</b> Example impact — replace with verified program cost.<br><b>₹1,000</b>
-                Example impact — replace with verified program cost.<br><b>₹2,500</b> Example impact — replace with
-                verified program cost.</div>-->
+
+<!-- About Section -->
+<section id="about" class="py-24 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+            <div class="space-y-8">
+                <div>
+                    <span class="text-primary-600 font-bold tracking-widest uppercase text-sm">Who We Are</span>
+                    <h2 class="text-4xl font-serif font-bold text-gray-900 mt-4 leading-tight">Serving people with purpose and passion.</h2>
+                </div>
+                <p class="text-lg text-gray-600 leading-relaxed">
+                    NavSahaay Foundation works across India to tackle the most pressing challenges in education, healthcare, and environmental restoration. We believe in creating self-sustaining communities through strategic intervention.
+                </p>
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="p-6 bg-white rounded-2xl shadow-sm border border-gray-100">
+                        <div class="h-10 w-10 bg-blue-50 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                        </div>
+                        <h4 class="font-bold text-gray-900 mb-2">Our Vision</h4>
+                        <p class="text-sm text-gray-500">A community where opportunity is accessible to every individual regardless of background.</p>
+                    </div>
+                    <div class="p-6 bg-white rounded-2xl shadow-sm border border-gray-100">
+                        <div class="h-10 w-10 bg-green-50 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        </div>
+                        <h4 class="font-bold text-gray-900 mb-2">Our Mission</h4>
+                        <p class="text-sm text-gray-500">Transforming collective community support into practical, measurable life outcomes.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative">
+                <div class="aspect-square rounded-3xl overflow-hidden shadow-2xl">
+                    <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Team at work">
+                </div>
+                <div class="absolute -bottom-8 -left-8 p-8 bg-primary-600 rounded-3xl shadow-xl max-w-xs text-white">
+                    <p class="text-2xl font-serif font-bold italic mb-2 text-primary-100">"Transparency is our priority."</p>
+                    <p class="text-sm font-medium uppercase tracking-widest text-primary-200">100% Impact Promise</p>
+                </div>
+            </div>
         </div>
-        <form class="card form" method="post" action="{{url_for('main.donate')}}"><input type="hidden" name="csrf_token"
-                value="{{csrf_token()}}"><label>Frequency<select name="frequency">
-                    <option value="MONTHLY">Monthly</option>
-                    <option value="ONE_TIME">One-time</option>
-                    <option value="YEARLY">Yearly</option>
-                </select></label><label>Amount ₹<input name="amount" type="number" min="100"
-                    required></label><label>Cause<select name="cause">
-                    <option>General Fund</option>
-                    <option>Education</option>
-                    <option>Healthcare</option>
-                    <option>Environment</option>
-                    <option>Feeding People</option>
-                </select></label><label>Name<input name="donor_name" required></label><label>Email<input name="email"
-                    type="email" required></label><label>Phone<input name="phone"
-                    required></label><label>Address<textarea name="address" required></textarea></label><label>PAN
-                (optional)<input name="pan"></label><label><input type="checkbox" name="anonymous"> Donate
-                anonymously</label><button class="btn">Create Donation Request</button>
-            <p class="note">Wait for real payment processor.</p>
+    </div>
+</section>
+
+<!-- Programs Section -->
+<section id="programs" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
+        <span class="text-primary-600 font-bold tracking-widest uppercase text-sm">Our Impact Areas</span>
+        <h2 class="text-4xl font-serif font-bold text-gray-900 mt-4">Four Pillars, One Shared Goal.</h2>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Education -->
+        <div class="group p-8 rounded-3xl bg-gray-50 hover:bg-white hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-primary-100">
+            <div class="h-14 w-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <svg class="h-8 w-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Education</h3>
+            <p class="text-gray-500 leading-relaxed mb-6 text-sm">Providing learning resources, digital access, and mentorship to underprivileged students.</p>
+            <a href="#" class="text-primary-600 font-bold text-sm hover:underline">Learn more &rarr;</a>
+        </div>
+
+        <!-- Healthcare -->
+        <div class="group p-8 rounded-3xl bg-gray-50 hover:bg-white hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-primary-100">
+            <div class="h-14 w-14 bg-red-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <svg class="h-8 w-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Healthcare</h3>
+            <p class="text-gray-500 leading-relaxed mb-6 text-sm">Medical camps, health awareness, and supporting essential medical needs for families.</p>
+            <a href="#" class="text-primary-600 font-bold text-sm hover:underline">Learn more &rarr;</a>
+        </div>
+
+        <!-- Environment -->
+        <div class="group p-8 rounded-3xl bg-gray-50 hover:bg-white hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-primary-100">
+            <div class="h-14 w-14 bg-green-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <svg class="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Environment</h3>
+            <p class="text-gray-500 leading-relaxed mb-6 text-sm">Afforestation drives, waste management education, and promoting sustainable living.</p>
+            <a href="#" class="text-primary-600 font-bold text-sm hover:underline">Learn more &rarr;</a>
+        </div>
+
+        <!-- Food Support -->
+        <div class="group p-8 rounded-3xl bg-gray-50 hover:bg-white hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-primary-100">
+            <div class="h-14 w-14 bg-orange-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <svg class="h-8 w-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18z"></path></svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Food Support</h3>
+            <p class="text-gray-500 leading-relaxed mb-6 text-sm">Ensuring zero hunger through food distribution drives delivered with dignity.</p>
+            <a href="#" class="text-primary-600 font-bold text-sm hover:underline">Learn more &rarr;</a>
+        </div>
+    </div>
+</section>
+
+<!-- Events Section -->
+<section id="events" class="py-24 bg-gray-900 text-white overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+            <div>
+                <span class="text-primary-500 font-bold tracking-widest uppercase text-sm">Join Us In Action</span>
+                <h2 class="text-4xl font-serif font-bold mt-4 leading-tight">Upcoming Events</h2>
+            </div>
+            <a href="#" class="text-primary-400 font-bold hover:text-primary-300 transition-colors flex items-center space-x-2">
+                <span>View All Events</span>
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </a>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for e in events %}
+            <div class="relative group bg-gray-800 rounded-3xl border border-gray-700 p-8 overflow-hidden transition-all hover:-translate-y-2">
+                <div class="absolute -top-12 -right-12 h-32 w-32 bg-primary-600/10 rounded-full group-hover:scale-150 transition-transform duration-700"></div>
+                <div class="flex items-center space-x-4 mb-8">
+                    <div class="bg-gray-700 rounded-xl px-4 py-2 text-center">
+                        <span class="block text-2xl font-bold font-serif">{{e.event_date.strftime('%d')}}</span>
+                        <span class="block text-[10px] font-bold uppercase tracking-widest text-primary-400">{{e.event_date.strftime('%b')}}</span>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-primary-500 uppercase tracking-widest">{{e.cause}}</p>
+                        <p class="text-sm font-medium text-gray-400">{{e.location}}</p>
+                    </div>
+                </div>
+                <h3 class="text-2xl font-serif font-bold mb-4">{{e.title}}</h3>
+                <p class="text-gray-400 text-sm leading-relaxed mb-8">{{e.description}}</p>
+                <button onclick="registerEvent('{{e.id}}')" class="w-full py-4 rounded-2xl bg-primary-600 hover:bg-primary-700 font-bold text-sm transition-colors shadow-lg shadow-primary-900/20">
+                    Register Now
+                </button>
+            </div>
+            {% endfor %}
+
+            {% if not events %}
+            <div class="col-span-full py-20 text-center bg-gray-800/50 rounded-3xl border-2 border-dashed border-gray-700">
+                <p class="text-gray-500 font-medium">No upcoming events at the moment. Check back soon!</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Donation Section -->
+<section id="donate" class="py-24 bg-white relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-16 items-center">
+        <div>
+            <span class="text-primary-600 font-bold tracking-widest uppercase text-sm">Your Contribution</span>
+            <h2 class="text-4xl font-serif font-bold text-gray-900 mt-4 leading-tight">Every donation builds a sustainable future.</h2>
+            <p class="mt-8 text-lg text-gray-600 leading-relaxed">
+                Your support enables us to keep our programs running. We ensure 100% of your donation goes directly towards our impact areas.
+            </p>
+
+            <div class="mt-12 space-y-6">
+                <div class="flex items-center space-x-4">
+                    <div class="h-8 w-8 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 font-bold text-xs">01</div>
+                    <p class="text-gray-700 font-medium italic underline decoration-primary-200 underline-offset-4">Verified 80G Tax Exemptions</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="h-8 w-8 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 font-bold text-xs">02</div>
+                    <p class="text-gray-700 font-medium italic underline decoration-primary-200 underline-offset-4">Quarterly Impact Reports</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="h-8 w-8 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 font-bold text-xs">03</div>
+                    <p class="text-gray-700 font-medium italic underline decoration-primary-200 underline-offset-4">Transparent Fund Allocation</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="relative">
+            <div class="absolute -inset-4 bg-primary-50 rounded-3xl -rotate-2"></div>
+            <form class="relative bg-white p-10 rounded-3xl shadow-2xl border border-primary-50" method="post" action="{{url_for('main.donate')}}">
+                <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Frequency</label>
+                        <select name="frequency" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 transition-all">
+                            <option value="MONTHLY">Monthly</option>
+                            <option value="ONE_TIME">One-time</option>
+                            <option value="YEARLY">Yearly</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Cause</label>
+                        <select name="cause" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 transition-all">
+                            <option>General Fund</option>
+                            <option>Education</option>
+                            <option>Healthcare</option>
+                            <option>Environment</option>
+                            <option>Feeding People</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Donation Amount (₹)</label>
+                    <input name="amount" type="number" min="100" placeholder="e.g. 500" required class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 transition-all">
+                </div>
+
+                <div class="space-y-4 mb-8">
+                    <input name="donor_name" placeholder="Full Name" required class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 transition-all">
+                    <div class="grid grid-cols-2 gap-4">
+                        <input name="email" type="email" placeholder="Email" required class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 transition-all">
+                        <input name="phone" placeholder="Phone" required class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 transition-all">
+                    </div>
+                    <textarea name="address" placeholder="Full Address" required rows="3" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 transition-all"></textarea>
+                </div>
+
+                <button class="w-full py-4 rounded-2xl bg-primary-600 hover:bg-primary-700 font-bold text-white shadow-xl transition-all transform active:scale-95">
+                    Process Donation Request
+                </button>
+                <p class="mt-4 text-[10px] text-center text-gray-400 uppercase tracking-tighter">*Note: Local version. Real payment gateway to be connected.</p>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Volunteer Section -->
+<section id="volunteer" class="py-24 bg-primary-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-16">
+        <div>
+            <span class="text-primary-600 font-bold tracking-widest uppercase text-sm">Become a Helper</span>
+            <h2 class="text-4xl font-serif font-bold text-gray-900 mt-4 leading-tight">Your time can change lives. Join us.</h2>
+            <p class="mt-8 text-lg text-gray-600 leading-relaxed">
+                Whether you're a student, professional, or retired, your unique skills can make a massive difference in our community projects.
+            </p>
+
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="flex items-center space-x-3 p-4 bg-white rounded-2xl shadow-sm">
+                    <div class="h-2 w-2 bg-primary-600 rounded-full"></div>
+                    <span class="text-sm font-semibold text-gray-700">Digital Mentoring</span>
+                </div>
+                <div class="flex items-center space-x-3 p-4 bg-white rounded-2xl shadow-sm">
+                    <div class="h-2 w-2 bg-primary-600 rounded-full"></div>
+                    <span class="text-sm font-semibold text-gray-700">On-ground Logistics</span>
+                </div>
+                <div class="flex items-center space-x-3 p-4 bg-white rounded-2xl shadow-sm">
+                    <div class="h-2 w-2 bg-primary-600 rounded-full"></div>
+                    <span class="text-sm font-semibold text-gray-700">Awareness Drives</span>
+                </div>
+                <div class="flex items-center space-x-3 p-4 bg-white rounded-2xl shadow-sm">
+                    <div class="h-2 w-2 bg-primary-600 rounded-full"></div>
+                    <span class="text-sm font-semibold text-gray-700">Skill Development</span>
+                </div>
+            </div>
+        </div>
+
+        <form class="bg-white p-10 rounded-3xl shadow-xl" method="post" action="{{url_for('main.volunteer')}}">
+            <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <input name="name" placeholder="Full Name" required class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600">
+                <input name="email" type="email" placeholder="Email Address" required class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600">
+            </div>
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <input name="phone" placeholder="Phone Number" required class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600">
+                <input name="city" placeholder="Your City" required class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600">
+            </div>
+            <div class="mb-6 flex space-x-4">
+                <div class="flex-1">
+                    <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Interest</label>
+                    <select name="interest" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 text-sm">
+                        <option>Education</option>
+                        <option>Healthcare</option>
+                        <option>Environment</option>
+                        <option>Feeding People</option>
+                    </select>
+                </div>
+                <div class="w-32">
+                    <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Age</label>
+                    <input name="age" type="number" min="1" required class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 text-sm">
+                </div>
+            </div>
+            <textarea name="skills" placeholder="Tell us about your skills..." rows="4" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 text-sm mb-8"></textarea>
+            <button class="w-full py-4 rounded-2xl bg-primary-600 hover:bg-primary-700 font-bold text-white shadow-lg transition-transform active:scale-95">
+                Register as Volunteer
+            </button>
         </form>
     </div>
 </section>
-<section id="volunteer" class="section">
-    <div class="wrap two">
-        <div><small>VOLUNTEER</small>
-            <h2>Give your time and skills.</h2>
-            <p>Register for education, healthcare, environment or feeding initiatives.</p>
-        </div>
-        <form class="card form" method="post" action="{{url_for('main.volunteer')}}"><input type="hidden"
-                name="csrf_token" value="{{csrf_token()}}"><label>Name<input name="name"
-                    required></label><label>Email<input name="email" type="email" required></label><label>Phone<input
-                    name="phone" required></label><label>City<input name="city" required></label><label>Age<input
-                    name="age" type="number" min="1" required></label><label>Interest<select name="interest">
-                    <option>Education</option>
-                    <option>Healthcare</option>
-                    <option>Environment</option>
-                    <option>Feeding People</option>
-                </select></label><label>Availability<select name="availability">
-                    <option>Weekday</option>
-                    <option>Weekend</option>
-                    <option>Remote</option>
-                    <option>Flexible</option>
-                </select></label><label>Skills<textarea name="skills"></textarea></label><label>Experience<textarea
-                    name="experience"></textarea></label><label>How did you hear about us?<input
-                    name="source"></label><button class="btn">Register</button></form>
+
+<!-- Contact Section -->
+<section id="contact" class="py-24 bg-white text-center">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <span class="text-primary-600 font-bold tracking-widest uppercase text-sm">Connect With Us</span>
+        <h2 class="text-4xl font-serif font-bold text-gray-900 mt-4 leading-tight italic decoration-primary-200 underline underline-offset-8">Let's start a conversation.</h2>
+        <p class="mt-8 text-lg text-gray-600 leading-relaxed mb-12">
+            Have questions? Want to partner with us? Drop us a line and our team will get back to you within 24 hours.
+        </p>
+
+        <form class="space-y-6" method="post" action="{{url_for('main.contact')}}">
+            <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+            <div class="grid grid-cols-2 gap-6">
+                <input name="name" placeholder="Name" required class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-primary-600 transition-all">
+                <input name="email" type="email" placeholder="Email" required class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-primary-600 transition-all">
+            </div>
+            <input name="subject" placeholder="Subject" required class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-primary-600 transition-all">
+            <textarea name="message" placeholder="Your Message" rows="5" required class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-primary-600 transition-all"></textarea>
+            <button class="inline-flex items-center justify-center px-12 py-4 border border-transparent text-base font-bold rounded-full text-white bg-gray-900 hover:bg-black shadow-xl transition-all transform hover:scale-105">
+                Send Message
+            </button>
+        </form>
     </div>
 </section>
-<section id="contact" class="section pale">
-    <div class="wrap two">
-        <div><small>CONTACT</small>
-            <h2>Let's work together.</h2>
-            <p>Email.</p>
-        </div>
-        <form class="card form" method="post" action="{{url_for('main.contact')}}"><input type="hidden"
-                name="csrf_token" value="{{csrf_token()}}"><label>Name<input name="name"
-                    required></label><label>Email<input name="email" type="email" required></label><label>Subject<input
-                    name="subject" required></label><label>Message<textarea name="message" rows="5"
-                    required></textarea></label><button class="btn">Send Inquiry</button></form>
-    </div>
-</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function registerEvent(eventId) {
+    const name = prompt("Please enter your name:");
+    const email = prompt("Please enter your email:");
+    const phone = prompt("Please enter your phone:");
+
+    if (name && email && phone) {
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('phone', phone);
+        formData.append('csrf_token', '{{csrf_token()}}');
+
+        fetch(`/events/${eventId}/register`, {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.message) alert(data.message);
+            else alert(data.error);
+        });
+    }
+}
+</script>
 {% endblock %}
