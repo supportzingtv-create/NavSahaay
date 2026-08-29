@@ -39,12 +39,16 @@ def create_app():
     from app.routes.api import api_bp
 
     app.register_blueprint(main_bp)
-    app.register_blueprint(auth_bp)
 
-    # Register Admin Blueprint on a subdomain if configured
+    # Register Admin and Auth Blueprints on a subdomain if configured
     if server_name:
         app.register_blueprint(admin_bp, subdomain='admin')
+        # Register auth on admin subdomain too so /login works there
+        app.register_blueprint(auth_bp, subdomain='admin', name='admin_auth')
+        # Register main auth as well for regular use
+        app.register_blueprint(auth_bp)
     else:
+        app.register_blueprint(auth_bp)
         app.register_blueprint(admin_bp, url_prefix="/admin")
 
     app.register_blueprint(api_bp, url_prefix="/api")
