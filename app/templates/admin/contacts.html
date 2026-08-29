@@ -1,1 +1,46 @@
-{% extends "admin/base.html" %}{% block admin_content %}<h1>Contact Enquiries</h1><table><tr><th>Name</th><th>Email</th><th>Subject</th><th>Message</th><th>Status</th></tr>{% for c in contacts %}<tr><td>{{c.name}}</td><td>{{c.email}}</td><td>{{c.subject}}</td><td>{{c.message}}</td><td>{{c.status}}</td></tr>{% endfor %}</table>{% endblock %}
+{% extends "admin/base.html" %}
+
+{% block header_title %}Contact Inquiries{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="px-8 py-6 border-b border-gray-100">
+        <h3 class="text-lg font-bold">Inbound Inquiries</h3>
+        <p class="text-xs text-gray-400 font-medium">Messages received from the website contact form.</p>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full text-left">
+            <thead>
+                <tr class="bg-gray-50 text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                    <th class="px-8 py-4">Sender Details</th>
+                    <th class="px-8 py-4">Subject</th>
+                    <th class="px-8 py-4">Message Preview</th>
+                    <th class="px-8 py-4 text-right">Date</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                {% for c in contacts %}
+                <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-8 py-4">
+                        <p class="font-bold text-gray-900">{{ c.name }}</p>
+                        <p class="text-xs text-gray-400">{{ c.email }}</p>
+                    </td>
+                    <td class="px-8 py-4">
+                        <p class="text-sm font-bold text-gray-700">{{ c.subject }}</p>
+                    </td>
+                    <td class="px-8 py-4">
+                        <p class="text-xs text-gray-500 leading-relaxed max-w-md truncate">{{ c.message }}</p>
+                    </td>
+                    <td class="px-8 py-4 text-right">
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                            {{ c.created_at.strftime('%d %b %Y') if c.created_at else 'N/A' }}
+                        </p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

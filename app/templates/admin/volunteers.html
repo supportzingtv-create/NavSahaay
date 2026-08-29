@@ -1,1 +1,67 @@
-{% extends "admin/base.html" %}{% block admin_content %}<h1>Volunteers</h1><table><tr><th>Reference</th><th>Name</th><th>Email</th><th>Interest</th><th>Status</th><th>Update</th></tr>{% for v in volunteers %}<tr><td>{{v.reference_id}}</td><td>{{v.name}}</td><td>{{v.email}}</td><td>{{v.interest}}</td><td>{{v.status}}</td><td><form method="post" action="{{url_for('admin.volunteer_status',id=v.id)}}"><input type="hidden" name="csrf_token" value="{{csrf_token()}}"><select name="status"><option>NEW</option><option>CONTACTED</option><option>APPROVED</option><option>REJECTED</option></select><button>Save</button></form></td></tr>{% endfor %}</table>{% endblock %}
+{% extends "admin/base.html" %}
+
+{% block header_title %}Volunteer Management{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="px-8 py-6 border-b border-gray-100">
+        <h3 class="text-lg font-bold">Registered Volunteers</h3>
+        <p class="text-xs text-gray-400 font-medium">Manage all people who signed up to help.</p>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full text-left">
+            <thead>
+                <tr class="bg-gray-50 text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                    <th class="px-8 py-4">Reference ID</th>
+                    <th class="px-8 py-4">Volunteer Details</th>
+                    <th class="px-8 py-4">City & Age</th>
+                    <th class="px-8 py-4">Interest</th>
+                    <th class="px-8 py-4">Status</th>
+                    <th class="px-8 py-4 text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                {% for v in volunteers %}
+                <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-8 py-4">
+                        <p class="text-xs font-mono font-bold text-gray-900">{{ v.reference_id }}</p>
+                    </td>
+                    <td class="px-8 py-4">
+                        <p class="font-bold text-gray-900">{{ v.name }}</p>
+                        <p class="text-xs text-gray-400">{{ v.email }}</p>
+                        <p class="text-[10px] text-gray-400 font-medium">{{ v.phone }}</p>
+                    </td>
+                    <td class="px-8 py-4">
+                        <p class="text-sm font-bold text-gray-700">{{ v.city }}</p>
+                        <p class="text-[10px] text-gray-400 font-bold uppercase">{{ v.age }} Years Old</p>
+                    </td>
+                    <td class="px-8 py-4">
+                        <p class="text-xs font-bold text-gray-600">{{ v.interest }}</p>
+                        <p class="text-[10px] text-gray-400 mt-1 italic">{{ v.availability }}</p>
+                    </td>
+                    <td class="px-8 py-4">
+                        <span class="px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest
+                            {% if v.status == 'ACTIVE' %}bg-green-100 text-green-700
+                            {% elif v.status == 'PENDING' %}bg-orange-100 text-orange-700
+                            {% else %}bg-gray-100 text-gray-700{% endif %}">
+                            {{ v.status }}
+                        </span>
+                    </td>
+                    <td class="px-8 py-4 text-right">
+                        <form method="post" action="{{ url_for('admin.volunteer_status', id=v.id) }}" class="inline-block">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <select name="status" onchange="this.form.submit()" class="text-[10px] font-bold uppercase tracking-widest bg-gray-50 border border-gray-100 rounded-lg px-2 py-1 outline-none focus:ring-1 focus:ring-primary-500">
+                                <option value="PENDING" {% if v.status == 'PENDING' %}selected{% endif %}>Pending</option>
+                                <option value="ACTIVE" {% if v.status == 'ACTIVE' %}selected{% endif %}>Active</option>
+                                <option value="REJECTED" {% if v.status == 'REJECTED' %}selected{% endif %}>Rejected</option>
+                            </select>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
