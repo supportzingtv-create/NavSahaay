@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from app.models import User, Event
 
 def seed_admin_and_events():
-    email = os.getenv("ADMIN_EMAIL", "admin@shivoham.local")
+    email = os.getenv("ADMIN_EMAIL", "admin@navsahaay.org")
     password = os.getenv("ADMIN_PASSWORD", "Admin@123")
 
     if not User.get_by_email(email):

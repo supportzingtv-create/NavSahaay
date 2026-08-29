@@ -38,7 +38,7 @@ def create_app():
 
     @app.context_processor
     def inject_globals():
-        return {"site_name": "Shivoham Foundation"}
+        return {"site_name": "NavSahaay Foundation"}
 
     # Initialize database connection
     try:
