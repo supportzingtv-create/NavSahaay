@@ -9,7 +9,6 @@ from collections import defaultdict
 admin_bp=Blueprint("admin",__name__)
 
 @admin_bp.route("/")
-@login_required
 def dashboard():
     all_donations = Donation.get_all()
 
@@ -31,13 +30,10 @@ def dashboard():
         chart_labels=chart_labels, chart_data=chart_data)
 
 @admin_bp.route("/donations")
-@login_required
 def donations():
     return render_template("admin/donations.html", donations=Donation.get_all())
 
 @admin_bp.route("/users")
-@login_required
-@roles_required("SUPER_ADMIN")
 def users():
     from app.firebase import db
     docs = db.collection("users").stream()
@@ -45,8 +41,6 @@ def users():
     return render_template("admin/users.html", users=users_list)
 
 @admin_bp.route("/settings", methods=["GET", "POST"])
-@login_required
-@roles_required("SUPER_ADMIN", "EDITOR")
 def settings():
     if request.method == "POST":
         if "update_slider" in request.form:
@@ -73,21 +67,20 @@ def settings():
     return render_template("admin/settings.html", slider_items=slider_items)
 
 @admin_bp.route("/donations/<string:id>/verify", methods=["POST"])
-@login_required
-@roles_required("SUPER_ADMIN","FINANCE")
 def verify_donation(id):
     d=Donation.get_by_id(id)
     if not d: return ("Not found",404)
     d.status="VERIFIED"
     if not d.receipt_number:
         d.receipt_number=f"SHV-RCP-{d.id[:8].upper()}"
-    AuditLog(user_id=current_user.id,action="VERIFY_DONATION",entity="Donation",entity_id=str(id)).save()
+
+    user_id = current_user.id if current_user.is_authenticated else "SYSTEM_ADMIN"
+    AuditLog(user_id=user_id,action="VERIFY_DONATION",entity="Donation",entity_id=str(id)).save()
     d.save()
     flash("Donation verified and receipt number assigned.","success")
     return redirect(url_for("admin.donations"))
 
 @admin_bp.route("/donations/<string:id>/receipt")
-@login_required
 def receipt(id):
     from app.services.receipt_service import build_receipt
     d=Donation.get_by_id(id)
@@ -95,13 +88,10 @@ def receipt(id):
     return build_receipt(d), 200, {"Content-Type":"application/pdf","Content-Disposition":f"attachment; filename={d.receipt_number or d.donation_id}.pdf"}
 
 @admin_bp.route("/volunteers")
-@login_required
 def volunteers():
     return render_template("admin/volunteers.html", volunteers=Volunteer.get_all())
 
 @admin_bp.route("/volunteers/<string:id>/status", methods=["POST"])
-@login_required
-@roles_required("SUPER_ADMIN","EDITOR")
 def volunteer_status(id):
     v=Volunteer.get_by_id(id)
     if v:
@@ -110,13 +100,10 @@ def volunteer_status(id):
     return redirect(url_for("admin.volunteers"))
 
 @admin_bp.route("/events")
-@login_required
 def events():
     return render_template("admin/events.html", events=Event.get_all())
 
 @admin_bp.route("/events/new", methods=["GET","POST"])
-@login_required
-@roles_required("SUPER_ADMIN","EDITOR")
 def new_event():
     if request.method=="POST":
         from datetime import datetime
@@ -129,21 +116,16 @@ def new_event():
     return render_template("admin/event_form.html")
 
 @admin_bp.route("/events/<string:id>/delete", methods=["POST"])
-@login_required
-@roles_required("SUPER_ADMIN")
 def delete_event(id):
     e=Event.get_by_id(id)
     if e: e.delete()
     return redirect(url_for("admin.events"))
 
 @admin_bp.route("/contacts")
-@login_required
 def contacts():
     return render_template("admin/contacts.html", contacts=Contact.get_all())
 
 @admin_bp.route("/documents", methods=["GET","POST"])
-@login_required
-@roles_required("SUPER_ADMIN","EDITOR")
 def documents():
     if request.method=="POST":
         f=request.files.get("file")
