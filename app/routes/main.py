@@ -7,35 +7,57 @@ main_bp = Blueprint("main", __name__)
 
 @main_bp.route("/")
 def home():
-    # Attempt to get events, but don't crash if DB is unavailable
     events = []
     slider_items = []
+    packages = []
+    stats = {}
+    general = {}
+
     try:
         all_events = Event.get_all(active_only=True)
         if all_events:
             events = all_events[:3]
 
-        slider_items = Setting.get_slider_items()
+        slider_items = Setting.get("hero_slider", [])
         if not slider_items:
-            # Fallback default slider
             slider_items = [
-                {
-                    "type": "image",
-                    "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070",
-                    "title": "Empowering Communities",
-                    "caption": "Join us in our mission to create a sustainable impact through collective action."
-                },
-                {
-                    "type": "image",
-                    "url": "https://images.unsplash.com/photo-1509059852496-f3822ae057bf?q=80&w=2080",
-                    "title": "Education for All",
-                    "caption": "Providing resources and support to ensure every child has access to quality education."
-                }
+                {"type": "image", "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070"},
+                {"type": "image", "url": "https://images.unsplash.com/photo-1509059852496-f3822ae057bf?q=80&w=2080"}
             ]
+
+        packages = Setting.get("donation_packages", [])
+        if not packages:
+            packages = [
+                {"title": "Feed a Homeless", "amount": "60", "description": "Provide one nutritious meal to a homeless person.", "tag": "Hot Meals", "img": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=400&q=80"},
+                {"title": "Plant a Tree", "amount": "70", "description": "Help restore nature by planting a native tree.", "tag": "Eco Action", "img": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=400&q=80"}
+            ]
+
+        stats = Setting.get("impact_stats", {
+            "lives_impacted": "50,000+",
+            "volunteers_count": "1,200+",
+            "total_donations": "₹10 Cr+"
+        })
+
+        general = Setting.get("general_info", {
+            "whatsapp": "+91 00000 00000",
+            "instagram": "@navsahaay"
+        })
+
+        programmes = Setting.get("programmes", [
+            {"title": "Education", "description": "Education and nutrition for children.", "icon_color": "#2563eb", "bg_color": "#eff6ff", "svg": '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>'},
+            {"title": "Healthcare", "description": "Healthcare services for communities.", "icon_color": "#9333ea", "bg_color": "#f5f3ff", "svg": '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>'}
+        ])
+
     except Exception as e:
         print(f"Error fetching home data: {e}")
 
-    return render_template("home.html", events=events, slider_items=slider_items)
+    return render_template("home.html",
+        events=events,
+        slider_items=slider_items,
+        packages=packages,
+        stats=stats,
+        general=general,
+        programmes=programmes)
 
 @main_bp.route("/donate", methods=["POST"])
 def donate():

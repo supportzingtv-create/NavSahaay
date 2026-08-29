@@ -26,6 +26,13 @@ def create_app():
     csrf.init_app(app)
     login_manager.login_view = "auth.login"
 
+    # Subdomain Configuration
+    server_name = os.getenv("SERVER_NAME")
+    if server_name:
+        app.config["SERVER_NAME"] = server_name
+        app.config["SESSION_COOKIE_DOMAIN"] = f".{server_name}"
+        app.config["REMEMBER_COOKIE_DOMAIN"] = f".{server_name}"
+
     from app.routes.main import main_bp
     from app.routes.auth import auth_bp
     from app.routes.admin import admin_bp
@@ -33,7 +40,13 @@ def create_app():
 
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
-    app.register_blueprint(admin_bp, url_prefix="/admin")
+
+    # Register Admin Blueprint on a subdomain if configured
+    if server_name:
+        app.register_blueprint(admin_bp, subdomain='admin')
+    else:
+        app.register_blueprint(admin_bp, url_prefix="/admin")
+
     app.register_blueprint(api_bp, url_prefix="/api")
 
     @app.context_processor

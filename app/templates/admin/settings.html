@@ -3,80 +3,276 @@
 {% block header_title %}Site Management{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl">
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-        <h3 class="text-xl font-bold mb-6">Hero Slider Settings</h3>
-        <p class="text-sm text-gray-500 mb-8">Manage the images and videos shown on the home page hero section.</p>
+<div class="max-w-6xl">
+    <!-- Tabs Navigation -->
+    <div class="flex space-x-8 mb-10 border-b border-gray-200">
+        <button onclick="showTab('slider')" id="tab-btn-slider" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-primary-600 text-primary-600">Hero Slider</button>
+        <button onclick="showTab('programmes')" id="tab-btn-programmes" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">Our Programmes</button>
+        <button onclick="showTab('stats')" id="tab-btn-stats" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">Impact Stats</button>
+        <button onclick="showTab('packages')" id="tab-btn-packages" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">Donation Packages</button>
+        <button onclick="showTab('general')" id="tab-btn-general" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">General Info</button>
+    </div>
 
-        <form method="post" action="{{ url_for('admin.settings') }}">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <input type="hidden" name="update_slider" value="1">
-
-            <div id="slider-items" class="space-y-8">
-                {% for item in slider_items %}
-                <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative slider-item">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Media URL</label>
-                            <input name="slider_url[]" value="{{ item.url }}" placeholder="https://..." class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+    <!-- Hero Slider Tab -->
+    <div id="tab-slider" class="tab-content block">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
+            <h3 class="text-xl font-bold mb-6">Hero Slider Settings</h3>
+            <form method="post" action="{{ url_for('admin.settings') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="action" value="update_slider">
+                <div id="slider-items" class="space-y-8">
+                    {% for item in slider_items %}
+                    <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Media URL</label>
+                                <input name="url[]" value="{{ item.url }}" placeholder="https://..." class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Media Type</label>
+                                <select name="type[]" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+                                    <option value="image" {% if item.type == 'image' %}selected{% endif %}>Image</option>
+                                    <option value="video" {% if item.type == 'video' %}selected{% endif %}>Video</option>
+                                </select>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Media Type</label>
-                            <select name="slider_type[]" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-                                <option value="image" {% if item.type == 'image' %}selected{% endif %}>Image</option>
-                                <option value="video" {% if item.type == 'video' %}selected{% endif %}>Video</option>
-                            </select>
-                        </div>
-                        <div class="md:col-span-2">
-                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Title</label>
-                            <input name="slider_title[]" value="{{ item.title }}" placeholder="Main Heading" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-                        </div>
-                        <div class="md:col-span-2">
-                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Caption</label>
-                            <textarea name="slider_caption[]" placeholder="Subtext..." rows="2" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">{{ item.caption }}</textarea>
-                        </div>
+                        <button type="button" onclick="this.parentElement.remove()" class="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 shadow-lg">
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
                     </div>
-                    <button type="button" onclick="this.parentElement.remove()" class="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 shadow-lg">
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
+                    {% endfor %}
                 </div>
-                {% endfor %}
-            </div>
+                <div class="mt-8 flex items-center justify-between">
+                    <button type="button" onclick="addItem('slider-items', 'slider-template')" class="text-xs font-black uppercase tracking-widest text-primary-600">Add Another Slide</button>
+                    <button type="submit" class="bg-gray-900 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-black transition-all shadow-xl">Update Slider</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-            <div class="mt-8 flex items-center justify-between">
-                <button type="button" onclick="addSlide()" class="text-sm font-bold text-primary-600 hover:text-primary-700 flex items-center">
-                    <svg class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                    Add Another Slide
-                </button>
-                <button type="submit" class="bg-gray-900 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-black transition-all shadow-xl">
-                    Save Site Changes
-                </button>
-            </div>
-        </form>
+    <!-- Our Programmes Tab -->
+    <div id="tab-programmes" class="tab-content hidden">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
+            <h3 class="text-xl font-bold mb-6">Our Programmes</h3>
+            <form method="post" action="{{ url_for('admin.settings') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="action" value="update_programmes">
+                <div id="programme-items" class="space-y-6">
+                    {% for prog in programmes %}
+                    <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Title</label>
+                                <input name="title[]" value="{{ prog.title }}" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold outline-none">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Icon Color (Hex)</label>
+                                    <input name="icon_color[]" value="{{ prog.icon_color }}" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Bg Color (Hex)</label>
+                                    <input name="bg_color[]" value="{{ prog.bg_color }}" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none">
+                                </div>
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Description</label>
+                                <input name="description[]" value="{{ prog.description }}" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Icon SVG Path (Heroicons style)</label>
+                                <textarea name="svg[]" rows="2" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-[10px] font-mono outline-none">{{ prog.svg }}</textarea>
+                            </div>
+                        </div>
+                        <button type="button" onclick="this.parentElement.remove()" class="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 shadow-lg">
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="mt-8 flex items-center justify-between">
+                    <button type="button" onclick="addItem('programme-items', 'programme-template')" class="text-xs font-black uppercase tracking-widest text-primary-600">Add Another Programme</button>
+                    <button type="submit" class="bg-gray-900 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-black shadow-xl">Update Programmes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Impact Stats Tab -->
+    <div id="tab-stats" class="tab-content hidden">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
+            <h3 class="text-xl font-bold mb-6">Impact Stats</h3>
+            <form method="post" action="{{ url_for('admin.settings') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="action" value="update_stats">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Lives Impacted</label>
+                        <input name="lives_impacted" value="{{ stats.lives_impacted }}" placeholder="50,000+" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Volunteers</label>
+                        <input name="volunteers_count" value="{{ stats.volunteers_count }}" placeholder="1,200+" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Total Donations</label>
+                        <input name="total_donations" value="{{ stats.total_donations }}" placeholder="₹10 Cr+" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                    </div>
+                </div>
+                <div class="mt-8 text-right">
+                    <button type="submit" class="bg-gray-900 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-black shadow-xl">Update Stats</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Donation Packages Tab -->
+    <div id="tab-packages" class="tab-content hidden">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
+            <h3 class="text-xl font-bold mb-6">Donation Packages</h3>
+            <form method="post" action="{{ url_for('admin.settings') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="action" value="update_packages">
+                <div id="package-items" class="space-y-6">
+                    {% for pkg in packages %}
+                    <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="md:col-span-2">
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Package Title</label>
+                                <input name="title[]" value="{{ pkg.title }}" placeholder="Feed a Child" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Amount (₹)</label>
+                                <input name="amount[]" value="{{ pkg.amount }}" placeholder="4000" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                            </div>
+                            <div class="md:col-span-3">
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Description</label>
+                                <textarea name="description[]" rows="2" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary-600 outline-none">{{ pkg.description }}</textarea>
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Image URL</label>
+                                <input name="img[]" value="{{ pkg.img }}" placeholder="https://..." class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Tag</label>
+                                <input name="tag[]" value="{{ pkg.tag }}" placeholder="Hot Meals" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                            </div>
+                        </div>
+                        <button type="button" onclick="this.parentElement.remove()" class="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 shadow-lg">
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="mt-8 flex items-center justify-between">
+                    <button type="button" onclick="addItem('package-items', 'package-template')" class="text-xs font-black uppercase tracking-widest text-primary-600">Add Another Package</button>
+                    <button type="submit" class="bg-gray-900 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-black shadow-xl">Update Packages</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- General Tab -->
+    <div id="tab-general" class="tab-content hidden">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
+            <h3 class="text-xl font-bold mb-6">General Information</h3>
+            <form method="post" action="{{ url_for('admin.settings') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="action" value="update_general">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">WhatsApp Support Number</label>
+                        <input name="whatsapp" value="{{ general.whatsapp }}" placeholder="+91 00000 00000" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Instagram Handle</label>
+                        <input name="instagram" value="{{ general.instagram }}" placeholder="@navsahaay" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                    </div>
+                </div>
+                <div class="mt-8 text-right">
+                    <button type="submit" class="bg-gray-900 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-black shadow-xl">Update Info</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<template id="slide-template">
-    <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative slider-item">
+<!-- Templates -->
+<template id="slider-template">
+    <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
                 <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Media URL</label>
-                <input name="slider_url[]" placeholder="https://..." class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+                <input name="url[]" placeholder="https://..." class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
             </div>
             <div>
                 <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Media Type</label>
-                <select name="slider_type[]" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+                <select name="type[]" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
                     <option value="image">Image</option>
                     <option value="video">Video</option>
                 </select>
             </div>
+        </div>
+        <button type="button" onclick="this.parentElement.remove()" class="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 shadow-lg">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+    </div>
+</template>
+
+<template id="package-template">
+    <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="md:col-span-2">
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Title</label>
-                <input name="slider_title[]" placeholder="Main Heading" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Package Title</label>
+                <input name="title[]" placeholder="Feed a Child" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Amount (₹)</label>
+                <input name="amount[]" placeholder="4000" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+            </div>
+            <div class="md:col-span-3">
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Description</label>
+                <textarea name="description[]" rows="2" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary-600 outline-none"></textarea>
             </div>
             <div class="md:col-span-2">
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Caption</label>
-                <textarea name="slider_caption[]" placeholder="Subtext..." rows="2" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none"></textarea>
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Image URL</label>
+                <input name="img[]" placeholder="https://..." class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Tag</label>
+                <input name="tag[]" placeholder="Hot Meals" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+            </div>
+        </div>
+        <button type="button" onclick="this.parentElement.remove()" class="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 shadow-lg">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+    </div>
+</template>
+
+<template id="programme-template">
+    <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Title</label>
+                <input name="title[]" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold outline-none">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Icon Color (Hex)</label>
+                    <input name="icon_color[]" value="#2563eb" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Bg Color (Hex)</label>
+                    <input name="bg_color[]" value="#eff6ff" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none">
+                </div>
+            </div>
+            <div class="md:col-span-2">
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Description</label>
+                <input name="description[]" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none">
+            </div>
+            <div class="md:col-span-2">
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Icon SVG Path</label>
+                <textarea name="svg[]" rows="2" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-[10px] font-mono outline-none"></textarea>
             </div>
         </div>
         <button type="button" onclick="this.parentElement.remove()" class="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 shadow-lg">
@@ -86,10 +282,22 @@
 </template>
 
 <script>
-function addSlide() {
-    const template = document.getElementById('slide-template');
+function showTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+    document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+    document.querySelectorAll('.tab-btn').forEach(el => {
+        el.classList.remove('border-primary-600', 'text-primary-600');
+        el.classList.add('border-transparent', 'text-gray-400');
+    });
+    document.getElementById('tab-btn-' + tabId).classList.add('border-primary-600', 'text-primary-600');
+    document.getElementById('tab-btn-' + tabId).classList.remove('border-transparent', 'text-gray-400');
+}
+
+function addItem(containerId, templateId) {
+    const template = document.getElementById(templateId);
     const clone = template.content.cloneNode(true);
-    document.getElementById('slider-items').appendChild(clone);
+    document.getElementById(containerId).appendChild(clone);
 }
 </script>
 {% endblock %}

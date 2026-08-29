@@ -9,6 +9,7 @@ from collections import defaultdict
 admin_bp=Blueprint("admin",__name__)
 
 @admin_bp.route("/")
+@login_required
 def dashboard():
     all_donations = Donation.get_all()
 
@@ -30,10 +31,13 @@ def dashboard():
         chart_labels=chart_labels, chart_data=chart_data)
 
 @admin_bp.route("/donations")
+@login_required
 def donations():
     return render_template("admin/donations.html", donations=Donation.get_all())
 
 @admin_bp.route("/users")
+@login_required
+@roles_required("SUPER_ADMIN")
 def users():
     from app.firebase import db
     docs = db.collection("users").stream()
@@ -41,32 +45,82 @@ def users():
     return render_template("admin/users.html", users=users_list)
 
 @admin_bp.route("/settings", methods=["GET", "POST"])
+@login_required
+@roles_required("SUPER_ADMIN", "EDITOR")
 def settings():
     if request.method == "POST":
-        if "update_slider" in request.form:
-            slider_items = []
-            urls = request.form.getlist("slider_url[]")
-            types = request.form.getlist("slider_type[]")
-            titles = request.form.getlist("slider_title[]")
-            captions = request.form.getlist("slider_caption[]")
+        action = request.form.get("action")
 
+        if action == "update_slider":
+            items = []
+            urls = request.form.getlist("url[]")
+            types = request.form.getlist("type[]")
             for i in range(len(urls)):
-                if urls[i]:
-                    slider_items.append({
-                        "url": urls[i],
-                        "type": types[i],
-                        "title": titles[i],
-                        "caption": captions[i]
+                if urls[i]: items.append({"url": urls[i], "type": types[i]})
+            Setting.set("hero_slider", items)
+            flash("Slider updated.", "success")
+
+        elif action == "update_stats":
+            stats = {
+                "lives_impacted": request.form.get("lives_impacted"),
+                "volunteers_count": request.form.get("volunteers_count"),
+                "total_donations": request.form.get("total_donations")
+            }
+            Setting.set("impact_stats", stats)
+            flash("Impact stats updated.", "success")
+
+        elif action == "update_packages":
+            pkgs = []
+            titles = request.form.getlist("title[]")
+            amounts = request.form.getlist("amount[]")
+            descs = request.form.getlist("description[]")
+            imgs = request.form.getlist("img[]")
+            tags = request.form.getlist("tag[]")
+            for i in range(len(titles)):
+                if titles[i]:
+                    pkgs.append({
+                        "title": titles[i], "amount": amounts[i],
+                        "description": descs[i], "img": imgs[i], "tag": tags[i]
                     })
-            Setting.set_slider_items(slider_items)
-            flash("Slider settings updated successfully.", "success")
+            Setting.set("donation_packages", pkgs)
+            flash("Packages updated.", "success")
+
+        elif action == "update_general":
+            general = {
+                "whatsapp": request.form.get("whatsapp"),
+                "instagram": request.form.get("instagram")
+            }
+            Setting.set("general_info", general)
+            flash("General info updated.", "success")
+
+        elif action == "update_programmes":
+            progs = []
+            titles = request.form.getlist("title[]")
+            descs = request.form.getlist("description[]")
+            i_colors = request.form.getlist("icon_color[]")
+            b_colors = request.form.getlist("bg_color[]")
+            svgs = request.form.getlist("svg[]")
+            for i in range(len(titles)):
+                if titles[i]:
+                    progs.append({
+                        "title": titles[i], "description": descs[i],
+                        "icon_color": i_colors[i], "bg_color": b_colors[i], "svg": svgs[i]
+                    })
+            Setting.set("programmes", progs)
+            flash("Programmes updated.", "success")
 
         return redirect(url_for("admin.settings"))
 
-    slider_items = Setting.get_slider_items()
-    return render_template("admin/settings.html", slider_items=slider_items)
+    return render_template("admin/settings.html",
+        slider_items=Setting.get("hero_slider", []),
+        stats=Setting.get("impact_stats", {}),
+        packages=Setting.get("donation_packages", []),
+        general=Setting.get("general_info", {}),
+        programmes=Setting.get("programmes", []))
 
 @admin_bp.route("/donations/<string:id>/verify", methods=["POST"])
+@login_required
+@roles_required("SUPER_ADMIN","FINANCE")
 def verify_donation(id):
     d=Donation.get_by_id(id)
     if not d: return ("Not found",404)
@@ -74,13 +128,13 @@ def verify_donation(id):
     if not d.receipt_number:
         d.receipt_number=f"SHV-RCP-{d.id[:8].upper()}"
 
-    user_id = current_user.id if current_user.is_authenticated else "SYSTEM_ADMIN"
-    AuditLog(user_id=user_id,action="VERIFY_DONATION",entity="Donation",entity_id=str(id)).save()
+    AuditLog(user_id=current_user.id,action="VERIFY_DONATION",entity="Donation",entity_id=str(id)).save()
     d.save()
     flash("Donation verified and receipt number assigned.","success")
     return redirect(url_for("admin.donations"))
 
 @admin_bp.route("/donations/<string:id>/receipt")
+@login_required
 def receipt(id):
     from app.services.receipt_service import build_receipt
     d=Donation.get_by_id(id)
@@ -88,10 +142,13 @@ def receipt(id):
     return build_receipt(d), 200, {"Content-Type":"application/pdf","Content-Disposition":f"attachment; filename={d.receipt_number or d.donation_id}.pdf"}
 
 @admin_bp.route("/volunteers")
+@login_required
 def volunteers():
     return render_template("admin/volunteers.html", volunteers=Volunteer.get_all())
 
 @admin_bp.route("/volunteers/<string:id>/status", methods=["POST"])
+@login_required
+@roles_required("SUPER_ADMIN","EDITOR")
 def volunteer_status(id):
     v=Volunteer.get_by_id(id)
     if v:
@@ -100,10 +157,13 @@ def volunteer_status(id):
     return redirect(url_for("admin.volunteers"))
 
 @admin_bp.route("/events")
+@login_required
 def events():
     return render_template("admin/events.html", events=Event.get_all())
 
 @admin_bp.route("/events/new", methods=["GET","POST"])
+@login_required
+@roles_required("SUPER_ADMIN","EDITOR")
 def new_event():
     if request.method=="POST":
         from datetime import datetime
@@ -116,16 +176,21 @@ def new_event():
     return render_template("admin/event_form.html")
 
 @admin_bp.route("/events/<string:id>/delete", methods=["POST"])
+@login_required
+@roles_required("SUPER_ADMIN")
 def delete_event(id):
     e=Event.get_by_id(id)
     if e: e.delete()
     return redirect(url_for("admin.events"))
 
 @admin_bp.route("/contacts")
+@login_required
 def contacts():
     return render_template("admin/contacts.html", contacts=Contact.get_all())
 
 @admin_bp.route("/documents", methods=["GET","POST"])
+@login_required
+@roles_required("SUPER_ADMIN","EDITOR")
 def documents():
     if request.method=="POST":
         f=request.files.get("file")
@@ -140,8 +205,10 @@ def documents():
     return render_template("admin/documents.html", documents=Document.get_all())
 
 @admin_bp.route("/documents/<string:id>/download")
+@login_required
 def download_document(id):
     d=Document.get_by_id(id)
     if not d:return ("Not found",404)
     folder=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),"uploads")
     return send_from_directory(folder,d.filename,as_attachment=True)
+
