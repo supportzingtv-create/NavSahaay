@@ -32,22 +32,26 @@ def create_app():
         app.config["SERVER_NAME"] = server_name
         app.config["SESSION_COOKIE_DOMAIN"] = f".{server_name}"
         app.config["REMEMBER_COOKIE_DOMAIN"] = f".{server_name}"
+        # Important for Vercel https
+        app.config["PREFERRED_URL_SCHEME"] = "https"
 
     from app.routes.main import main_bp
     from app.routes.auth import auth_bp
     from app.routes.admin import admin_bp
     from app.routes.api import api_bp
 
-    app.register_blueprint(main_bp)
-
-    # Register Admin and Auth Blueprints on a subdomain if configured
+    # Blueprint Registration based on Domain Configuration
     if server_name:
+        # Register main website on the base domain
+        app.register_blueprint(main_bp)
+
+        # Register Admin and Auth on the 'admin' subdomain
+        # Register auth first to ensure it's the primary provider for login
+        app.register_blueprint(auth_bp, subdomain='admin')
         app.register_blueprint(admin_bp, subdomain='admin')
-        # Register auth on admin subdomain too so /login works there
-        app.register_blueprint(auth_bp, subdomain='admin', name='admin_auth')
-        # Register main auth as well for regular use
-        app.register_blueprint(auth_bp)
     else:
+        # Local development or no subdomain setup
+        app.register_blueprint(main_bp)
         app.register_blueprint(auth_bp)
         app.register_blueprint(admin_bp, url_prefix="/admin")
 
