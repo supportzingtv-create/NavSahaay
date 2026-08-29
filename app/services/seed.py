@@ -6,11 +6,18 @@ def seed_admin_and_events():
     email = os.getenv("ADMIN_EMAIL", "admin@navsahaay.org")
     password = os.getenv("ADMIN_PASSWORD", "Admin@123")
 
-    if not User.get_by_email(email):
-        u = User(id=None, name="Shivoham Administrator", email=email, role="SUPER_ADMIN")
-        u.set_password(password)
-        u.save()
-        print(f"Seeded admin: {email}")
+    user = User.get_by_email(email)
+    if not user:
+        user = User(id=None, name="NavSahaay Administrator", email=email, role="SUPER_ADMIN")
+        user.set_password(password)
+        user.save()
+        print(f"Seeded new admin: {email}")
+    else:
+        # Update existing admin to ensure credentials match env vars
+        user.set_password(password)
+        user.role = "SUPER_ADMIN"
+        user.save()
+        print(f"Updated admin credentials: {email}")
 
     if Event.count() == 0:
         now = datetime.now()

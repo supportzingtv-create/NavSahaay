@@ -19,6 +19,11 @@ def get_db():
                 if "private_key" in cert_dict:
                     cert_dict["private_key"] = cert_dict["private_key"].replace("\\n", "\n")
 
+                # Double check the dict structure
+                if cert_dict.get("type") != "service_account":
+                    print("Firebase Init Warning: Invalid service account type.")
+                    return None
+
                 cred = credentials.Certificate(cert_dict)
                 firebase_admin.initialize_app(cred)
             except Exception as e:
