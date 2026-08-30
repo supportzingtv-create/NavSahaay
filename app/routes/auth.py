@@ -29,4 +29,4 @@ def login():
 @auth_bp.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for("main.home"))
+    return redirect(url_for("main.home", _external=True))

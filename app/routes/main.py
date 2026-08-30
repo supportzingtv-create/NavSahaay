@@ -7,6 +7,10 @@ main_bp = Blueprint("main", __name__)
 
 @main_bp.route("/")
 def home():
+    # If request is coming from admin subdomain but somehow hit main route, redirect
+    if request.host.startswith("admin."):
+        return redirect(url_for("admin.dashboard", _external=True))
+
     events = []
     slider_items = []
     packages = []

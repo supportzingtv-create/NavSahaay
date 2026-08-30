@@ -25,7 +25,7 @@
         <!-- Sidebar -->
         <aside class="w-64 bg-gray-900 text-white flex-shrink-0 hidden md:block">
             <div class="p-6">
-                <a href="{{ url_for('main.home') }}" class="flex items-center space-x-3">
+                <a href="{{ url_for('main.home', _external=True) }}" class="flex items-center space-x-3">
                     <img class="h-10 w-auto object-contain" src="{{ url_for('static', filename='images/logo2.png') }}" alt="Logo">
                     <span class="text-lg font-bold tracking-tighter uppercase font-serif">NavSahaay</span>
                 </a>

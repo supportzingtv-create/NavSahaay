@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, redirect, url_for, request
 from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
 from dotenv import load_dotenv
@@ -29,10 +29,11 @@ def create_app():
     # Subdomain Configuration
     server_name = os.getenv("SERVER_NAME")
     if server_name:
+        # Normalize server name (remove port if any)
+        server_name = server_name.split(':')[0]
         app.config["SERVER_NAME"] = server_name
         app.config["SESSION_COOKIE_DOMAIN"] = f".{server_name}"
         app.config["REMEMBER_COOKIE_DOMAIN"] = f".{server_name}"
-        # Important for Vercel https
         app.config["PREFERRED_URL_SCHEME"] = "https"
 
     from app.routes.main import main_bp
@@ -40,20 +41,19 @@ def create_app():
     from app.routes.admin import admin_bp
     from app.routes.api import api_bp
 
-    # Blueprint Registration based on Domain Configuration
+    # Blueprint Registration
     if server_name:
-        # Register main website on the base domain
-        app.register_blueprint(main_bp)
-
         # Register Admin and Auth on the 'admin' subdomain
-        # Register auth first to ensure it's the primary provider for login
+        # They will be accessible at admin.navsahaay.org/ and admin.navsahaay.org/login
         app.register_blueprint(auth_bp, subdomain='admin')
         app.register_blueprint(admin_bp, subdomain='admin')
-    else:
-        # Local development or no subdomain setup
+        # Register main website on the base domain
         app.register_blueprint(main_bp)
+    else:
+        # Local development (localhost:5000)
         app.register_blueprint(auth_bp)
         app.register_blueprint(admin_bp, url_prefix="/admin")
+        app.register_blueprint(main_bp)
 
     app.register_blueprint(api_bp, url_prefix="/api")
 
