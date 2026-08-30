@@ -30,7 +30,6 @@ def create_app():
     # Subdomain Configuration
     server_name = os.getenv("SERVER_NAME")
     if server_name:
-        # Flask SERVER_NAME MUST match exactly the base domain
         server_name = server_name.split(':')[0]
         app.config["SERVER_NAME"] = server_name
         app.config["SESSION_COOKIE_DOMAIN"] = f".{server_name}"
@@ -42,8 +41,9 @@ def create_app():
     from app.routes.admin import admin_bp
     from app.routes.api import api_bp
 
-    # Register Admin and Auth on the 'admin' subdomain strictly
+    # Blueprint Registration
     if server_name:
+        # Register Admin and Auth on the 'admin' subdomain
         app.register_blueprint(auth_bp, subdomain='admin')
         app.register_blueprint(admin_bp, subdomain='admin')
         # Register main website on the base domain
@@ -58,6 +58,15 @@ def create_app():
     @app.context_processor
     def inject_globals():
         return {"site_name": "NavSahaay Foundation"}
+
+    @app.before_request
+    def check_admin_subdomain():
+        # Extra safety check for subdomains on Vercel
+        host = request.host.split(':')[0]
+        if host == f"admin.{server_name}" if server_name else False:
+            # If we are on admin host but somehow not in admin/auth blueprint
+            if not request.blueprint or request.blueprint == 'main':
+                return redirect(url_for('admin.dashboard', _external=True))
 
     # Initialize database connection
     try:
