@@ -3,6 +3,7 @@ from flask import Flask, redirect, url_for, request
 from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
 from dotenv import load_dotenv
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 load_dotenv()
 login_manager = LoginManager()
@@ -11,11 +12,11 @@ csrf = CSRFProtect()
 def create_app():
     app = Flask(__name__)
 
-    # Ensure SECRET_KEY is never None or empty
-    secret = os.getenv("SECRET_KEY")
-    if not secret:
-        secret = "shivoham-fallback-secret-key-12345"
+    # Trust Vercel's proxy for HTTPS and Host headers
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 
+    # Ensure SECRET_KEY is never None or empty
+    secret = os.getenv("SECRET_KEY") or "shivoham-fallback-secret-key-12345"
     app.config["SECRET_KEY"] = secret
     app.secret_key = secret
 
@@ -29,7 +30,7 @@ def create_app():
     # Subdomain Configuration
     server_name = os.getenv("SERVER_NAME")
     if server_name:
-        # Normalize server name (remove port if any)
+        # Flask SERVER_NAME MUST match exactly the base domain
         server_name = server_name.split(':')[0]
         app.config["SERVER_NAME"] = server_name
         app.config["SESSION_COOKIE_DOMAIN"] = f".{server_name}"
@@ -41,16 +42,13 @@ def create_app():
     from app.routes.admin import admin_bp
     from app.routes.api import api_bp
 
-    # Blueprint Registration
+    # Register Admin and Auth on the 'admin' subdomain strictly
     if server_name:
-        # Register Admin and Auth on the 'admin' subdomain
-        # They will be accessible at admin.navsahaay.org/ and admin.navsahaay.org/login
         app.register_blueprint(auth_bp, subdomain='admin')
         app.register_blueprint(admin_bp, subdomain='admin')
         # Register main website on the base domain
         app.register_blueprint(main_bp)
     else:
-        # Local development (localhost:5000)
         app.register_blueprint(auth_bp)
         app.register_blueprint(admin_bp, url_prefix="/admin")
         app.register_blueprint(main_bp)
@@ -76,6 +74,7 @@ def create_app():
 def load_user(user_id):
     from app.models.user import User
     try:
+        if not user_id: return None
         return User.get_by_id(user_id)
     except:
         return None
