@@ -61,14 +61,20 @@ def create_app():
 
     @app.before_request
     def force_admin_subdomain():
+        # 1. Skip for static files and admin/auth paths to prevent loops
+        if request.path.startswith('/static') or \
+           request.path.startswith('/login') or \
+           request.path.startswith('/dashboard') or \
+           request.path.startswith('/admin'):
+            return
+
         host = request.host.split(':')[0]
         # Check if we are on the admin subdomain
         is_admin_subdomain = host.startswith('admin.')
 
-        # If on admin subdomain but not hitting auth or admin blueprint
+        # If on admin subdomain but hitting a route outside auth/admin blueprints
         if is_admin_subdomain:
             if not request.blueprint or request.blueprint not in ['auth', 'admin']:
-                # Redirect to login if not authenticated, otherwise dashboard
                 from flask_login import current_user
                 if current_user.is_authenticated:
                     return redirect(url_for('admin.dashboard', _external=True))
