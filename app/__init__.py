@@ -42,16 +42,12 @@ def create_app():
     from app.routes.api import api_bp
 
     # Blueprint Registration
-    if server_name:
-        # Register Admin and Auth on the 'admin' subdomain
-        app.register_blueprint(auth_bp, subdomain='admin')
-        app.register_blueprint(admin_bp, subdomain='admin')
-        # Register main website on the base domain
-        app.register_blueprint(main_bp)
-    else:
-        app.register_blueprint(auth_bp)
-        app.register_blueprint(admin_bp, url_prefix="/admin")
-        app.register_blueprint(main_bp)
+    # We register them globally (no subdomain restriction) to ensure routes match
+    # even if SERVER_NAME isn't perfectly configured in the environment.
+    # Our global @before_request guard will handle the subdomain enforcement.
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(admin_bp)
+    app.register_blueprint(main_bp)
 
     app.register_blueprint(api_bp, url_prefix="/api")
 
@@ -61,25 +57,28 @@ def create_app():
 
     @app.before_request
     def force_admin_subdomain():
-        # 1. Skip for static files and admin/auth paths to prevent loops
-        if request.path.startswith('/static') or \
-           request.path.startswith('/login') or \
-           request.path.startswith('/dashboard') or \
-           request.path.startswith('/admin'):
+        # 1. Skip for static files
+        if request.path.startswith('/static'):
             return
 
         host = request.host.split(':')[0]
-        # Check if we are on the admin subdomain
         is_admin_subdomain = host.startswith('admin.')
 
-        # If on admin subdomain but hitting a route outside auth/admin blueprints
+        # 2. If on admin subdomain, ensure we only see admin/auth content
         if is_admin_subdomain:
-            if not request.blueprint or request.blueprint not in ['auth', 'admin']:
+            # Allow auth, admin and api blueprints
+            if request.blueprint not in ['auth', 'admin', 'api']:
                 from flask_login import current_user
                 if current_user.is_authenticated:
                     return redirect(url_for('admin.dashboard', _external=True))
                 else:
                     return redirect(url_for('auth.login', _external=True))
+
+        # 3. Optional: If on main domain but hitting admin/auth routes, redirect to admin subdomain
+        elif request.blueprint in ['auth', 'admin']:
+             server_name = os.getenv("SERVER_NAME")
+             if server_name and not host.startswith('admin.'):
+                 return redirect(url_for(request.endpoint, _external=True, **(request.view_args or {})))
 
     # Initialize database connection
     try:
