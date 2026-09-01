@@ -59,15 +59,6 @@ def create_app():
     def inject_globals():
         return {"site_name": "NavSahaay Foundation"}
 
-    @app.before_request
-    def check_admin_subdomain():
-        # Extra safety check for subdomains on Vercel
-        host = request.host.split(':')[0]
-        if host == f"admin.{server_name}" if server_name else False:
-            # If we are on admin host but somehow not in admin/auth blueprint
-            if not request.blueprint or request.blueprint == 'main':
-                return redirect(url_for('admin.dashboard', _external=True))
-
     # Initialize database connection
     try:
         from app.firebase import db

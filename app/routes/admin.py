@@ -8,7 +8,7 @@ from collections import defaultdict
 
 admin_bp=Blueprint("admin",__name__)
 
-@admin_bp.route("/")
+@admin_bp.route("/dashboard")
 @login_required
 def dashboard():
     all_donations = Donation.get_all()
