@@ -59,6 +59,22 @@ def create_app():
     def inject_globals():
         return {"site_name": "NavSahaay Foundation"}
 
+    @app.before_request
+    def force_admin_subdomain():
+        host = request.host.split(':')[0]
+        # Check if we are on the admin subdomain
+        is_admin_subdomain = host.startswith('admin.')
+
+        # If on admin subdomain but not hitting auth or admin blueprint
+        if is_admin_subdomain:
+            if not request.blueprint or request.blueprint not in ['auth', 'admin']:
+                # Redirect to login if not authenticated, otherwise dashboard
+                from flask_login import current_user
+                if current_user.is_authenticated:
+                    return redirect(url_for('admin.dashboard', _external=True))
+                else:
+                    return redirect(url_for('auth.login', _external=True))
+
     # Initialize database connection
     try:
         from app.firebase import db
