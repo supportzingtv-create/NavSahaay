@@ -6,3 +6,4 @@ from .contact import Contact
 from .document import Document
 from .audit import AuditLog
 from .settings import Setting
+from .cause import Cause

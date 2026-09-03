@@ -212,3 +212,68 @@ def download_document(id):
     folder=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),"uploads")
     return send_from_directory(folder,d.filename,as_attachment=True)
 
+@admin_bp.route("/causes")
+@login_required
+def causes():
+    from app.models import Cause
+    return render_template("admin/causes.html", causes=Cause.get_all())
+
+@admin_bp.route("/causes/new", methods=["GET", "POST"])
+@login_required
+@roles_required("SUPER_ADMIN", "EDITOR")
+def new_cause():
+    from app.models import Cause
+    if request.method == "POST":
+        c = Cause(
+            title=request.form["title"],
+            slug=request.form.get("slug"),
+            tag=request.form["tag"],
+            amount=float(request.form["amount"]),
+            short_description=request.form["short_description"],
+            description=request.form["description"],
+            content=request.form["content"],
+            image_url=request.form["image_url"],
+            active=bool(request.form.get("active"))
+        )
+        c.save()
+        flash("New donation cause created successfully.", "success")
+        return redirect(url_for("admin.causes"))
+    return render_template("admin/cause_form.html", cause=None)
+
+@admin_bp.route("/causes/<string:id>/edit", methods=["GET", "POST"])
+@login_required
+@roles_required("SUPER_ADMIN", "EDITOR")
+def edit_cause(id):
+    from app.models import Cause
+    c = Cause.get_by_id(id)
+    if not c:
+        flash("Cause not found.", "error")
+        return redirect(url_for("admin.causes"))
+
+    if request.method == "POST":
+        c.title = request.form["title"]
+        c.slug = request.form.get("slug")
+        c.tag = request.form["tag"]
+        c.amount = float(request.form["amount"])
+        c.short_description = request.form["short_description"]
+        c.description = request.form["description"]
+        c.content = request.form["content"]
+        c.image_url = request.form["image_url"]
+        c.active = bool(request.form.get("active"))
+        c.save()
+        flash("Cause updated successfully.", "success")
+        return redirect(url_for("admin.causes"))
+
+    return render_template("admin/cause_form.html", cause=c)
+
+@admin_bp.route("/causes/<string:id>/delete", methods=["POST"])
+@login_required
+@roles_required("SUPER_ADMIN")
+def delete_cause(id):
+    from app.models import Cause
+    c = Cause.get_by_id(id)
+    if c:
+        c.delete()
+        flash("Cause deleted.", "success")
+    return redirect(url_for("admin.causes"))
+

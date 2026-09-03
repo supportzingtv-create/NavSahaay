@@ -25,11 +25,15 @@ def home():
                 {"type": "image", "url": "https://images.unsplash.com/photo-1509059852496-f3822ae057bf?q=80&w=2080"}
             ]
 
-        packages = Setting.get("donation_packages", [])
+        # Fetch causes from DB instead of static setting
+        from app.models import Cause
+        packages = Cause.get_all(active_only=True)
+
+        # Fallback if no causes in DB
         if not packages:
             packages = [
-                {"title": "Feed a Homeless", "amount": "60", "description": "Provide one nutritious meal to a homeless person.", "tag": "Hot Meals", "img": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=400&q=80"},
-                {"title": "Plant a Tree", "amount": "70", "description": "Help restore nature by planting a native tree.", "tag": "Eco Action", "img": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=400&q=80"}
+                {"title": "Feed a Homeless", "amount": "60", "short_description": "Provide one nutritious meal to a homeless person.", "tag": "Hot Meals", "image_url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=400&q=80", "slug": "feed-a-homeless"},
+                {"title": "Plant a Tree", "amount": "70", "short_description": "Help restore nature by planting a native tree.", "tag": "Eco Action", "image_url": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=400&q=80", "slug": "plant-a-tree"}
             ]
 
         stats = Setting.get("impact_stats", {
@@ -118,3 +122,12 @@ def event_register(event_id):
     r=EventRegistration(event_id=event.id,name=request.form["name"],email=request.form["email"],phone=request.form["phone"])
     r.save()
     return jsonify({"message":"Registration successful"})
+
+@main_bp.route("/cause/<slug>")
+def cause_detail(slug):
+    from app.models import Cause
+    cause = Cause.get_by_slug(slug)
+    if not cause or not cause.active:
+        return render_template("404.html"), 404
+
+    return render_template("cause_detail.html", cause=cause)

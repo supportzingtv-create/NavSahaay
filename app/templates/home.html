@@ -110,14 +110,19 @@
         {% for pkg in packages %}
         <div class="bg-white rounded-[2rem] border border-gray-100 shadow-xl overflow-hidden hover:shadow-2xl transition-all group">
             <div class="relative h-48">
-                <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="{{ pkg.img }}" alt="{{ pkg.title }}">
+                <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="{{ pkg.image_url }}" alt="{{ pkg.title }}">
                 <div class="absolute top-4 left-4 bg-primary-600 text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">{{ pkg.tag }}</div>
             </div>
             <div class="p-8">
                 <h3 class="text-xl font-bold text-gray-900 mb-2">{{ pkg.title }}</h3>
-                <p class="text-sm text-gray-500 mb-6 leading-relaxed">{{ pkg.description }}</p>
+                <p class="text-sm text-gray-500 mb-6 leading-relaxed">{{ pkg.short_description }}</p>
                 <div class="flex items-center justify-between mb-8">
-                    <span class="text-2xl font-black text-primary-600">₹{{ pkg.amount }}</span>
+                    <div class="flex flex-col items-start">
+                        <span class="text-2xl font-black text-primary-600">₹{{ pkg.amount }}</span>
+                        {% if pkg.slug %}
+                        <a href="{{ url_for('main.cause_detail', slug=pkg.slug) }}" class="text-[9px] font-bold text-blue-600 uppercase tracking-widest hover:underline mt-1">View Details &rarr;</a>
+                        {% endif %}
+                    </div>
                     <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Impact</span>
                 </div>
                 <button onclick="quickDonate('{{ pkg.title }}', {{ pkg.amount }})" class="w-full py-4 rounded-xl bg-gray-900 text-white font-bold text-xs uppercase tracking-widest hover:bg-primary-600 transition-colors shadow-lg">Donate Now</button>
@@ -340,12 +345,9 @@
                     <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Choose Cause</label>
                     <select id="donationCause" name="cause" class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 transition-all shadow-inner">
                         <option>General Fund</option>
-                        <option>Education</option>
-                        <option>Healthcare</option>
-                        <option>Environment</option>
-                        <option>Feeding People</option>
-                        <option>Feed a Homeless (₹60)</option>
-                        <option>Plant a Tree (₹70)</option>
+                        {% for pkg in packages %}
+                        <option value="{{ pkg.title }}">{{ pkg.title }} (₹{{ pkg.amount }})</option>
+                        {% endfor %}
                         <option>School Bag Kit (₹450)</option>
                         <option>Birthday Celebration (₹4000)</option>
                     </select>
@@ -533,7 +535,26 @@ const swiper = new Swiper('.hero-swiper', {
 });
 
 function quickDonate(cause, amount) {
-    document.getElementById('donationCause').value = cause + ' (₹' + amount + ')';
+    const select = document.getElementById('donationCause');
+    const optionValue = cause + ' (₹' + amount + ')';
+
+    // Check if option already exists
+    let exists = false;
+    for (let i = 0; i < select.options.length; i++) {
+        if (select.options[i].text === optionValue) {
+            select.selectedIndex = i;
+            exists = true;
+            break;
+        }
+    }
+
+    // If not, add it
+    if (!exists) {
+        const newOpt = new Option(optionValue, cause);
+        select.add(newOpt);
+        select.value = cause;
+    }
+
     document.getElementById('donationAmount').value = amount;
     document.getElementById('donate').scrollIntoView({ behavior: 'smooth' });
 }

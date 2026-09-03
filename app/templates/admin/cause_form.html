@@ -1,0 +1,84 @@
+{% extends "admin/base.html" %}
+
+{% block header_title %}{{ 'Edit' if cause else 'Create' }} Donation Cause{% endblock %}
+
+{% block extra_css %}
+<!-- Simple WYSIWYG editor -->
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+  tinymce.init({
+    selector: '#content_editor',
+    plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="px-8 py-6 border-b border-gray-100">
+        <h3 class="text-lg font-bold">Cause Details</h3>
+        <p class="text-xs text-gray-400 font-medium">Configure the landing page and donation details.</p>
+    </div>
+
+    <form method="post" class="p-8 space-y-8">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="space-y-2">
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">Cause Title</label>
+                <input name="title" value="{{ cause.title if cause else '' }}" required placeholder="e.g. Feed a Child" class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 transition-all shadow-inner">
+            </div>
+            <div class="space-y-2">
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">Slug (URL Part)</label>
+                <input name="slug" value="{{ cause.slug if cause else '' }}" placeholder="e.g. feed-a-child" class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 transition-all shadow-inner">
+                <p class="text-[9px] text-gray-400 italic">Leave empty to auto-generate from title.</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="space-y-2">
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">Tag / Category</label>
+                <input name="tag" value="{{ cause.tag if cause else '' }}" required placeholder="e.g. HOT MEALS" class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 transition-all shadow-inner">
+            </div>
+            <div class="space-y-2">
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">Donation Amount (₹)</label>
+                <input name="amount" type="number" step="1" value="{{ cause.amount if cause else '0' }}" required class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 transition-all shadow-inner">
+            </div>
+            <div class="flex items-center space-x-4 h-full pt-6">
+                <label class="flex items-center cursor-pointer">
+                    <input type="checkbox" name="active" value="y" {% if not cause or cause.active %}checked{% endif %} class="w-5 h-5 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500">
+                    <span class="ml-2 text-xs font-bold text-gray-700 uppercase tracking-widest">Active</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="space-y-2">
+            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">Banner Image URL</label>
+            <input name="image_url" value="{{ cause.image_url if cause else '' }}" placeholder="https://..." class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 transition-all shadow-inner">
+        </div>
+
+        <div class="space-y-2">
+            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">Short Description (for Cards)</label>
+            <textarea name="short_description" rows="2" required class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-medium focus:ring-2 focus:ring-primary-600 transition-all shadow-inner">{{ cause.short_description if cause else '' }}</textarea>
+        </div>
+
+        <div class="space-y-2">
+            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">Long Description (Intro Text)</label>
+            <textarea name="description" rows="3" required class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-medium focus:ring-2 focus:ring-primary-600 transition-all shadow-inner">{{ cause.description if cause else '' }}</textarea>
+        </div>
+
+        <div class="space-y-2">
+            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">Page Content (Rich Text)</label>
+            <textarea id="content_editor" name="content" class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-primary-600 transition-all">{{ cause.content if cause else '' }}</textarea>
+        </div>
+
+        <div class="flex justify-end space-x-4 pt-6 border-t border-gray-100">
+            <a href="{{ url_for('admin.causes') }}" class="px-8 py-4 bg-gray-100 text-gray-600 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-gray-200 transition-all">Cancel</a>
+            <button type="submit" class="px-8 py-4 bg-gray-900 text-white rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-black shadow-xl transition-all transform active:scale-95">
+                {{ 'Save Changes' if cause else 'Create Cause Page' }}
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
