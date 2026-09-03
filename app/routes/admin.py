@@ -109,6 +109,58 @@ def settings():
             Setting.set("programmes", progs)
             flash("Programmes updated.", "success")
 
+        elif action == "update_testimonials":
+            items = []
+            names = request.form.getlist("name[]")
+            roles = request.form.getlist("role[]")
+            quotes = request.form.getlist("quote[]")
+            imgs = request.form.getlist("img[]")
+            for i in range(len(names)):
+                if names[i]:
+                    items.append({"name": names[i], "role": roles[i], "quote": quotes[i], "img": imgs[i]})
+            Setting.set("testimonials", items)
+            flash("Testimonials updated.", "success")
+
+        elif action == "update_partners":
+            items = []
+            names = request.form.getlist("partner_name[]")
+            logos = request.form.getlist("logo[]")
+            for i in range(len(names)):
+                if names[i]:
+                    items.append({"name": names[i], "logo": logos[i]})
+            Setting.set("partners", items)
+            flash("Partners updated.", "success")
+
+        elif action == "update_faqs":
+            items = []
+            ques = request.form.getlist("question[]")
+            ans = request.form.getlist("answer[]")
+            for i in range(len(ques)):
+                if ques[i]:
+                    items.append({"question": ques[i], "answer": ans[i]})
+            Setting.set("faqs", items)
+            flash("FAQs updated.", "success")
+
+        elif action == "update_seo":
+            seo = {
+                "title": request.form.get("seo_title"),
+                "description": request.form.get("seo_description"),
+                "keywords": request.form.get("seo_keywords"),
+                "og_image": request.form.get("og_image")
+            }
+            Setting.set("seo_meta", seo)
+
+            social = {
+                "whatsapp": request.form.get("whatsapp"),
+                "instagram": request.form.get("instagram"),
+                "facebook": request.form.get("facebook"),
+                "twitter": request.form.get("twitter"),
+                "youtube": request.form.get("youtube"),
+                "email": request.form.get("contact_email")
+            }
+            Setting.set("social_links", social)
+            flash("SEO and Social settings updated.", "success")
+
         return redirect(url_for("admin.settings"))
 
     return render_template("admin/settings.html",
@@ -116,7 +168,12 @@ def settings():
         stats=Setting.get("impact_stats", {}),
         packages=Setting.get("donation_packages", []),
         general=Setting.get("general_info", {}),
-        programmes=Setting.get("programmes", []))
+        programmes=Setting.get("programmes", []),
+        testimonials=Setting.get("testimonials", []),
+        partners=Setting.get("partners", []),
+        faqs=Setting.get("faqs", []),
+        seo=Setting.get("seo_meta", {}),
+        social=Setting.get("social_links", {}))
 
 @admin_bp.route("/donations/<string:id>/verify", methods=["POST"])
 @login_required

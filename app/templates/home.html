@@ -194,6 +194,108 @@
     </div>
 </section>
 
+<!-- Testimonials Section (Modern & Emotional) -->
+{% if testimonials %}
+<section class="py-24 bg-white overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <span class="text-primary-600 font-black tracking-[0.3em] uppercase text-xs">Testimonials</span>
+            <h2 class="text-4xl md:text-5xl font-serif font-black text-gray-900 mt-4 leading-tight italic">Voices of Impact</h2>
+        </div>
+
+        <div class="swiper testimonial-swiper pb-12">
+            <div class="swiper-wrapper">
+                {% for item in testimonials %}
+                <div class="swiper-slide px-4">
+                    <div class="bg-gray-50 p-10 rounded-[3rem] border border-gray-100 text-center relative">
+                        <div class="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white shadow-lg">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017V21H14.017ZM14.017 21C12.9124 21 12.017 20.1046 12.017 19V17C12.017 15.8954 12.9124 15 14.017 15H17.017C18.1216 15 19.017 15.8954 19.017 17V19C19.017 20.1046 18.1216 21 17.017 21H14.017Z"/></svg>
+                        </div>
+                        <p class="text-lg md:text-xl text-gray-700 italic font-medium leading-relaxed mb-8">"{{ item.quote }}"</p>
+                        <div class="flex items-center justify-center space-x-4">
+                            {% if item.img %}
+                            <img src="{{ item.img }}" class="w-14 h-14 rounded-full object-cover shadow-md border-2 border-white">
+                            {% endif %}
+                            <div class="text-left">
+                                <p class="font-black text-gray-900 uppercase text-xs tracking-widest">{{ item.name }}</p>
+                                <p class="text-[10px] text-primary-600 font-bold uppercase tracking-widest">{{ item.role }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="swiper-pagination !-bottom-2"></div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Partners & Supporters (Grayscale Logo Grid) -->
+{% if partners %}
+<section class="py-20 bg-gray-50 border-y border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p class="text-center text-[10px] font-black text-gray-400 uppercase tracking-[0.5em] mb-12">Proudly Supported By</p>
+        <div class="flex flex-wrap items-center justify-center gap-12 md:gap-20 opacity-50 grayscale hover:grayscale-0 transition-all duration-700">
+            {% for item in partners %}
+            <img src="{{ item.logo }}" alt="{{ item.name }}" class="h-8 md:h-12 w-auto object-contain">
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- FAQ Section (Clean & Accessible) -->
+{% if faqs %}
+<section class="py-24 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-serif font-black text-gray-900 leading-tight">Common Questions</h2>
+            <div class="h-1 w-20 bg-primary-600 mx-auto mt-6 opacity-30"></div>
+        </div>
+
+        <div class="space-y-4">
+            {% for item in faqs %}
+            <div class="border border-gray-100 rounded-[2rem] overflow-hidden">
+                <button class="w-full flex items-center justify-between p-8 text-left bg-gray-50 hover:bg-white transition-colors group" onclick="toggleFaq(this)">
+                    <span class="text-sm md:text-base font-bold text-gray-900 tracking-tight">{{ item.question }}</span>
+                    <svg class="w-5 h-5 text-gray-400 group-hover:text-primary-600 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="hidden p-8 pt-0 bg-white">
+                    <p class="text-sm text-gray-600 leading-relaxed font-medium">{{ item.answer }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<script>
+function toggleFaq(btn) {
+    const content = btn.nextElementSibling;
+    const icon = btn.querySelector('svg');
+    content.classList.toggle('hidden');
+    icon.classList.toggle('rotate-180');
+}
+</script>
+{% endif %}
+
+<!-- Newsletter Section (High Conversion) -->
+<section class="py-24 bg-primary-600 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+        <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0 0 L100 100 M100 0 L0 100" stroke="white" stroke-width="0.1"/></svg>
+    </div>
+    <div class="max-w-4xl mx-auto px-4 relative z-10 text-center">
+        <h2 class="text-4xl md:text-5xl font-serif font-black text-white mb-6">Stay Connected</h2>
+        <p class="text-lg text-primary-50 font-medium mb-12">Subscribe to our newsletter and get monthly updates on our impact and upcoming events.</p>
+
+        <form class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto" onsubmit="event.preventDefault(); alert('Subscribed successfully!'); this.reset();">
+            <input type="email" required placeholder="Enter your email address" class="flex-1 px-8 py-5 rounded-2xl bg-white/10 border border-white/20 text-white placeholder:text-primary-100 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-md font-bold text-sm">
+            <button class="px-10 py-5 bg-white text-primary-600 rounded-2xl font-black uppercase text-xs tracking-widest shadow-2xl hover:bg-primary-50 transition-all transform active:scale-95">Subscribe</button>
+        </form>
+    </div>
+</section>
+
 <!-- Scrolling Marquee Section (Tight & Bold Orange Bar) -->
 <section class="bg-primary-600 py-0 overflow-hidden border-y-4 border-primary-700 shadow-2xl relative z-20">
     <div class="flex whitespace-nowrap animate-marquee-fast items-center py-1">
@@ -532,6 +634,28 @@ const swiper = new Swiper('.hero-swiper', {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',
     },
+});
+
+const testimonialSwiper = new Swiper('.testimonial-swiper', {
+    loop: true,
+    slidesPerView: 1,
+    spaceBetween: 30,
+    autoplay: {
+        delay: 4000,
+        disableOnInteraction: false,
+    },
+    pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+    },
+    breakpoints: {
+        768: {
+            slidesPerView: 2,
+        },
+        1024: {
+            slidesPerView: 3,
+        }
+    }
 });
 
 function quickDonate(cause, amount) {
