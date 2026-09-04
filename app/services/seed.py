@@ -38,11 +38,13 @@ def seed_admin_and_events():
         if len(Cause.get_all()) == 0:
             causes = [
                 Cause(title="Feed a Homeless", amount=60, tag="Hot Meals",
+                      impact_unit_name="Nutritious Meal", impact_unit_cost=60,
                       short_description="Provide one nutritious meal to a homeless person.",
                       description="Our feeding program ensures that no one goes to sleep hungry in our community.",
                       image_url="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=800&q=80",
                       content="<h3>Why Feed the Homeless?</h3><p>Hunger is a daily struggle for thousands. Your small contribution of ₹60 provides a fresh, nutritious hot meal...</p>"),
                 Cause(title="Plant a Tree", amount=70, tag="Eco Action",
+                      impact_unit_name="Native Tree", impact_unit_cost=70,
                       short_description="Help restore nature by planting a native tree.",
                       description="We are on a mission to plant 10,000 trees to combat climate change.",
                       image_url="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80",

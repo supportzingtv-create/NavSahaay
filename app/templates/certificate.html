@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Gifting Impact Certificate | NavSahaay Foundation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .serif { font-family: 'Playfair Display', serif; }
+        .cert-border {
+            border: 20px solid #f97316;
+            outline: 5px solid #fff;
+            outline-offset: -15px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <div class="max-w-4xl w-full bg-white cert-border p-16 text-center shadow-2xl relative overflow-hidden">
+        <!-- Watermark -->
+        <div class="absolute inset-0 opacity-[0.03] flex items-center justify-center pointer-events-none">
+            <img src="{{ url_for('static', filename='images/logo2.png') }}" class="w-[500px]">
+        </div>
+
+        <div class="relative z-10">
+            <img src="{{ url_for('static', filename='images/logo2.png') }}" class="h-24 mx-auto mb-8">
+
+            <p class="text-xs font-black uppercase tracking-[0.5em] text-primary-600 mb-12">Certificate of Impact</p>
+
+            <h1 class="serif text-5xl font-black text-gray-900 mb-8">A Gift of Hope</h1>
+
+            <p class="text-xl text-gray-600 leading-relaxed mb-12">
+                This certificate is proudly presented to
+            </p>
+
+            <h2 class="serif text-6xl font-black text-primary-600 mb-12 underline decoration-gray-100 underline-offset-8">
+                {{ donation.recipient_name }}
+            </h2>
+
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed mb-12">
+                A generous donation has been made in your honor by <strong>{{ donation.donor_name if not donation.anonymous else 'A Friend' }}</strong>
+                to support <strong>{{ donation.cause }}</strong>. This contribution will bring meaningful change to those in need.
+            </p>
+
+            <div class="flex items-center justify-center space-x-20 mt-20">
+                <div class="text-left border-t-2 border-gray-100 pt-4 px-8">
+                    <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Date</p>
+                    <p class="font-bold text-gray-900">{{ donation.created_at.strftime('%d %B, %Y') }}</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-24 h-24 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-2 text-primary-600 border-2 border-primary-100">
+                        <svg class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    </div>
+                    <p class="text-[8px] font-black uppercase tracking-widest text-gray-400">Verified Impact</p>
+                </div>
+                <div class="text-right border-t-2 border-gray-100 pt-4 px-8">
+                    <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Certificate No.</p>
+                    <p class="font-bold text-gray-900">{{ donation.donation_id }}</p>
+                </div>
+            </div>
+
+            <p class="mt-16 text-[10px] text-gray-400 font-bold uppercase tracking-widest">NavSahaay Foundation | www.navsahaay.org</p>
+        </div>
+    </div>
+
+    <div class="fixed bottom-8 right-8 no-print">
+        <button onclick="window.print()" class="px-8 py-4 bg-gray-900 text-white rounded-full font-black uppercase text-xs tracking-widest shadow-2xl hover:bg-black transition-all">
+            Download / Print
+        </button>
+    </div>
+
+    <style type="text/css" media="print">
+        .no-print { display: none; }
+        body { background: white; p: 0; }
+        .cert-border { shadow: none; }
+    </style>
+</body>
+</html>

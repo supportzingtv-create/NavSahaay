@@ -1,0 +1,66 @@
+{% extends "admin/base.html" %}
+
+{% block header_title %}Ground Reports (Field Updates){% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Post New Report -->
+    <div class="lg:col-span-1">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 sticky top-28">
+            <h3 class="text-lg font-bold mb-6">Post Field Update</h3>
+            <form method="post" class="space-y-6">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Caption / Title</label>
+                    <input name="title" required placeholder="e.g. Food distribution started..." class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Location</label>
+                    <input name="location" required placeholder="e.g. Okhla, New Delhi" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Image URL</label>
+                    <input name="image_url" required placeholder="https://..." class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                </div>
+                <div class="flex items-center">
+                    <label class="flex items-center cursor-pointer">
+                        <input type="checkbox" name="active" value="y" checked class="w-5 h-5 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500">
+                        <span class="ml-2 text-xs font-bold text-gray-700 uppercase tracking-widest">Active</span>
+                    </label>
+                </div>
+                <button type="submit" class="w-full py-4 bg-gray-900 text-white rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-black shadow-xl transition-all transform active:scale-95">Post Report</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Reports List -->
+    <div class="lg:col-span-2 space-y-6">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="px-8 py-6 border-b border-gray-100">
+                <h3 class="text-lg font-bold">Recent Updates</h3>
+                <p class="text-xs text-gray-400 font-medium">These appear in the "Live From Field" feed.</p>
+            </div>
+            <div class="divide-y divide-gray-100">
+                {% for r in reports %}
+                <div class="p-6 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center space-x-4">
+                        <img src="{{ r.image_url }}" class="w-16 h-16 rounded-xl object-cover shadow-sm">
+                        <div>
+                            <p class="font-bold text-gray-900">{{ r.title }}</p>
+                            <p class="text-[10px] text-primary-600 font-black uppercase tracking-widest">{{ r.location }}</p>
+                            <p class="text-[9px] text-gray-400 mt-1 uppercase">{{ r.created_at.strftime('%d %b, %H:%M') }}</p>
+                        </div>
+                    </div>
+                    <form method="post" action="{{ url_for('admin.delete_report', id=r.id) }}" onsubmit="return confirm('Delete this report?');">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button class="text-red-600 hover:text-red-700 p-2 rounded-lg hover:bg-red-50">
+                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

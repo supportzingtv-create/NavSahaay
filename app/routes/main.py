@@ -58,6 +58,28 @@ def home():
         })
         social = Setting.get("social_links", general)
 
+        # Fetch Ground Reports (Live Feed)
+        from app.models import Report
+        ground_reports = Report.get_all(active_only=True)[:10]
+
+        # Calculate Kindness Leaderboard (Monthly)
+        from datetime import datetime
+        now = datetime.now()
+        start_of_month = datetime(now.year, now.month, 1)
+
+        all_donations = Donation.get_all()
+        monthly_donors = {}
+        for d in all_donations:
+            if d.status == "VERIFIED" and d.created_at >= start_of_month:
+                name = d.donor_name if not d.anonymous else "Anonymous Hero"
+                monthly_donors[name] = monthly_donors.get(name, 0) + d.amount
+
+        leaderboard = sorted(monthly_donors.items(), key=lambda x: x[1], reverse=True)[:5]
+
+        # Fetch Impact Pins
+        from app.models import ImpactPin
+        impact_pins = ImpactPin.get_all(active_only=True)
+
         programmes = Setting.get("programmes", [
             {"title": "Education", "description": "Quality education and nutrition for underprivileged children.", "icon_color": "#2563eb", "bg_color": "#eff6ff", "svg": '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>'},
             {"title": "Healthcare", "description": "Mobile clinics and healthcare services for remote communities.", "icon_color": "#dc2626", "bg_color": "#fef2f2", "svg": '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>'},
@@ -81,7 +103,10 @@ def home():
         partners=partners,
         faqs=faqs,
         seo=seo,
-        social=social)
+        social=social,
+        ground_reports=ground_reports,
+        leaderboard=leaderboard,
+        impact_pins=impact_pins)
 
 @main_bp.route("/donate", methods=["POST"])
 def donate():
@@ -98,11 +123,30 @@ def donate():
         phone=request.form["phone"], address=request.form["address"],
         pan=request.form.get("pan"), amount=amount,
         frequency=request.form["frequency"], cause=request.form["cause"],
+        honor_name=request.form.get("honor_name"),
+        honor_type=request.form.get("honor_type"),
+        wish=request.form.get("wish"),
+        sponsored_date=request.form.get("sponsored_date"),
+        recipient_name=request.form.get("recipient_name"),
+        recipient_email=request.form.get("recipient_email"),
         anonymous=bool(request.form.get("anonymous")), status="PENDING"
     )
     donation.save()
-    flash(f"Donation request created: {donation.donation_id}.", "success")
-    return redirect(url_for("main.home") + "#donate")
+    return redirect(url_for("main.donation_success", id=donation.id))
+
+@main_bp.route("/donation-success/<id>")
+def donation_success(id):
+    donation = Donation.get_by_id(id)
+    if not donation:
+        return redirect(url_for("main.home"))
+    return render_template("donation_success.html", donation=donation)
+
+@main_bp.route("/certificate/<id>")
+def view_certificate(id):
+    donation = Donation.get_by_id(id)
+    if not donation or not donation.recipient_name:
+        return redirect(url_for("main.home"))
+    return render_template("certificate.html", donation=donation)
 
 @main_bp.route("/volunteer", methods=["POST"])
 def volunteer():

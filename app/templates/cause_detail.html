@@ -29,6 +29,25 @@
                 {{ cause.content | safe }}
             </div>
 
+            {% if cause.target_amount and cause.target_amount > 0 %}
+            <div class="p-10 bg-gray-50 rounded-[2.5rem] border border-gray-100">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                    <div>
+                        <p class="text-[10px] font-black text-primary-600 uppercase tracking-[0.2em] mb-1">Fundraising Progress</p>
+                        <h3 class="text-3xl font-black text-gray-900">₹{{ cause.raised_amount|int }} <span class="text-lg text-gray-400 font-bold">of ₹{{ cause.target_amount|int }} goal</span></h3>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-4xl font-black text-primary-600">{{ (cause.raised_amount / cause.target_amount * 100)|round|int if cause.raised_amount < cause.target_amount else 100 }}%</span>
+                    </div>
+                </div>
+                <div class="w-full h-4 bg-gray-200 rounded-full overflow-hidden shadow-inner">
+                    <div class="h-full bg-primary-600 rounded-full transition-all duration-1000 shadow-lg"
+                         style="width: {{ (cause.raised_amount / cause.target_amount * 100)|round|int if cause.raised_amount < cause.target_amount else 100 }}%"></div>
+                </div>
+                <p class="text-xs text-gray-500 mt-6 font-medium italic">* This progress bar includes both online and offline verified donations.</p>
+            </div>
+            {% endif %}
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="bg-gray-50 p-8 rounded-[2rem] border border-gray-100">
                     <p class="text-[10px] font-black text-primary-600 uppercase tracking-widest mb-2">Target Impact</p>
@@ -50,6 +69,13 @@
 
                 <h3 class="text-2xl font-serif font-black text-gray-900 mb-8">Contribute Now</h3>
 
+                {% if matching.active %}
+                <div class="mb-8 p-4 bg-primary-600 rounded-2xl text-white shadow-lg">
+                    <p class="text-[9px] font-black uppercase tracking-widest opacity-80 mb-1">Your Impact is Doubled</p>
+                    <p class="text-xs font-bold leading-tight">{{ matching.text }}</p>
+                </div>
+                {% endif %}
+
                 <form method="post" action="{{ url_for('main.donate') }}" class="space-y-6">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="cause" value="{{ cause.title }}">
@@ -57,7 +83,32 @@
 
                     <div>
                         <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Donation Amount (₹)</label>
-                        <input name="amount" type="number" value="{{ cause.amount }}" min="100" required class="w-full px-6 py-4 bg-gray-50 border-0 rounded-2xl text-lg font-black text-gray-900 focus:ring-2 focus:ring-primary-600 shadow-inner">
+                        <input id="detailAmount" name="amount" type="number" value="{{ cause.amount|int }}" min="100" required oninput="updateDetailImpact()" class="w-full px-6 py-4 bg-gray-50 border-0 rounded-2xl text-lg font-black text-gray-900 focus:ring-2 focus:ring-primary-600 shadow-inner">
+                    </div>
+
+                    <div id="detailImpactBox" class="{{ 'hidden' if not cause.impact_unit_name else '' }} p-4 bg-primary-50 rounded-2xl border border-primary-100 flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-primary-600 shadow-sm">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        </div>
+                        <p class="text-[10px] font-bold text-gray-700 leading-tight">Provides <span id="detailImpactQty" class="text-primary-600 font-black">1</span> <span id="detailImpactUnit">{{ cause.impact_unit_name }}</span></p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">In Memory/Honor of (Optional)</label>
+                        <div class="grid grid-cols-1 gap-3">
+                            <select name="honor_type" class="w-full px-6 py-4 bg-gray-50 border-0 rounded-2xl text-xs font-bold focus:ring-2 focus:ring-primary-600">
+                                <option value="">Select Type...</option>
+                                <option value="MEMORY">In Memory of</option>
+                                <option value="HONOR">In Honor of</option>
+                                <option value="BIRTHDAY">On Birthday of</option>
+                            </select>
+                            <input name="honor_name" placeholder="Name of Person" class="w-full px-6 py-4 bg-gray-50 border-0 rounded-2xl text-xs font-bold focus:ring-2 focus:ring-primary-600 shadow-inner">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1 mb-2">Leave a Wish / Prayer</label>
+                        <textarea name="wish" rows="2" placeholder="Your wish for the world..." class="w-full px-6 py-4 bg-gray-50 border-0 rounded-2xl text-xs font-bold focus:ring-2 focus:ring-primary-600"></textarea>
                     </div>
 
                     <div class="space-y-4">
@@ -78,4 +129,25 @@
         </div>
     </div>
 </section>
+
+<script>
+function updateDetailImpact() {
+    const amount = document.getElementById('detailAmount').value;
+    const cost = {{ cause.impact_unit_cost or 0 }};
+    const unit = "{{ cause.impact_unit_name or '' }}";
+    const box = document.getElementById('detailImpactBox');
+
+    if (amount && cost > 0 && unit) {
+        const qty = Math.floor(amount / cost);
+        if (qty > 0) {
+            box.classList.remove('hidden');
+            document.getElementById('detailImpactQty').innerText = qty;
+            document.getElementById('detailImpactUnit').innerText = unit + (qty > 1 ? 's' : '');
+            return;
+        }
+    }
+    if(box) box.classList.add('hidden');
+}
+window.onload = updateDetailImpact;
+</script>
 {% endblock %}

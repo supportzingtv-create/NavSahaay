@@ -13,6 +13,9 @@
         <button onclick="showTab('testimonials')" id="tab-btn-testimonials" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">Testimonials</button>
         <button onclick="showTab('partners')" id="tab-btn-partners" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">Partners</button>
         <button onclick="showTab('faqs')" id="tab-btn-faqs" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">FAQ</button>
+        <button onclick="showTab('urgent')" id="tab-btn-urgent" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">Urgent Alert</button>
+        <button onclick="showTab('transparency')" id="tab-btn-transparency" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">Transparency</button>
+        <button onclick="showTab('matching')" id="tab-btn-matching" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">2X Matching</button>
         <button onclick="showTab('seo')" id="tab-btn-seo" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">SEO & Social</button>
         <button onclick="showTab('general')" id="tab-btn-general" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">Info</button>
     </div>
@@ -310,7 +313,108 @@
         </div>
     </div>
 
-    <!-- SEO Tab -->
+    <!-- Urgent Appeal Tab -->
+    <div id="tab-urgent" class="tab-content hidden">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
+            <h3 class="text-xl font-bold mb-6">Urgent Appeal Banner</h3>
+            <form method="post" action="{{ url_for('admin.settings') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="action" value="update_urgent_appeal">
+
+                <div class="space-y-6">
+                    <div class="flex items-center space-x-4 mb-6">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="checkbox" name="urgent_active" value="y" {% if urgent.active %}checked{% endif %} class="w-5 h-5 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500">
+                            <span class="ml-2 text-xs font-bold text-gray-700 uppercase tracking-widest">Show Urgent Banner on Website</span>
+                        </label>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Banner Text</label>
+                            <input name="urgent_text" value="{{ urgent.text }}" placeholder="e.g. Help families affected by Delhi floods" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-red-600 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Button Text</label>
+                            <input name="urgent_btn_text" value="{{ urgent.btn_text }}" placeholder="Donate Now" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-red-600 outline-none">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Redirect Link (URL or #id)</label>
+                        <input name="urgent_link" value="{{ urgent.link }}" placeholder="e.g. /cause/flood-relief" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-red-600 outline-none">
+                    </div>
+                </div>
+
+                <div class="mt-8 text-right">
+                    <button type="submit" class="bg-red-600 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-red-700 shadow-xl transition-all">Save Appeal Settings</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Transparency Tab -->
+    <div id="tab-transparency" class="tab-content hidden">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
+            <h3 class="text-xl font-bold mb-6">Transparency Dashboard Ratios (%)</h3>
+            <form method="post" action="{{ url_for('admin.settings') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="action" value="update_transparency">
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Programmes (%)</label>
+                        <input name="ratio_programmes" value="{{ transparency.programmes }}" placeholder="92" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Admin/Operations (%)</label>
+                        <input name="ratio_admin" value="{{ transparency.admin }}" placeholder="5" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Fundraising (%)</label>
+                        <input name="ratio_fundraising" value="{{ transparency.fundraising }}" placeholder="3" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                    </div>
+                </div>
+
+                <div class="mt-8 text-right">
+                    <button type="submit" class="bg-primary-600 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-primary-700 shadow-xl transition-all">Update Ratios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="tab-matching" class="tab-content hidden">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
+            <h3 class="text-xl font-bold mb-6">Donation Matching (Multiplier)</h3>
+            <form method="post" action="{{ url_for('admin.settings') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="action" value="update_matching">
+
+                <div class="space-y-6">
+                    <div class="flex items-center space-x-4 mb-6">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="checkbox" name="matching_active" value="y" {% if matching.active %}checked{% endif %} class="w-5 h-5 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500">
+                            <span class="ml-2 text-xs font-bold text-gray-700 uppercase tracking-widest">Enable 2X/3X Matching Badge</span>
+                        </label>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Multiplier (e.g. 2, 3)</label>
+                            <input name="matching_multiplier" value="{{ matching.multiplier or '2' }}" placeholder="2" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Display Text</label>
+                            <input name="matching_text" value="{{ matching.text }}" placeholder="A generous donor is matching every rupee!" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 text-right">
+                    <button type="submit" class="bg-primary-600 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-primary-700 shadow-xl transition-all">Save Matching Settings</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div id="tab-seo" class="tab-content hidden">
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
             <h3 class="text-xl font-bold mb-6">SEO & Social Settings</h3>

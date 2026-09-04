@@ -74,13 +74,36 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 <body class="font-sans text-gray-900 antialiased bg-white">
+    <!-- Urgent Appeal Banner -->
+    {% if urgent_appeal.active %}
+    <div class="bg-red-600 text-white py-3 px-4 relative z-[60] shadow-2xl">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
+            <div class="flex items-center space-x-2">
+                <span class="flex h-2 w-2 relative">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                </span>
+                <p class="text-xs sm:text-sm font-black uppercase tracking-widest italic">{{ urgent_appeal.text }}</p>
+            </div>
+            <a href="{{ urgent_appeal.link }}" class="px-6 py-1.5 bg-white text-red-600 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-gray-100 transition-all transform hover:scale-105 active:scale-95 shadow-lg">
+                {{ urgent_appeal.btn_text or 'Donate Now' }}
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
     <!-- Top Ticker -->
     <div class="ticker-wrap hidden sm:block">
         <div class="ticker text-[10px] sm:text-xs font-bold uppercase tracking-widest">
-            <span>Someone just donated ₹500 for Child Education</span> &nbsp; | &nbsp;
-            <span>Ramesh K. donated ₹2000 for Food Support</span> &nbsp; | &nbsp;
-            <span>Anita S. donated ₹150 for Plant a Tree</span> &nbsp; | &nbsp;
-            <span>NavSahaay provides 100% Transparency with Photo/Video Proof</span>
+            {% if recent_ticker %}
+                {% for d in recent_ticker %}
+                    <span>{{ d.donor_name if not d.anonymous else 'Anonymous' }} donated ₹{{ d.amount|int }} for {{ d.cause }}</span> &nbsp; | &nbsp;
+                {% endfor %}
+            {% else %}
+                <span>Someone just donated ₹500 for Child Education</span> &nbsp; | &nbsp;
+                <span>NavSahaay provides 100% Transparency with Photo/Video Proof</span> &nbsp; | &nbsp;
+                <span>Join 1,200+ volunteers making a difference</span>
+            {% endif %}
         </div>
     </div>
 

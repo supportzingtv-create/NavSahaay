@@ -161,6 +161,34 @@ def settings():
             Setting.set("social_links", social)
             flash("SEO and Social settings updated.", "success")
 
+        elif action == "update_urgent_appeal":
+            appeal = {
+                "active": bool(request.form.get("urgent_active")),
+                "text": request.form.get("urgent_text"),
+                "link": request.form.get("urgent_link"),
+                "btn_text": request.form.get("urgent_btn_text")
+            }
+            Setting.set("urgent_appeal", appeal)
+            flash("Urgent Appeal updated.", "success")
+
+        elif action == "update_matching":
+            matching = {
+                "active": bool(request.form.get("matching_active")),
+                "multiplier": request.form.get("matching_multiplier", "2"),
+                "text": request.form.get("matching_text")
+            }
+            Setting.set("donation_matching", matching)
+            flash("Donation Matching updated.", "success")
+
+        elif action == "update_transparency":
+            ratios = {
+                "programmes": request.form.get("ratio_programmes", "92"),
+                "admin": request.form.get("ratio_admin", "5"),
+                "fundraising": request.form.get("ratio_fundraising", "3")
+            }
+            Setting.set("transparency_ratios", ratios)
+            flash("Transparency ratios updated.", "success")
+
         return redirect(url_for("admin.settings"))
 
     return render_template("admin/settings.html",
@@ -173,7 +201,10 @@ def settings():
         partners=Setting.get("partners", []),
         faqs=Setting.get("faqs", []),
         seo=Setting.get("seo_meta", {}),
-        social=Setting.get("social_links", {}))
+        social=Setting.get("social_links", {}),
+        urgent=Setting.get("urgent_appeal", {}),
+        matching=Setting.get("donation_matching", {}),
+        transparency=Setting.get("transparency_ratios", {"programmes":"92", "admin":"5", "fundraising":"3"}))
 
 @admin_bp.route("/donations/<string:id>/verify", methods=["POST"])
 @login_required
@@ -286,10 +317,14 @@ def new_cause():
             slug=request.form.get("slug"),
             tag=request.form["tag"],
             amount=float(request.form["amount"]),
+            target_amount=float(request.form.get("target_amount", 0)),
+            raised_amount=float(request.form.get("raised_amount", 0)),
             short_description=request.form["short_description"],
             description=request.form["description"],
             content=request.form["content"],
             image_url=request.form["image_url"],
+            impact_unit_name=request.form.get("impact_unit_name"),
+            impact_unit_cost=float(request.form.get("impact_unit_cost", 0)),
             active=bool(request.form.get("active"))
         )
         c.save()
@@ -312,10 +347,14 @@ def edit_cause(id):
         c.slug = request.form.get("slug")
         c.tag = request.form["tag"]
         c.amount = float(request.form["amount"])
+        c.target_amount = float(request.form.get("target_amount", 0))
+        c.raised_amount = float(request.form.get("raised_amount", 0))
         c.short_description = request.form["short_description"]
         c.description = request.form["description"]
         c.content = request.form["content"]
         c.image_url = request.form["image_url"]
+        c.impact_unit_name = request.form.get("impact_unit_name")
+        c.impact_unit_cost = float(request.form.get("impact_unit_cost", 0))
         c.active = bool(request.form.get("active"))
         c.save()
         flash("Cause updated successfully.", "success")
@@ -333,4 +372,60 @@ def delete_cause(id):
         c.delete()
         flash("Cause deleted.", "success")
     return redirect(url_for("admin.causes"))
+
+@admin_bp.route("/impact-map", methods=["GET", "POST"])
+@login_required
+@roles_required("SUPER_ADMIN", "EDITOR")
+def impact_map():
+    from app.models import ImpactPin
+    if request.method == "POST":
+        p = ImpactPin(
+            title=request.form["title"],
+            description=request.form["description"],
+            lat=request.form["lat"],
+            lng=request.form["lng"],
+            image_url=request.form["image_url"],
+            active=bool(request.form.get("active"))
+        )
+        p.save()
+        flash("Map pin added.", "success")
+        return redirect(url_for("admin.impact_map"))
+    return render_template("admin/impact_map.html", pins=ImpactPin.get_all())
+
+@admin_bp.route("/impact-map/<string:id>/delete", methods=["POST"])
+@login_required
+@roles_required("SUPER_ADMIN")
+def delete_pin(id):
+    from app.models import ImpactPin
+    p = ImpactPin.get_by_id(id)
+    if p: p.delete()
+    flash("Pin removed.", "success")
+    return redirect(url_for("admin.impact_map"))
+
+@admin_bp.route("/reports", methods=["GET", "POST"])
+@login_required
+@roles_required("SUPER_ADMIN", "EDITOR")
+def reports():
+    from app.models import Report
+    if request.method == "POST":
+        r = Report(
+            title=request.form["title"],
+            location=request.form["location"],
+            image_url=request.form["image_url"],
+            active=bool(request.form.get("active"))
+        )
+        r.save()
+        flash("Ground report posted.", "success")
+        return redirect(url_for("admin.reports"))
+    return render_template("admin/reports.html", reports=Report.get_all())
+
+@admin_bp.route("/reports/<string:id>/delete", methods=["POST"])
+@login_required
+@roles_required("SUPER_ADMIN")
+def delete_report(id):
+    from app.models import Report
+    r = Report.get_by_id(id)
+    if r: r.delete()
+    flash("Report deleted.", "success")
+    return redirect(url_for("admin.reports"))
 

@@ -36,20 +36,39 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="space-y-2">
                 <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">Tag / Category</label>
                 <input name="tag" value="{{ cause.tag if cause else '' }}" required placeholder="e.g. HOT MEALS" class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 transition-all shadow-inner">
             </div>
             <div class="space-y-2">
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">Donation Amount (₹)</label>
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">Unit Amount (₹)</label>
                 <input name="amount" type="number" step="1" value="{{ cause.amount if cause else '0' }}" required class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 transition-all shadow-inner">
+            </div>
+            <div class="space-y-2">
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">Target Amount (₹)</label>
+                <input name="target_amount" type="number" step="1" value="{{ cause.target_amount if cause else '0' }}" class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 transition-all shadow-inner">
+            </div>
+            <div class="space-y-2">
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">Already Raised (₹)</label>
+                <input name="raised_amount" type="number" step="1" value="{{ cause.raised_amount if cause else '0' }}" class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 transition-all shadow-inner">
             </div>
             <div class="flex items-center space-x-4 h-full pt-6">
                 <label class="flex items-center cursor-pointer">
                     <input type="checkbox" name="active" value="y" {% if not cause or cause.active %}checked{% endif %} class="w-5 h-5 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500">
                     <span class="ml-2 text-xs font-bold text-gray-700 uppercase tracking-widest">Active</span>
                 </label>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="space-y-2">
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">Impact Unit Name (for Calculator)</label>
+                <input name="impact_unit_name" value="{{ cause.impact_unit_name if cause else '' }}" placeholder="e.g. Nutritious Meal" class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 transition-all shadow-inner">
+            </div>
+            <div class="space-y-2">
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">Impact Unit Cost (₹)</label>
+                <input name="impact_unit_cost" type="number" step="1" value="{{ cause.impact_unit_cost if cause else '0' }}" class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 transition-all shadow-inner">
             </div>
         </div>
 

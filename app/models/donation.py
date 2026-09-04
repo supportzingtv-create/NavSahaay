@@ -1,9 +1,11 @@
 from datetime import datetime
 
 class Donation:
-    def __init__(self, id=None, donation_id=None, receipt_number=None, donor_name=None,
-                 email=None, phone=None, address=None, pan=None, amount=0,
                  frequency="ONE_TIME", cause=None, anonymous=False,
+                 honor_name=None, honor_type=None,
+                 wish=None,
+                 sponsored_date=None,
+                 recipient_name=None, recipient_email=None,
                  payment_method="MANUAL", status="PENDING", created_at=None):
         self.id = id
         self.donation_id = donation_id
@@ -17,6 +19,12 @@ class Donation:
         self.frequency = frequency
         self.cause = cause
         self.anonymous = anonymous
+        self.honor_name = honor_name
+        self.honor_type = honor_type
+        self.wish = wish
+        self.sponsored_date = sponsored_date
+        self.recipient_name = recipient_name
+        self.recipient_email = recipient_email
         self.payment_method = payment_method
         self.status = status
         self.created_at = created_at or datetime.now()
@@ -34,6 +42,12 @@ class Donation:
             "frequency": self.frequency,
             "cause": self.cause,
             "anonymous": self.anonymous,
+            "honor_name": self.honor_name,
+            "honor_type": self.honor_type,
+            "wish": self.wish,
+            "sponsored_date": self.sponsored_date,
+            "recipient_name": self.recipient_name,
+            "recipient_email": self.recipient_email,
             "payment_method": self.payment_method,
             "status": self.status,
             "created_at": self.created_at
@@ -67,6 +81,27 @@ class Donation:
         if db is None: return []
         docs = db.collection("donations").order_by("created_at", direction="DESCENDING").stream()
         return [Donation(id=doc.id, **doc.to_dict()) for doc in docs]
+
+    @staticmethod
+    def get_recent_verified(limit=5):
+        from app.firebase import db
+        if db is None: return []
+        docs = db.collection("donations").where("status", "==", "VERIFIED").order_by("created_at", direction="DESCENDING").limit(limit).stream()
+        return [Donation(id=doc.id, **doc.to_dict()) for doc in docs]
+
+    @staticmethod
+    def get_recent_wishes(limit=15):
+        from app.firebase import db
+        if db is None: return []
+        # Filter for donations that have a wish and are verified
+        docs = db.collection("donations").where("status", "==", "VERIFIED").order_by("created_at", direction="DESCENDING").limit(limit * 2).stream()
+        wishes = []
+        for doc in docs:
+            data = doc.to_dict()
+            if data.get("wish"):
+                wishes.append(Donation(id=doc.id, **data))
+            if len(wishes) >= limit: break
+        return wishes
 
     def save(self):
         from app.firebase import db

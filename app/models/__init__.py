@@ -7,3 +7,5 @@ from .document import Document
 from .audit import AuditLog
 from .settings import Setting
 from .cause import Cause
+from .report import Report
+from .impact_pin import ImpactPin
