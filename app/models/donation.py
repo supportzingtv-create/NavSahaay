@@ -1,6 +1,8 @@
 from datetime import datetime
 
 class Donation:
+    def __init__(self, id=None, donation_id=None, receipt_number=None, donor_name=None,
+                 email=None, phone=None, address=None, pan=None, amount=0,
                  frequency="ONE_TIME", cause=None, anonymous=False,
                  honor_name=None, honor_type=None,
                  wish=None,
@@ -93,7 +95,6 @@ class Donation:
     def get_recent_wishes(limit=15):
         from app.firebase import db
         if db is None: return []
-        # Filter for donations that have a wish and are verified
         docs = db.collection("donations").where("status", "==", "VERIFIED").order_by("created_at", direction="DESCENDING").limit(limit * 2).stream()
         wishes = []
         for doc in docs:

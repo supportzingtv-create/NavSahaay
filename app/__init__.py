@@ -53,18 +53,32 @@ def create_app():
 
     @app.context_processor
     def inject_globals():
-        from app.models import Setting, Donation
-        return {
-            "site_name": "NavSahaay Foundation",
-            "urgent_appeal": Setting.get("urgent_appeal", {"active": False}),
-            "matching": Setting.get("donation_matching", {"active": False}),
-            "social": Setting.get("social_links", {}),
-            "seo": Setting.get("seo_meta", {}),
-            "recent_ticker": Donation.get_recent_verified(5),
-            "wall_of_fame": Donation.get_recent_verified(10),
-            "recent_wishes": Donation.get_recent_wishes(15),
-            "transparency": Setting.get("transparency_ratios", {"programmes":"92", "admin":"5", "fundraising":"3"})
-        }
+        try:
+            from app.models import Setting, Donation
+            return {
+                "site_name": "NavSahaay Foundation",
+                "urgent_appeal": Setting.get("urgent_appeal", {"active": False}),
+                "matching": Setting.get("donation_matching", {"active": False}),
+                "social": Setting.get("social_links", {}),
+                "seo": Setting.get("seo_meta", {}),
+                "recent_ticker": Donation.get_recent_verified(5),
+                "wall_of_fame": Donation.get_recent_verified(10),
+                "recent_wishes": Donation.get_recent_wishes(15),
+                "transparency": Setting.get("transparency_ratios", {"programmes":"92", "admin":"5", "fundraising":"3"})
+            }
+        except Exception as e:
+            app.logger.error(f"Error in inject_globals: {e}")
+            return {
+                "site_name": "NavSahaay Foundation",
+                "urgent_appeal": {"active": False},
+                "matching": {"active": False},
+                "social": {},
+                "seo": {},
+                "recent_ticker": [],
+                "wall_of_fame": [],
+                "recent_wishes": [],
+                "transparency": {"programmes":"92", "admin":"5", "fundraising":"3"}
+            }
 
     @app.before_request
     def force_admin_subdomain():
@@ -86,7 +100,7 @@ def create_app():
                     return redirect(url_for('auth.login', _external=True))
 
         # 3. Optional: If on main domain but hitting admin/auth routes, redirect to admin subdomain
-        elif request.blueprint in ['auth', 'admin']:
+        elif request.blueprint in ['auth', 'admin'] and request.endpoint:
              server_name = os.getenv("SERVER_NAME")
              if server_name and not host.startswith('admin.'):
                  return redirect(url_for(request.endpoint, _external=True, **(request.view_args or {})))
