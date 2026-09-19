@@ -31,12 +31,12 @@
                     },
                     colors: {
                         primary: {
-                            50: '#fff7ed',
-                            100: '#ffedd5',
-                            500: '#f97316',
-                            600: '#ea580c',
-                            700: '#c2410c',
-                            800: '#9a3412',
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
                         },
                         secondary: {
                             50: '#f8fafc',
@@ -51,7 +51,7 @@
 
     <style>
         :root {
-            --brand-orange: #f97316;
+            --brand-primary: #059669;
             --brand-navy: #0f172a;
             --brand-navy-deep: #020617;
             --bg-light: #ffffff;
@@ -101,21 +101,21 @@
 
         /* Modern Button Refinement */
         .btn-brand {
-            background-color: var(--brand-orange);
+            background-color: var(--brand-primary);
             color: white;
             transition: all 0.3s ease;
         }
         .btn-brand:hover {
-            background-color: #ea580c;
+            background-color: #047857;
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(249, 115, 22, 0.25);
+            box-shadow: 0 10px 25px rgba(5, 150, 105, 0.25);
         }
     </style>
 </head>
 <body class="site-theme font-sans text-slate-900 antialiased bg-white">
     <!-- Urgent Appeal Banner -->
     {% if urgent_appeal.active %}
-    <div class="bg-orange-600 text-white py-3 px-4 relative z-[60] shadow-xl">
+    <div class="bg-[#1e3a8a] text-white py-3 px-4 relative z-[60] shadow-xl">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
             <div class="flex items-center space-x-3">
                 <span class="flex h-2.5 w-2.5 relative">
@@ -124,7 +124,7 @@
                 </span>
                 <p class="text-xs sm:text-sm font-extrabold uppercase tracking-widest">{{ urgent_appeal.text }}</p>
             </div>
-            <a href="{{ urgent_appeal.link }}" class="px-6 py-2 bg-white text-orange-600 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-orange-50 transition-all shadow-lg">
+            <a href="{{ urgent_appeal.link }}" class="px-6 py-2 bg-white text-[#1e3a8a] rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-blue-50 transition-all shadow-lg">
                 {{ urgent_appeal.btn_text or 'Donate Now' }}
             </a>
         </div>
