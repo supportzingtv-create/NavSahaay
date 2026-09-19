@@ -31,17 +31,16 @@
                     },
                     colors: {
                         primary: {
-                            50: '#ecfdf5',
-                            100: '#d1fae5',
-                            500: '#10b981',
-                            600: '#059669',
-                            700: '#047857',
-                            800: '#065f46',
-                        },
-                        secondary: {
                             50: '#f8fafc',
-                            900: '#0f172a',
-                            950: '#020617',
+                            100: '#f1f5f9',
+                            500: '#334155',
+                            600: '#1e293b',
+                            700: '#0f172a',
+                            800: '#020617',
+                        },
+                        accent: {
+                            500: '#2563eb',
+                            600: '#1d4ed8',
                         }
                     }
                 }
@@ -51,7 +50,8 @@
 
     <style>
         :root {
-            --brand-primary: #059669;
+            --brand-primary: #0f172a;
+            --brand-accent: #2563eb;
             --brand-navy: #0f172a;
             --brand-navy-deep: #020617;
             --bg-light: #ffffff;
@@ -71,16 +71,6 @@
             color: white;
             padding: 10px 0;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .ticker {
-            display: inline-block;
-            white-space: nowrap;
-            padding-right: 100%;
-            animation: ticker 30s linear infinite;
-        }
-        @keyframes ticker {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-100%, 0, 0); }
         }
     </style>
 
@@ -108,12 +98,23 @@
             overflow: hidden;
         }
         .btn-brand:hover {
-            background-color: #047857;
+            background-color: #000000;
             transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 15px 30px rgba(5, 150, 105, 0.3);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
         }
         .btn-brand:active {
             transform: translateY(-1px) scale(0.98);
+        }
+
+        .btn-accent {
+            background-color: var(--brand-accent);
+            color: white;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-accent:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(37, 99, 235, 0.3);
         }
 
         /* Global Reveal Animation */
@@ -140,16 +141,16 @@
 <body class="site-theme font-sans text-slate-900 antialiased bg-white overflow-x-hidden">
     <!-- Urgent Appeal Banner -->
     {% if urgent_appeal.active %}
-    <div class="bg-[#1e3a8a] text-white py-3 px-4 relative z-[60] shadow-xl animate-fade-in-down">
+    <div class="bg-black text-white py-3 px-4 relative z-[60] shadow-xl">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
-            <div class="flex items-center space-x-2">
+            <div class="flex items-center space-x-3">
                 <span class="flex h-2.5 w-2.5 relative">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
                 </span>
                 <p class="text-xs sm:text-sm font-extrabold uppercase tracking-widest">{{ urgent_appeal.text }}</p>
             </div>
-            <a href="{{ urgent_appeal.link }}" class="px-6 py-2 bg-white text-[#1e3a8a] rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-blue-50 transition-all shadow-lg hover:scale-105 active:scale-95">
+            <a href="{{ urgent_appeal.link }}" class="px-6 py-2 bg-white text-black rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-slate-100 transition-all shadow-lg hover:scale-105 active:scale-95">
                 {{ urgent_appeal.btn_text or 'Donate Now' }}
             </a>
         </div>
@@ -163,7 +164,7 @@
                 <div class="flex justify-start lg:w-0 lg:flex-1 h-full">
                     <a href="{{ url_for('main.home') }}" class="flex items-center space-x-4 group h-full py-2">
                         <div class="flex-shrink-0">
-                            <img class="h-20 w-auto sm:h-24 object-contain" src="{{ url_for('static', filename='images/logo2.png') }}" alt="NavSahaay Logo" style="image-rendering: -webkit-optimize-contrast;">
+                            <img class="h-20 w-auto object-contain" src="{{ url_for('static', filename='images/logo2.png') }}" alt="NavSahaay Logo" style="image-rendering: -webkit-optimize-contrast;">
                         </div>
                         <div class="leading-none flex flex-col justify-center">
                             <span class="text-2xl sm:text-4xl font-black text-gray-900 tracking-tighter uppercase font-serif">NAVSAHAAY</span>
@@ -215,18 +216,6 @@
     </header>
 
     <main>
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
-                    {% for category, message in messages %}
-                        <div class="p-4 rounded-2xl flex items-center shadow-lg border {% if category == 'success' %}bg-green-50 border-green-100 text-green-800{% else %}bg-red-50 border-red-100 text-red-800{% endif %}">
-                            <span class="text-sm font-bold uppercase tracking-widest">{{ message }}</span>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
-
         {% block content %}{% endblock %}
     </main>
 
