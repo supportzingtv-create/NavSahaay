@@ -54,7 +54,16 @@ def create_app():
     @app.context_processor
     def inject_globals():
         try:
-            from app.models import Setting, Donation
+            from app.models import Setting, Donation, Cause
+
+            # Fetch all active causes and group them by category for Mega Menu
+            all_causes = Cause.get_all(active_only=True)
+            categorized_causes = {}
+            for c in all_causes:
+                if c.category not in categorized_causes:
+                    categorized_causes[c.category] = []
+                categorized_causes[c.category].append(c)
+
             return {
                 "site_name": "NavSahaay Foundation",
                 "urgent_appeal": Setting.get("urgent_appeal", {"active": False}),
@@ -64,7 +73,8 @@ def create_app():
                 "recent_ticker": Donation.get_recent_verified(5),
                 "wall_of_fame": Donation.get_recent_verified(10),
                 "recent_wishes": Donation.get_recent_wishes(15),
-                "transparency": Setting.get("transparency_ratios", {"programmes":"92", "admin":"5", "fundraising":"3"})
+                "transparency": Setting.get("transparency_ratios", {"programmes":"92", "admin":"5", "fundraising":"3"}),
+                "mega_menu_causes": categorized_causes
             }
         except Exception as e:
             app.logger.error(f"Error in inject_globals: {e}")

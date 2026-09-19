@@ -38,7 +38,17 @@
 
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="space-y-2">
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">Tag / Category</label>
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">Category (Mega Menu)</label>
+                <select name="category" class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 transition-all shadow-inner outline-none">
+                    <option value="Food" {% if cause and cause.category == 'Food' %}selected{% endif %}>Food</option>
+                    <option value="Child" {% if cause and cause.category == 'Child' %}selected{% endif %}>Child</option>
+                    <option value="Education" {% if cause and cause.category == 'Education' %}selected{% endif %}>Education</option>
+                    <option value="Special Events" {% if cause and cause.category == 'Special Events' %}selected{% endif %}>Special Events</option>
+                    <option value="Others" {% if cause and cause.category == 'Others' %}selected{% endif %}>Others</option>
+                </select>
+            </div>
+            <div class="space-y-2">
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">Tag / Category (Badge)</label>
                 <input name="tag" value="{{ cause.tag if cause else '' }}" required placeholder="e.g. HOT MEALS" class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 transition-all shadow-inner">
             </div>
             <div class="space-y-2">

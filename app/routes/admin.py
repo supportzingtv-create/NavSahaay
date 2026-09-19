@@ -206,6 +206,21 @@ def settings():
         matching=Setting.get("donation_matching", {}),
         transparency=Setting.get("transparency_ratios", {"programmes":"92", "admin":"5", "fundraising":"3"}))
 
+@admin_bp.route("/upload-media", methods=["POST"])
+@login_required
+def upload_media():
+    f = request.files.get("file")
+    if not f: return jsonify({"error": "No file"}), 400
+
+    # Secure filename and save to local uploads first
+    # In a real Cloudflare setup, you'd stream this to R2 here.
+    filename = secure_filename(f.filename)
+    upload_path = os.path.join(os.getcwd(), "app", "static", "uploads")
+    os.makedirs(upload_path, exist_ok=True)
+    f.save(os.path.join(upload_path, filename))
+
+    return jsonify({"url": url_for('static', filename='uploads/' + filename)})
+
 @admin_bp.route("/donations/<string:id>/verify", methods=["POST"])
 @login_required
 @roles_required("SUPER_ADMIN","FINANCE")
@@ -316,6 +331,7 @@ def new_cause():
             title=request.form["title"],
             slug=request.form.get("slug"),
             tag=request.form["tag"],
+            category=request.form["category"],
             amount=float(request.form["amount"]),
             target_amount=float(request.form.get("target_amount", 0)),
             raised_amount=float(request.form.get("raised_amount", 0)),
@@ -346,6 +362,7 @@ def edit_cause(id):
         c.title = request.form["title"]
         c.slug = request.form.get("slug")
         c.tag = request.form["tag"]
+        c.category = request.form["category"]
         c.amount = float(request.form["amount"])
         c.target_amount = float(request.form.get("target_amount", 0))
         c.raised_amount = float(request.form.get("raised_amount", 0))

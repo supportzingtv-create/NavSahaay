@@ -4,7 +4,7 @@ import re
 class Cause:
     def __init__(self, id=None, slug=None, title=None, description=None, short_description=None,
                  amount=0, target_amount=0, raised_amount=0, image_url=None, tag=None,
-                 impact_unit_name=None, impact_unit_cost=0,
+                 category="Others", impact_unit_name=None, impact_unit_cost=0,
                  content=None, active=True, created_at=None):
         self.id = id
         self.slug = slug or self.generate_slug(title)
@@ -16,6 +16,7 @@ class Cause:
         self.raised_amount = raised_amount
         self.image_url = image_url
         self.tag = tag
+        self.category = category
         self.impact_unit_name = impact_unit_name
         self.impact_unit_cost = impact_unit_cost
         self.content = content
@@ -38,6 +39,7 @@ class Cause:
             "raised_amount": self.raised_amount,
             "image_url": self.image_url,
             "tag": self.tag,
+            "category": self.category,
             "impact_unit_name": self.impact_unit_name,
             "impact_unit_cost": self.impact_unit_cost,
             "content": self.content,
