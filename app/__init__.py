@@ -97,7 +97,7 @@ def create_app():
             return
 
         host = request.host.split(':')[0]
-        is_admin_subdomain = host.startswith('admin.')
+        is_admin_subdomain = host.startswith('admin')
 
         # 2. If on admin subdomain, ensure we only see admin/auth content
         if is_admin_subdomain:
@@ -112,7 +112,7 @@ def create_app():
         # 3. Optional: If on main domain but hitting admin/auth routes, redirect to admin subdomain
         elif request.blueprint in ['auth', 'admin'] and request.endpoint:
              server_name = os.getenv("SERVER_NAME")
-             if server_name and not host.startswith('admin.'):
+             if server_name and not host.startswith('admin'):
                  return redirect(url_for(request.endpoint, _external=True, **(request.view_args or {})))
 
     # Initialize database connection
