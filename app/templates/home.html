@@ -1,237 +1,83 @@
 {% extends "base.html" %}
 
 {% block content %}
-<!-- Hero Slider Section -->
-<section class="relative bg-white overflow-hidden">
-    <div class="swiper hero-swiper h-[250px] sm:h-[400px] md:h-[500px]">
+<!-- Hero Section -->
+<section class="relative bg-slate-900 overflow-hidden min-h-[500px] flex items-center">
+    <div class="swiper hero-swiper absolute inset-0">
         <div class="swiper-wrapper">
             {% for item in slider_items %}
             <div class="swiper-slide relative">
                 {% if item.type == 'video' %}
-                <video autoplay muted loop class="absolute inset-0 w-full h-full object-cover">
+                <video autoplay muted loop class="absolute inset-0 w-full h-full object-cover opacity-60">
                     <source src="{{ item.url }}" type="video/mp4">
                 </video>
                 {% else %}
-                <img src="{{ item.url }}" alt="Foundation Work" class="absolute inset-0 w-full h-full object-cover">
+                <img src="{{ item.url }}" alt="Foundation Work" class="absolute inset-0 w-full h-full object-cover opacity-60">
                 {% endif %}
+                <div class="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-transparent to-slate-900/80"></div>
             </div>
             {% endfor %}
         </div>
-        <!-- Swiper Controls -->
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-next !text-white !after:text-lg"></div>
-        <div class="swiper-button-prev !text-white !after:text-lg"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center sm:text-left py-20">
+        <div class="max-w-3xl reveal">
+            <span class="inline-block px-4 py-2 rounded-full bg-primary-600/20 text-primary-400 text-[10px] font-black uppercase tracking-[0.4em] mb-8 border border-primary-500/20 backdrop-blur-md">Changing Lives Together</span>
+            <h1 class="text-5xl md:text-8xl font-serif font-black text-white leading-none uppercase mb-8 italic">Healing Hands,<br><span class="text-primary-500">Brighter</span> Tomorrow.</h1>
+            <p class="text-xl text-slate-300 font-medium leading-relaxed mb-12 max-w-xl">We are dedicated to providing sustainable education, healthcare, and humanitarian aid to those who need it most.</p>
+            <div class="flex flex-col sm:flex-row gap-6">
+                <a href="#donate" class="btn-brand px-10 py-5 rounded-full font-black uppercase text-xs tracking-widest shadow-2xl shadow-primary-500/20 text-center">Start Your Impact</a>
+                <a href="#programs" class="px-10 py-5 rounded-full border-2 border-white/20 text-white font-black uppercase text-xs tracking-widest hover:bg-white hover:text-slate-900 transition-all text-center backdrop-blur-sm">Our Mission</a>
+            </div>
+        </div>
     </div>
 </section>
-
-<!-- Scrolling Marquee Section (Dynamic Activity Bar) -->
-<section class="bg-primary-700 py-3 overflow-hidden border-y border-white/5 shadow-lg relative z-20">
-    <div class="flex whitespace-nowrap animate-marquee items-center space-x-12">
-        <span class="text-2xl md:text-4xl font-black text-white uppercase tracking-tighter opacity-90">NAVSAHAAY FOUNDATION</span>
-        <span class="text-2xl md:text-4xl font-black text-emerald-200 uppercase tracking-tighter opacity-40 italic">#HelpingHands</span>
-        <span class="text-2xl md:text-4xl font-black text-white uppercase tracking-tighter opacity-90">NAVSAHAAY FOUNDATION</span>
-        <span class="text-2xl md:text-4xl font-black text-emerald-200 uppercase tracking-tighter opacity-40 italic">#BrighterTomorrow</span>
-        <span class="text-2xl md:text-4xl font-black text-white uppercase tracking-tighter opacity-90">NAVSAHAAY FOUNDATION</span>
-        <span class="text-2xl md:text-4xl font-black text-emerald-200 uppercase tracking-tighter opacity-40 italic">#JoinTheMovement</span>
-    </div>
-</section>
-
-<style>
-    @keyframes marquee {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
-    }
-    .animate-marquee {
-        animation: marquee 20s linear infinite;
-        width: max-content;
-    }
-</style>
 
 <!-- Impact Counters -->
-<section class="bg-white py-16 sm:py-24 border-y border-slate-100">
+<section class="reveal bg-white py-20 border-b border-slate-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
             <div class="space-y-2">
-                <p class="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter">{{ stats.lives_impacted }}</p>
+                <p class="text-5xl font-black text-slate-900 tracking-tighter">{{ stats.lives_impacted }}</p>
                 <p class="text-[10px] font-black text-primary-600 uppercase tracking-[0.3em]">Lives Impacted</p>
             </div>
             <div class="space-y-2">
-                <p class="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter">{{ stats.volunteers_count }}</p>
+                <p class="text-5xl font-black text-slate-900 tracking-tighter">{{ stats.volunteers_count }}</p>
                 <p class="text-[10px] font-black text-primary-600 uppercase tracking-[0.3em]">Volunteers</p>
             </div>
             <div class="space-y-2">
-                <p class="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter">{{ stats.total_donations }}</p>
+                <p class="text-5xl font-black text-slate-900 tracking-tighter">{{ stats.total_donations }}</p>
                 <p class="text-[10px] font-black text-primary-600 uppercase tracking-[0.3em]">Donations</p>
             </div>
             <div class="space-y-2">
-                <p class="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter">100%</p>
+                <p class="text-5xl font-black text-slate-900 tracking-tighter">100%</p>
                 <p class="text-[10px] font-black text-primary-600 uppercase tracking-[0.3em]">Transparency</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Our Programmes -->
-<section id="programs" class="py-24 bg-gray-50/50">
+<!-- Ground Reports (Live Updates) -->
+{% if ground_reports %}
+<section class="reveal py-24 bg-slate-50 overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-24">
-            <span class="text-primary-600 font-black tracking-[0.3em] uppercase text-xs">How we help</span>
-            <h2 class="text-4xl md:text-6xl font-serif font-black text-slate-900 mt-4 leading-tight uppercase italic">Our Programmes</h2>
-            <div class="h-1 w-20 bg-primary-600 mx-auto mt-8 opacity-40"></div>
+        <div class="flex items-center space-x-3 mb-16">
+            <div class="w-3 h-3 bg-red-600 rounded-full animate-ping"></div>
+            <p class="text-xs font-black uppercase tracking-[0.3em] text-slate-900">Live From The Ground</p>
         </div>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
-            {% for prog in programmes %}
-            <div class="flex items-start space-x-6 group">
-                <div class="flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:rotate-6 shadow-lg shadow-black/5"
-                     style="background-color: {{ prog.bg_color }}; color: {{ prog.icon_color }}">
-                    <div class="w-8 h-8">
-                        {{ prog.svg | safe }}
+        <div class="flex space-x-8 overflow-x-auto pb-12 scrollbar-hide">
+            {% for r in ground_reports %}
+            <div class="flex-shrink-0 w-80 group cursor-pointer hover-lift">
+                <div class="relative h-[450px] rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white">
+                    <img src="{{ r.image_url }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-10 left-8 right-8 text-white">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-primary-400 mb-3">{{ r.location }}</p>
+                        <h3 class="text-xl font-bold leading-tight">{{ r.title }}</h3>
+                        <p class="text-[8px] text-slate-400 mt-6 uppercase font-bold tracking-widest">{{ r.created_at.strftime('%d %b, %H:%M') }}</p>
                     </div>
                 </div>
-                <div>
-                    <h3 class="text-xl font-black uppercase mb-3 tracking-tight text-slate-800">{{ prog.title }}</h3>
-                    <p class="text-slate-500 font-medium leading-relaxed text-sm">{{ prog.description }}</p>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-<!-- Donation Packages (The "Thaagam" Style) -->
-<section id="causes" class="py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-20">
-        <span class="text-primary-600 font-black tracking-[0.3em] uppercase text-xs">Direct Impact</span>
-        <h2 class="text-4xl md:text-5xl font-serif font-black text-gray-900 mt-4 leading-tight">Small Amounts, Huge Impact.</h2>
-        <p class="mt-6 text-gray-500 max-w-2xl mx-auto font-medium text-lg">Choose a specific package to see exactly where your money goes. 100% transparency with photo/video proof.</p>
-    </div>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {% for pkg in packages %}
-        <div class="bg-white rounded-[2rem] border border-gray-100 shadow-xl overflow-hidden hover:shadow-2xl transition-all group">
-            <div class="relative h-48">
-                <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="{{ pkg.image_url }}" alt="{{ pkg.title }}">
-                <div class="absolute top-4 left-4 bg-primary-600 text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">{{ pkg.tag }}</div>
-            </div>
-            <div class="p-8">
-                <h3 class="text-xl font-bold text-gray-900 mb-2">{{ pkg.title }}</h3>
-                <p class="text-sm text-gray-500 mb-4 leading-relaxed line-clamp-2">{{ pkg.short_description }}</p>
-
-                {% if pkg.target_amount and pkg.target_amount > 0 %}
-                <div class="mb-6">
-                    <div class="flex justify-between text-[10px] font-black uppercase tracking-widest mb-2">
-                        <span class="text-primary-600">₹{{ pkg.raised_amount|int }} Raised</span>
-                        <span class="text-gray-400">Target: ₹{{ pkg.target_amount|int }}</span>
-                    </div>
-                    <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                        <div class="h-full bg-primary-600 rounded-full transition-all duration-1000"
-                             style="width: {{ (pkg.raised_amount / pkg.target_amount * 100)|round|int if pkg.raised_amount < pkg.target_amount else 100 }}%"></div>
-                    </div>
-                </div>
-                {% endif %}
-
-                <div class="flex items-center justify-between mb-8">
-                    <div class="flex flex-col items-start">
-                        <span class="text-2xl font-black text-primary-600">₹{{ pkg.amount }}</span>
-                        {% if pkg.slug %}
-                        <a href="{{ url_for('main.cause_detail', slug=pkg.slug) }}" class="text-[9px] font-bold text-blue-600 uppercase tracking-widest hover:underline mt-1">View Details &rarr;</a>
-                        {% endif %}
-                    </div>
-                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Impact</span>
-                </div>
-                <button onclick="quickDonate('{{ pkg.title }}', {{ pkg.amount }})" class="w-full py-4 rounded-xl bg-slate-900 text-white font-black text-xs uppercase tracking-widest hover:bg-primary-600 transition-all shadow-lg active:scale-95">Donate Now</button>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-</section>
-
-<!-- Birthday Coming Up Section (Modern & Festive) -->
-<section class="py-24 bg-[#fffaf0] relative overflow-hidden">
-    <!-- Decorative elements -->
-    <div class="absolute top-0 right-0 w-64 h-64 bg-primary-100 rounded-full blur-3xl opacity-50 -mr-32 -mt-32"></div>
-    <div class="absolute bottom-0 left-0 w-64 h-64 bg-purple-100 rounded-full blur-3xl opacity-50 -ml-32 -mb-32"></div>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-        <div class="mb-16">
-            <span class="inline-block px-4 py-2 rounded-full bg-primary-100 text-primary-600 text-[10px] font-black uppercase tracking-[0.3em] mb-6 shadow-sm">Celebrate Joy</span>
-            <h2 class="text-5xl md:text-7xl font-serif font-black text-gray-900 leading-tight">Birthday Coming Up?</h2>
-            <p class="mt-6 text-lg md:text-xl text-gray-600 max-w-2xl mx-auto font-medium">
-                Celebrate your special day with the poor and homeless kids. Share your joy and create memories that last forever!
-            </p>
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-            <!-- Proof 1 -->
-            <div class="group bg-white p-6 rounded-[2.5rem] shadow-xl hover:shadow-2xl transition-all duration-500 border border-gray-50 hover:-translate-y-2">
-                <div class="aspect-square rounded-3xl overflow-hidden mb-6 bg-gray-100 relative">
-                    <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=300&q=80" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Photo Proof">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-                </div>
-                <h3 class="text-xs font-black uppercase tracking-widest text-gray-900">Photo Proof</h3>
-                <p class="text-[9px] font-bold text-gray-400 mt-2 uppercase tracking-tighter">Of Your Donation</p>
-            </div>
-            <!-- Proof 2 -->
-            <div class="group bg-white p-6 rounded-[2.5rem] shadow-xl hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:-translate-y-2">
-                <div class="aspect-square rounded-3xl overflow-hidden mb-6 bg-gray-100 relative flex items-center justify-center">
-                    <img src="https://images.unsplash.com/photo-1530103862676-fa8c9d34a689?auto=format&fit=crop&w=300&q=80" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Video">
-                    <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
-                        <div class="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                            <svg class="w-5 h-5 text-primary-600" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.841z"/></svg>
-                        </div>
-                    </div>
-                </div>
-                <h3 class="text-xs font-black uppercase tracking-widest text-gray-900">Video Wish</h3>
-                <p class="text-[9px] font-bold text-gray-400 mt-2 uppercase tracking-tighter">From the Children</p>
-            </div>
-            <!-- Proof 3 -->
-            <div class="group bg-white p-6 rounded-[2.5rem] shadow-xl hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:-translate-y-2">
-                <div class="aspect-square rounded-3xl overflow-hidden mb-6 bg-gray-100 relative">
-                    <img src="https://images.unsplash.com/photo-1558636508-e0ee482c7567?auto=format&fit=crop&w=300&q=80" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Virtual Celebration">
-                </div>
-                <h3 class="text-xs font-black uppercase tracking-widest text-gray-900">Virtual Party</h3>
-                <p class="text-[9px] font-bold text-gray-400 mt-2 uppercase tracking-tighter">Live Celebration</p>
-            </div>
-            <!-- Proof 4 -->
-            <div class="group bg-white p-6 rounded-[2.5rem] shadow-xl hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:-translate-y-2">
-                <div class="aspect-square rounded-3xl overflow-hidden mb-6 bg-gray-100 relative">
-                    <img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=300&q=80" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Food Collage">
-                </div>
-                <h3 class="text-xs font-black uppercase tracking-widest text-gray-900">Food Collage</h3>
-                <p class="text-[9px] font-bold text-gray-400 mt-2 uppercase tracking-tighter">Impact Summary</p>
-            </div>
-        </div>
-
-        <button onclick="openBirthdayModal()" class="px-12 py-6 bg-gray-900 text-white rounded-2xl font-black uppercase text-sm tracking-[0.2em] shadow-2xl hover:bg-primary-600 transition-all transform hover:scale-105 active:scale-95">
-            Donate Now to Celebrate
-        </button>
-    </div>
-</section>
-
-<!-- Donor Wall of Fame (Social Proof) -->
-{% if recent_ticker %}
-<section class="py-24 bg-gray-50 overflow-hidden">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-            <div class="max-w-2xl">
-                <span class="text-primary-600 font-black tracking-[0.3em] uppercase text-xs">Our Heroes</span>
-                <h2 class="text-4xl md:text-5xl font-serif font-black text-gray-900 mt-4 leading-tight">Wall of Fame</h2>
-                <p class="mt-4 text-gray-500 font-medium italic">Honoring the generous souls who are making a real difference in the world.</p>
-            </div>
-            <a href="#donate" class="text-sm font-bold text-primary-600 uppercase tracking-widest hover:underline decoration-2 underline-offset-8">Join the wall &rarr;</a>
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {% for d in wall_of_fame %}
-            <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100 text-center transform transition-transform hover:-translate-y-2">
-                <div class="w-16 h-16 bg-primary-50 rounded-2xl flex items-center justify-center mx-auto mb-6 text-primary-600 font-black text-2xl shadow-inner">
-                    {{ d.donor_name[0] if not d.anonymous else 'A' }}
-                </div>
-                <h3 class="text-xs font-black uppercase tracking-widest text-gray-900 mb-1 truncate">{{ d.donor_name if not d.anonymous else 'Anonymous' }}</h3>
-                <p class="text-[9px] font-bold text-primary-600 uppercase tracking-widest mb-4">Donated ₹{{ d.amount|int }}</p>
-                <div class="h-0.5 w-8 bg-gray-100 mx-auto"></div>
-                <p class="text-[8px] text-gray-400 font-bold uppercase mt-4 truncate">{{ d.cause }}</p>
             </div>
             {% endfor %}
         </div>
@@ -239,23 +85,91 @@
 </section>
 {% endif %}
 
-<!-- Digital Mannat Wall (Experiential Section) -->
-<section class="py-24 bg-[#0a1128] text-white overflow-hidden relative min-h-[600px] flex items-center">
-    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-20"></div>
+<!-- Our Programmes -->
+<section id="programs" class="reveal py-32 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-24">
+        <span class="text-primary-600 font-black tracking-[0.3em] uppercase text-[10px] block mb-4">How we help</span>
+        <h2 class="text-4xl md:text-6xl font-serif font-black text-slate-900 uppercase italic">Our Programmes</h2>
+        <div class="h-1.5 w-24 bg-primary-600 mx-auto mt-8 rounded-full opacity-30"></div>
+    </div>
 
-    <!-- Floating Glowing Wishes Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20">
+        {% for prog in programmes %}
+        <div class="flex items-start space-x-8 group">
+            <div class="flex-shrink-0 w-20 h-20 rounded-3xl flex items-center justify-center transition-all duration-500 group-hover:rotate-12 group-hover:scale-110 shadow-2xl shadow-black/5"
+                 style="background-color: {{ prog.bg_color }}; color: {{ prog.icon_color }}">
+                <div class="w-10 h-10">
+                    {{ prog.svg | safe }}
+                </div>
+            </div>
+            <div>
+                <h3 class="text-xl font-black uppercase mb-4 tracking-tight text-slate-800">{{ prog.title }}</h3>
+                <p class="text-slate-500 font-medium leading-relaxed text-sm">{{ prog.description }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Donation Causes & Conversion -->
+<section id="causes" class="reveal py-32 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-24">
+        <span class="text-primary-600 font-black tracking-[0.3em] uppercase text-[10px] block mb-4">Direct Action</span>
+        <h2 class="text-4xl md:text-6xl font-serif font-black text-slate-900 uppercase italic">Support a Cause</h2>
+        <p class="mt-8 text-xl text-slate-500 max-w-2xl mx-auto font-medium">Choose a specific mission to see exactly where your contribution creates an impact.</p>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {% for pkg in packages %}
+        <div class="bg-white rounded-[3rem] border border-slate-100 shadow-2xl overflow-hidden hover-lift group">
+            <div class="relative h-56 overflow-hidden">
+                <img class="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110" src="{{ pkg.image_url }}" alt="{{ pkg.title }}">
+                <div class="absolute top-6 left-6 bg-primary-600 text-white px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest shadow-lg">{{ pkg.tag }}</div>
+            </div>
+            <div class="p-10">
+                <h3 class="text-xl font-black text-slate-900 mb-4 leading-tight">{{ pkg.title }}</h3>
+
+                {% if pkg.target_amount and pkg.target_amount > 0 %}
+                <div class="mb-8">
+                    <div class="flex justify-between text-[9px] font-black uppercase tracking-widest mb-3">
+                        <span class="text-primary-600">₹{{ pkg.raised_amount|int }} Raised</span>
+                        <span class="text-slate-400">Goal: ₹{{ pkg.target_amount|int }}</span>
+                    </div>
+                    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden shadow-inner">
+                        <div class="h-full bg-primary-600 rounded-full transition-all duration-1000"
+                             style="width: {{ (pkg.raised_amount / pkg.target_amount * 100)|round|int if pkg.raised_amount < pkg.target_amount else 100 }}%"></div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="flex items-center justify-between mb-10">
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-black text-primary-600">₹{{ pkg.amount|int }}</span>
+                        {% if pkg.slug %}
+                        <a href="{{ url_for('main.cause_detail', slug=pkg.slug) }}" class="text-[9px] font-black text-slate-400 uppercase tracking-widest hover:text-primary-600 mt-2 transition-colors">Details &rarr;</a>
+                        {% endif %}
+                    </div>
+                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Impact Unit</span>
+                </div>
+                <button onclick="quickDonate('{{ pkg.title }}', {{ pkg.amount }})" class="btn-brand w-full py-5 rounded-2xl font-black uppercase text-xs tracking-widest shadow-xl">Donate Now</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Wall of Wishes -->
+<section class="reveal py-32 bg-slate-950 text-white overflow-hidden relative min-h-[700px] flex items-center">
+    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
     <div class="absolute inset-0 z-0">
         {% for wish in recent_wishes %}
         <div class="absolute animate-float-wish"
              style="top: {{ range(10, 80)|random }}%; left: {{ range(5, 90)|random }}%; animation-delay: {{ range(0, 10)|random }}s;">
             <div class="relative group cursor-pointer">
-                <!-- Glowing Lamp/Star -->
-                <div class="w-3 h-3 bg-primary-500 rounded-full shadow-[0_0_20px_#bd8f2f] animate-pulse"></div>
-
-                <!-- Wish Popup on Hover -->
-                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 w-48 p-4 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none z-10 scale-90 group-hover:scale-100">
-                    <p class="text-[9px] italic text-primary-200 leading-relaxed">"{{ wish.wish }}"</p>
-                    <p class="text-[8px] font-black uppercase tracking-widest mt-2 text-white">— {{ wish.donor_name if not wish.anonymous else 'A Soul' }}</p>
+                <div class="w-3 h-3 bg-primary-500 rounded-full shadow-[0_0_20px_#10b981] animate-pulse"></div>
+                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 w-56 p-6 bg-slate-900/90 backdrop-blur-2xl border border-white/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none z-10 scale-90 group-hover:scale-100 shadow-2xl">
+                    <p class="text-[10px] italic text-primary-200 leading-relaxed mb-4">"{{ wish.wish }}"</p>
+                    <p class="text-[9px] font-black uppercase tracking-widest text-white border-t border-white/10 pt-4">— {{ wish.donor_name if not wish.anonymous else 'A Hero' }}</p>
                 </div>
             </div>
         </div>
@@ -263,56 +177,216 @@
     </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-        <div class="mb-12">
-            <span class="inline-block px-4 py-2 rounded-full bg-primary-500/10 text-primary-500 text-[10px] font-black uppercase tracking-[0.4em] mb-6 border border-primary-500/20 shadow-xl">Sacred Intentions</span>
-            <h2 class="text-5xl md:text-7xl font-serif font-black leading-tight italic">Wall of Wishes</h2>
-            <p class="mt-6 text-lg text-gray-400 max-w-2xl mx-auto font-medium">
-                Every pulse represents a prayer, a wish, and a life changed. Leave your sacred intention with your donation and light up our wall.
-            </p>
+        <div class="mb-16">
+            <span class="inline-block px-4 py-2 rounded-full bg-primary-600/10 text-primary-400 text-[10px] font-black uppercase tracking-[0.4em] mb-8 border border-primary-500/20 backdrop-blur-md">Heartfelt Intentions</span>
+            <h2 class="text-5xl md:text-8xl font-serif font-black italic uppercase leading-none mb-8">Wall of Wishes</h2>
+            <p class="text-xl text-slate-400 max-w-2xl mx-auto font-medium leading-relaxed">Each pulse is a prayer lit by a hero. Donate and leave your wish to join this legacy of light.</p>
         </div>
-
-        <a href="#donate" class="inline-flex items-center px-12 py-6 bg-primary-600 text-white rounded-full font-black uppercase text-sm tracking-[0.2em] shadow-[0_0_30px_rgba(249,115,22,0.3)] hover:scale-105 transition-transform active:scale-95">
-            Light a Wish Now
-        </a>
+        <a href="#donate" class="inline-flex items-center px-12 py-6 bg-primary-600 text-white rounded-full font-black uppercase text-sm tracking-[0.2em] shadow-2xl shadow-primary-500/20 hover:scale-105 transition-transform active:scale-95">Light a Wish Now</a>
     </div>
-
-    <style>
-        @keyframes float-wish {
-            0%, 100% { transform: translateY(0) translateX(0); }
-            33% { transform: translateY(-20px) translateX(10px); }
-            66% { transform: translateY(-10px) translateX(-10px); }
-        }
-        .animate-float-wish {
-            animation: float-wish 8s ease-in-out infinite;
-        }
-    </style>
 </section>
 
-<!-- Testimonials Section (Modern & Emotional) -->
-{% if testimonials %}
-<section class="py-24 bg-white overflow-hidden">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-            <span class="text-primary-600 font-black tracking-[0.3em] uppercase text-xs">Testimonials</span>
-            <h2 class="text-4xl md:text-5xl font-serif font-black text-gray-900 mt-4 leading-tight italic">Voices of Impact</h2>
+<!-- Leaderboard & Map -->
+<section class="reveal py-32 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-24">
+        <div>
+            <div class="mb-16">
+                <span class="text-primary-600 font-black tracking-[0.3em] uppercase text-[10px] block mb-4">Transparency</span>
+                <h2 class="text-4xl md:text-5xl font-serif font-black text-slate-900 uppercase italic">Monthly Champions</h2>
+            </div>
+            <div class="space-y-4">
+                {% for name, total in leaderboard %}
+                <div class="flex items-center justify-between p-6 bg-slate-50 rounded-3xl hover:bg-slate-100 transition-all border border-transparent hover:border-slate-200 group">
+                    <div class="flex items-center space-x-6">
+                        <div class="w-12 h-12 rounded-2xl bg-white flex items-center justify-center font-black text-lg shadow-sm group-hover:scale-110 transition-transform">#{{ loop.index }}</div>
+                        <div>
+                            <p class="font-black text-slate-900 uppercase text-sm">{{ name }}</p>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Kindness Hero</p>
+                        </div>
+                    </div>
+                    <p class="text-xl font-black text-primary-600">₹{{ total|int }}</p>
+                </div>
+                {% endfor %}
+            </div>
         </div>
 
-        <div class="swiper testimonial-swiper pb-12">
+        <div>
+            <div class="mb-16">
+                <span class="text-primary-600 font-black tracking-[0.3em] uppercase text-[10px] block mb-4">Coverage</span>
+                <h2 class="text-4xl md:text-5xl font-serif font-black text-slate-900 uppercase italic">Impact Footprint</h2>
+            </div>
+            <div class="relative aspect-video bg-slate-900 rounded-[3rem] overflow-hidden shadow-2xl border-8 border-slate-50">
+                <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')]"></div>
+                <div class="absolute inset-0 flex items-center justify-center p-12">
+                    <svg viewBox="0 0 500 600" class="h-full w-auto opacity-30 fill-white">
+                        <path d="M149.7,543.1c-2.3-1.9-4.7-3.9-7-5.8c-2.4-1.9-4.8-3.8-7.2-5.7L0,453.3l7.2,5.7l7.2,5.7c2.3,1.9,4.7,3.9,7,5.8l149.7,543.1z"></path>
+                    </svg>
+                    {% for pin in impact_pins %}
+                    <div class="absolute group" style="left: {{ pin.lng }}%; top: {{ pin.lat }}%;">
+                        <div class="w-4 h-4 bg-primary-500 rounded-full animate-ping absolute opacity-75"></div>
+                        <div class="w-4 h-4 bg-primary-500 rounded-full relative shadow-2xl cursor-pointer"></div>
+                        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 w-56 p-6 bg-white rounded-3xl shadow-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none z-20 scale-90 group-hover:scale-100 text-left">
+                            <h4 class="text-slate-900 font-black text-xs uppercase mb-1">{{ pin.title }}</h4>
+                            <p class="text-slate-500 text-[10px] leading-relaxed italic line-clamp-2">{{ pin.description }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Adoption & Donation -->
+<section id="adopt" class="reveal py-32 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-24 items-start">
+        <!-- Reusing dynamic form components with better spacing -->
+        <div class="lg:sticky lg:top-32">
+            <span class="text-primary-600 font-black tracking-[0.3em] uppercase text-[10px] block mb-4">Get Involved</span>
+            <h2 class="text-5xl md:text-7xl font-serif font-black text-slate-900 leading-none uppercase italic mb-10">Make a<br><span class="text-primary-600">Difference</span></h2>
+
+            <!-- Adopt a Day Mini Block -->
+            <div class="bg-slate-900 p-10 rounded-[3rem] text-white shadow-2xl relative overflow-hidden group mb-12">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-primary-600/20 rounded-full blur-3xl -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-1000"></div>
+                <h3 class="text-2xl font-black uppercase mb-4 italic">Adopt a Day</h3>
+                <p class="text-slate-400 font-medium leading-relaxed mb-8">Sponsor all foundation activities for one full day of your choice.</p>
+                <a href="#adopt-a-day" class="inline-flex items-center space-x-3 text-primary-500 font-black uppercase text-[10px] tracking-widest hover:text-primary-400 transition-colors">
+                    <span>Reserve a Date</span>
+                    <span>&rarr;</span>
+                </a>
+            </div>
+
+            <!-- Sacrifice Widget -->
+            <div class="p-10 bg-white rounded-[3rem] border border-slate-100 shadow-xl">
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-10 text-center">Luxury Swap Calculator</p>
+                <div class="flex items-center justify-between gap-4 overflow-x-auto pb-6 scrollbar-hide">
+                    <button type="button" onclick="swapLuxury('Chai', 20, 1)" class="flex-shrink-0 flex flex-col items-center group">
+                        <div class="w-14 h-14 rounded-[1.5rem] bg-slate-50 flex items-center justify-center text-2xl shadow-inner transition-all group-hover:scale-110 group-hover:bg-primary-50">☕</div>
+                        <span class="text-[9px] font-black mt-3 uppercase text-slate-400">Chai</span>
+                    </button>
+                    <button type="button" onclick="swapLuxury('Pizza', 500, 8)" class="flex-shrink-0 flex flex-col items-center group">
+                        <div class="w-14 h-14 rounded-[1.5rem] bg-slate-50 flex items-center justify-center text-2xl shadow-inner transition-all group-hover:scale-110 group-hover:bg-primary-50">🍕</div>
+                        <span class="text-[9px] font-black mt-3 uppercase text-slate-400">Pizza</span>
+                    </button>
+                    <button type="button" onclick="swapLuxury('Dinner', 1500, 25)" class="flex-shrink-0 flex flex-col items-center group">
+                        <div class="w-14 h-14 rounded-[1.5rem] bg-slate-50 flex items-center justify-center text-2xl shadow-inner transition-all group-hover:scale-110 group-hover:bg-primary-50">🍱</div>
+                        <span class="text-[9px] font-black mt-3 uppercase text-slate-400">Dinner</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="reveal">
+            <form id="donationForm" class="bg-white p-12 rounded-[4rem] shadow-2xl border border-slate-100" method="post" action="{{url_for('main.donate')}}">
+                <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+
+                {% if matching.active %}
+                <div class="mb-10 p-6 bg-primary-600 rounded-3xl text-white shadow-xl flex items-center space-x-4 animate-fade-in">
+                    <div class="text-3xl">🚀</div>
+                    <div>
+                        <p class="text-[10px] font-black uppercase tracking-widest opacity-80 mb-1">Matching Active</p>
+                        <p class="text-sm font-black italic">{{ matching.text }}</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="space-y-10">
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 ml-1">Impact Amount (₹)</label>
+                        <input id="donationAmount" name="amount" type="number" min="100" placeholder="Enter amount..." required oninput="updateImpact()" class="w-full bg-slate-50 border-0 rounded-[2.5rem] px-8 py-6 text-3xl font-black text-slate-900 focus:ring-2 focus:ring-primary-600 shadow-inner">
+
+                        <div id="impactDisplay" class="hidden mt-6 p-6 bg-slate-900 rounded-[2rem] flex items-center space-x-5 shadow-2xl">
+                            <div class="w-12 h-12 bg-primary-600 rounded-2xl flex items-center justify-center text-2xl">✨</div>
+                            <p class="text-sm font-black text-white leading-tight">This provides <span id="impactQuantity" class="text-primary-400 text-2xl">0</span> <span id="impactUnit" class="italic">Units</span> of impact.</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 ml-1">Choose Mission</label>
+                        <select id="donationCause" name="cause" onchange="updateImpact()" class="w-full bg-slate-50 border-0 rounded-[2rem] px-8 py-5 text-sm font-black focus:ring-2 focus:ring-primary-600 shadow-inner outline-none">
+                            <option value="General Fund" data-unit="" data-cost="0">General Welfare</option>
+                            {% for pkg in packages %}
+                            <option value="{{ pkg.title }}" data-unit="{{ pkg.impact_unit_name }}" data-cost="{{ pkg.impact_unit_cost }}">{{ pkg.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <input name="donor_name" placeholder="Full Name" required class="w-full bg-slate-50 border-0 rounded-2xl px-6 py-4 text-sm font-black focus:ring-2 focus:ring-primary-600 shadow-inner">
+                        <input name="email" type="email" placeholder="Email" required class="w-full bg-slate-50 border-0 rounded-2xl px-6 py-4 text-sm font-black focus:ring-2 focus:ring-primary-600 shadow-inner">
+                    </div>
+
+                    <textarea name="wish" rows="2" placeholder="Leave a wish or prayer..." class="w-full bg-slate-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 shadow-inner"></textarea>
+
+                    <button class="btn-brand w-full py-6 rounded-[2.5rem] font-black uppercase text-sm tracking-[0.2em] shadow-2xl active:scale-95">Initiate Donation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Transparency Dashboard -->
+<section class="reveal py-32 bg-white border-t border-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-24 items-center">
+            <div>
+                <span class="text-primary-600 font-black tracking-[0.3em] uppercase text-[10px] block mb-4">Financial Accountability</span>
+                <h2 class="text-4xl md:text-6xl font-serif font-black text-slate-900 uppercase italic leading-tight">Every Rupee<br>Tracked.</h2>
+                <div class="mt-12 space-y-8">
+                    <div class="flex items-center space-x-6 group">
+                        <div class="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform shadow-inner">🌱</div>
+                        <div>
+                            <p class="text-xl font-black text-slate-900">{{ transparency.programmes }}% Ground Impact</p>
+                            <p class="text-sm text-slate-500 font-medium italic">Sent directly to beneficiaries and fieldwork.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-6 group">
+                        <div class="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform shadow-inner">📊</div>
+                        <div>
+                            <p class="text-xl font-black text-slate-900">{{ transparency.admin }}% Administration</p>
+                            <p class="text-sm text-slate-500 font-medium italic">Office, staff and statutory compliance costs.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative">
+                <div class="absolute inset-0 bg-primary-600/5 rounded-full blur-[120px]"></div>
+                <div class="bg-white p-16 rounded-[4rem] shadow-2xl border border-slate-50 relative z-10 text-center">
+                    <canvas id="transparencyChart" class="mx-auto max-w-[280px]"></canvas>
+                    <div class="mt-12">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Total Funds Distributed</p>
+                        <p class="text-4xl font-black text-primary-600 mt-2 italic">100% Honest</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+{% if testimonials %}
+<section class="reveal py-32 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-24">
+        <h2 class="text-4xl md:text-6xl font-serif font-black text-slate-900 uppercase italic">Voices of Impact</h2>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="swiper testimonial-swiper pb-16">
             <div class="swiper-wrapper">
                 {% for item in testimonials %}
                 <div class="swiper-slide px-4">
-                    <div class="bg-gray-50 p-10 rounded-[3rem] border border-gray-100 text-center relative">
-                        <div class="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white shadow-lg">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017V21H14.017ZM14.017 21C12.9124 21 12.017 20.1046 12.017 19V17C12.017 15.8954 12.9124 15 14.017 15H17.017C18.1216 15 19.017 15.8954 19.017 17V19C19.017 20.1046 18.1216 21 17.017 21H14.017Z"/></svg>
+                    <div class="bg-white p-12 rounded-[3.5rem] shadow-2xl border border-white relative text-center hover-lift transition-all">
+                        <div class="absolute -top-6 left-1/2 -translate-x-1/2 w-14 h-14 bg-primary-600 rounded-3xl flex items-center justify-center text-white shadow-xl rotate-3">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017V21H14.017ZM14.017 21C12.9124 21 12.017 20.1046 12.017 19V17C12.017 15.8954 12.9124 15 14.017 15H17.017C18.1216 15 19.017 15.8954 19.017 17V19C19.017 20.1046 18.1216 21 17.017 21H14.017Z"/></svg>
                         </div>
-                        <p class="text-lg md:text-xl text-gray-700 italic font-medium leading-relaxed mb-8">"{{ item.quote }}"</p>
-                        <div class="flex items-center justify-center space-x-4">
+                        <p class="text-xl text-slate-600 italic font-medium leading-relaxed mb-10">"{{ item.quote }}"</p>
+                        <div class="flex items-center justify-center space-x-5">
                             {% if item.img %}
-                            <img src="{{ item.img }}" class="w-14 h-14 rounded-full object-cover shadow-md border-2 border-white">
+                            <img src="{{ item.img }}" alt="{{ item.name }}" class="w-16 h-16 rounded-3xl object-cover shadow-lg border-4 border-white">
                             {% endif %}
                             <div class="text-left">
-                                <p class="font-black text-gray-900 uppercase text-xs tracking-widest">{{ item.name }}</p>
-                                <p class="text-[10px] text-primary-600 font-bold uppercase tracking-widest">{{ item.role }}</p>
+                                <p class="font-black text-slate-900 uppercase text-xs tracking-widest">{{ item.name }}</p>
+                                <p class="text-[10px] text-primary-600 font-bold uppercase mt-1 tracking-widest">{{ item.role }}</p>
                             </div>
                         </div>
                     </div>
@@ -325,837 +399,112 @@
 </section>
 {% endif %}
 
-<!-- Partners & Supporters (Grayscale Logo Grid) -->
-{% if partners %}
-<section class="py-20 bg-gray-50 border-y border-gray-100">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="text-center text-[10px] font-black text-gray-400 uppercase tracking-[0.5em] mb-12">Proudly Supported By</p>
-        <div class="flex flex-wrap items-center justify-center gap-12 md:gap-20 opacity-50 grayscale hover:grayscale-0 transition-all duration-700">
-            {% for item in partners %}
-            <img src="{{ item.logo }}" alt="{{ item.name }}" class="h-8 md:h-12 w-auto object-contain">
+<!-- FAQ -->
+{% if faqs %}
+<section class="reveal py-32 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-24">
+            <h2 class="text-4xl md:text-5xl font-serif font-black text-slate-900 uppercase italic">Common Queries</h2>
+        </div>
+        <div class="space-y-6">
+            {% for item in faqs %}
+            <div class="border border-slate-100 rounded-[2.5rem] overflow-hidden group">
+                <button class="w-full flex items-center justify-between p-10 text-left bg-slate-50 hover:bg-white transition-all group-hover:shadow-xl" onclick="toggleFaq(this)">
+                    <span class="text-lg font-black text-slate-800 uppercase tracking-tight">{{ item.question }}</span>
+                    <div class="w-10 h-10 rounded-2xl bg-white flex items-center justify-center text-primary-600 shadow-sm transition-transform duration-500">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                </button>
+                <div class="hidden p-10 pt-0 bg-white">
+                    <p class="text-lg text-slate-500 font-medium leading-relaxed">{{ item.answer }}</p>
+                </div>
+            </div>
             {% endfor %}
         </div>
     </div>
 </section>
 {% endif %}
 
-<!-- FAQ Section (Clean & Accessible) -->
-{% if faqs %}
-<section class="py-24 bg-white">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-            <h2 class="text-4xl font-serif font-black text-gray-900 leading-tight">Common Questions</h2>
-            <div class="h-1 w-20 bg-primary-600 mx-auto mt-6 opacity-30"></div>
-        </div>
+<!-- Newsletter -->
+<section class="reveal py-32 bg-primary-600 relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
+    <div class="max-w-4xl mx-auto px-4 relative z-10 text-center text-white">
+        <h2 class="text-5xl md:text-7xl font-serif font-black uppercase italic leading-none mb-10">Stay Heroic.</h2>
+        <p class="text-xl text-emerald-100 font-medium mb-16 max-w-xl mx-auto">Get monthly impact stories and exclusive updates on our missions.</p>
 
-        <div class="space-y-4">
-            {% for item in faqs %}
-            <div class="border border-gray-100 rounded-[2rem] overflow-hidden">
-                <button class="w-full flex items-center justify-between p-8 text-left bg-gray-50 hover:bg-white transition-colors group" onclick="toggleFaq(this)">
-                    <span class="text-sm md:text-base font-bold text-gray-900 tracking-tight">{{ item.question }}</span>
-                    <svg class="w-5 h-5 text-gray-400 group-hover:text-primary-600 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-                <div class="hidden p-8 pt-0 bg-white">
-                    <p class="text-sm text-gray-600 leading-relaxed font-medium">{{ item.answer }}</p>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
+        <form class="flex flex-col sm:flex-row gap-6 max-w-2xl mx-auto" onsubmit="event.preventDefault(); alert('Hero registered!'); this.reset();">
+            <input type="email" required placeholder="Enter your email address" class="flex-1 px-10 py-6 rounded-[2rem] bg-white/10 border border-white/20 text-white placeholder:text-emerald-100/50 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-xl font-black text-sm">
+            <button class="px-12 py-6 bg-white text-primary-700 rounded-[2rem] font-black uppercase text-xs tracking-widest shadow-2xl hover:scale-105 transition-transform active:scale-95">Subscribe</button>
+        </form>
     </div>
 </section>
 
 <script>
 function toggleFaq(btn) {
     const content = btn.nextElementSibling;
-    const icon = btn.querySelector('svg');
+    const icon = btn.querySelector('div');
     content.classList.toggle('hidden');
     icon.classList.toggle('rotate-180');
 }
 </script>
-{% endif %}
 
-<!-- Impact Footprint Map (Geographic Transparency) -->
-<section class="py-24 bg-gray-950 text-white overflow-hidden relative">
-    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-20"></div>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-        <div class="mb-20">
-            <span class="text-primary-500 font-black tracking-[0.4em] uppercase text-[10px] mb-4 block">Geographic Reach</span>
-            <h2 class="text-4xl md:text-6xl font-serif font-black italic">Impact Footprint</h2>
-            <div class="h-1 w-20 bg-primary-600 mx-auto mt-8 opacity-50"></div>
-        </div>
-
-        <div class="relative max-w-5xl mx-auto aspect-[4/3] md:aspect-[16/9] bg-white/5 rounded-[3rem] border border-white/10 shadow-2xl backdrop-blur-sm overflow-hidden">
-            <!-- India SVG Map Container -->
-            <div id="india-map" class="absolute inset-0 flex items-center justify-center p-12">
-                <!-- Using a simplified high-quality India SVG path -->
-                <svg viewBox="0 0 500 600" class="h-full w-auto opacity-20 fill-white">
-                    <path d="M149.7,543.1c-2.3-1.9-4.7-3.9-7-5.8c-2.4-1.9-4.8-3.8-7.2-5.7c-2.4-1.9-4.8-3.8-7.2-5.7c-2.3-1.9-4.7-3.9-7-5.8c-2.4-1.9-4.8-3.8-7.2-5.7c-2.4-1.9-4.8-3.8-7.2-5.7c-2.3-1.9-4.7-3.9-7-5.8c-2.4-1.9-4.8-3.8-7.2-5.7l-7.2-5.7c-2.3-1.9-4.7-3.9-7-5.8l-7.2-5.7l-7.2-5.7c-2.3-1.9-4.7-3.9-7-5.8l-7.2-5.7L0,453.3l7.2,5.7l7.2,5.7c2.3,1.9,4.7,3.9,7,5.8l7.2,5.7l7.2,5.7c2.3,1.9,4.7,3.9,7,5.8l7.2,5.7l7.2,5.7c2.3,1.9,4.7,3.9,7,5.8l7.2,5.7l7.2,5.7c2.3,1.9,4.7,3.9,7,5.8l7.2,5.7l7.2,5.7c2.3,1.9,4.7,3.9,7,5.8l7.2,5.7l7.2,5.7c2.3,1.9,4.7,3.9,7,5.8l7.2,5.7l7.2,5.7c2.3,1.9,4.7,3.9,7,5.8l7.2,5.7l7.2,5.7l7,5.8L149.7,543.1z"></path>
-                    <!-- Fallback if complex SVG path not ready: A stylish dot grid representing India shape -->
-                </svg>
-
-                <!-- Dynamic Pins based on Lat/Lng -->
-                <!-- Note: In a real project, we'd use Leaflet or a precise SVG. Here we simulate positioning -->
-                {% for pin in impact_pins %}
-                <div class="absolute group" style="left: {{ pin.lng }}%; top: {{ pin.lat }}%;">
-                    <div class="relative">
-                        <div class="w-4 h-4 bg-primary-600 rounded-full animate-ping absolute opacity-75"></div>
-                        <div class="w-4 h-4 bg-primary-600 rounded-full relative shadow-[0_0_15px_#bd8f2f] cursor-pointer"></div>
-
-                        <!-- Pin Tooltip -->
-                        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 w-64 p-6 bg-white rounded-3xl shadow-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none z-20 scale-90 group-hover:scale-100 text-left">
-                            {% if pin.image_url %}
-                            <img src="{{ pin.image_url }}" class="w-full h-32 rounded-2xl object-cover mb-4">
-                            {% endif %}
-                            <p class="text-gray-400 text-[8px] font-black uppercase tracking-widest mb-1">Impact at</p>
-                            <h4 class="text-gray-900 font-black text-sm uppercase mb-2">{{ pin.title }}</h4>
-                            <p class="text-gray-600 text-[10px] font-medium leading-relaxed italic line-clamp-3">{{ pin.description }}</p>
-                            <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white rotate-45"></div>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-
-            <div class="absolute bottom-10 left-10 text-left max-w-xs">
-                <p class="text-[10px] font-black uppercase tracking-[0.3em] text-primary-500 mb-2">Our Presence</p>
-                <p class="text-xs text-gray-400 font-medium">NavSahaay is expanding across India. Every pin represents a community transformed.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Transparency Dashboard (Authority Section) -->
-<section class="py-24 bg-white border-y border-gray-100 overflow-hidden">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-2 gap-20 items-center">
-            <div>
-                <span class="text-primary-600 font-black tracking-[0.3em] uppercase text-xs">Financial Ethics</span>
-                <h2 class="text-4xl md:text-6xl font-serif font-black text-gray-900 mt-6 leading-tight italic">Transparency Dashboard</h2>
-                <p class="mt-8 text-xl text-gray-600 font-medium leading-relaxed">
-                    We believe in 100% accountability. Every rupee you donate is optimized to reach the ground where it's needed most.
-                </p>
-                <div class="mt-12 space-y-8">
-                    <div class="flex items-center space-x-6">
-                        <div class="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center text-2xl shadow-inner">🌳</div>
-                        <div>
-                            <p class="text-lg font-black text-gray-900">{{ transparency.programmes }}% Ground Impact</p>
-                            <p class="text-sm text-gray-500 font-medium italic">Directly spent on our 6 core welfare programmes.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center space-x-6">
-                        <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-2xl shadow-inner">🏢</div>
-                        <div>
-                            <p class="text-lg font-black text-gray-900">{{ transparency.admin }}% Administration</p>
-                            <p class="text-sm text-gray-500 font-medium italic">Staff salaries, office maintenance and legal compliance.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="relative">
-                <div class="absolute inset-0 bg-primary-600/5 rounded-full blur-[100px]"></div>
-                <div class="bg-white p-12 rounded-[3rem] shadow-2xl border border-gray-100 relative z-10 text-center">
-                    <canvas id="transparencyChart" class="mx-auto max-w-[300px]"></canvas>
-                    <div class="mt-10">
-                        <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Total Funds Distributed</p>
-                        <p class="text-4xl font-black text-primary-600 mt-2">100% Accountability</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const ctx = document.getElementById('transparencyChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Programmes', 'Admin', 'Fundraising'],
-            datasets: [{
-                data: [{{ transparency.programmes }}, {{ transparency.admin }}, {{ transparency.fundraising }}],
-                backgroundColor: ['#bd8f2f', '#315d8d', '#94a3b8'],
-                borderWidth: 0,
-                hoverOffset: 20
-            }]
-        },
-        options: {
-            cutout: '80%',
-            plugins: {
-                legend: { display: false }
-            }
-        }
-    });
-});
-</script>
-
-<!-- Newsletter Section (High Conversion) -->
-<section class="py-24 bg-primary-600 relative overflow-hidden">
-    <div class="absolute inset-0 opacity-10">
-        <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0 0 L100 100 M100 0 L0 100" stroke="white" stroke-width="0.1"/></svg>
-    </div>
-    <div class="max-w-4xl mx-auto px-4 relative z-10 text-center">
-        <h2 class="text-4xl md:text-5xl font-serif font-black text-white mb-6">Stay Connected</h2>
-        <p class="text-lg text-primary-50 font-medium mb-12">Subscribe to our newsletter and get monthly updates on our impact and upcoming events.</p>
-
-        <form class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto" onsubmit="event.preventDefault(); alert('Subscribed successfully!'); this.reset();">
-            <input type="email" required placeholder="Enter your email address" class="flex-1 px-8 py-5 rounded-2xl bg-white/10 border border-white/20 text-white placeholder:text-primary-100 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-md font-bold text-sm">
-            <button class="px-10 py-5 bg-white text-primary-600 rounded-2xl font-black uppercase text-xs tracking-widest shadow-2xl hover:bg-primary-50 transition-all transform active:scale-95">Subscribe</button>
-        </form>
-    </div>
-</section>
-
-<!-- Scrolling Marquee Section (Tight & Bold Orange Bar) -->
-<section class="bg-primary-600 py-0 overflow-hidden border-y-4 border-primary-700 shadow-2xl relative z-20">
-    <div class="flex whitespace-nowrap animate-marquee-fast items-center py-1">
-        <span class="text-7xl md:text-9xl font-black text-white uppercase tracking-tighter font-['Bebas_Neue'] leading-[0.8] pr-12">NAVSAHAAY FOUNDATION</span>
-        <span class="text-7xl md:text-9xl font-black text-primary-200 uppercase tracking-tighter font-['Bebas_Neue'] opacity-30 leading-[0.8] pr-12">NAVSAHAAY FOUNDATION</span>
-        <span class="text-7xl md:text-9xl font-black text-white uppercase tracking-tighter font-['Bebas_Neue'] leading-[0.8] pr-12">NAVSAHAAY FOUNDATION</span>
-        <span class="text-7xl md:text-9xl font-black text-primary-200 uppercase tracking-tighter font-['Bebas_Neue'] opacity-30 leading-[0.8] pr-12">NAVSAHAAY FOUNDATION</span>
-    </div>
-</section>
-
-<style>
-    @keyframes marquee-fast {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
-    }
-    .animate-marquee-fast {
-        animation: marquee-fast 15s linear infinite;
-        width: max-content;
-    }
-</style>
-
-<!-- SDG Section (Refined & Clean UI) -->
-<section class="py-24 bg-[#0a1128] text-white overflow-hidden relative">
-    <!-- Decorative background element -->
-    <div class="absolute -top-24 -left-24 w-96 h-96 bg-primary-600/10 rounded-full blur-[120px]"></div>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="text-center mb-20">
-            <p class="text-primary-500 font-black tracking-[0.4em] uppercase text-[10px] mb-4">International Impact</p>
-            <h2 class="text-4xl md:text-6xl font-serif font-black leading-tight italic">Global Mission Goals</h2>
-            <div class="h-1 w-20 bg-primary-600 mx-auto mt-8 opacity-50"></div>
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-            <!-- Goal 3 -->
-            <div class="group relative bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl text-center hover:bg-white/10 hover:border-primary-500/50 transition-all duration-500 hover:-translate-y-2 shadow-2xl">
-                <div class="w-20 h-20 bg-gradient-to-br from-white/10 to-white/5 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
-                    <span class="text-4xl filter drop-shadow-lg">❤️</span>
-                </div>
-                <h3 class="text-sm font-black uppercase tracking-widest text-white mb-2 group-hover:text-primary-400 transition-colors">Health</h3>
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter leading-tight">Wellbeing</p>
-            </div>
-            <!-- Goal 5 -->
-            <div class="group relative bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl text-center hover:bg-white/10 hover:border-primary-500/50 transition-all duration-500 hover:-translate-y-2 shadow-2xl">
-                <div class="w-20 h-20 bg-gradient-to-br from-white/10 to-white/5 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
-                    <span class="text-4xl filter drop-shadow-lg">♀️</span>
-                </div>
-                <h3 class="text-sm font-black uppercase tracking-widest text-white mb-2 group-hover:text-primary-400 transition-colors">Gender</h3>
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter leading-tight">Equality</p>
-            </div>
-            <!-- Goal 4 -->
-            <div class="group relative bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl text-center hover:bg-white/10 hover:border-primary-500/50 transition-all duration-500 hover:-translate-y-2 shadow-2xl">
-                <div class="w-20 h-20 bg-gradient-to-br from-white/10 to-white/5 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
-                    <span class="text-4xl filter drop-shadow-lg">🎓</span>
-                </div>
-                <h3 class="text-sm font-black uppercase tracking-widest text-white mb-2 group-hover:text-primary-400 transition-colors">Quality</h3>
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter leading-tight">Education</p>
-            </div>
-            <!-- Goal 8 -->
-            <div class="group relative bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl text-center hover:bg-white/10 hover:border-primary-500/50 transition-all duration-500 hover:-translate-y-2 shadow-2xl">
-                <div class="w-20 h-20 bg-gradient-to-br from-white/10 to-white/5 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
-                    <span class="text-4xl filter drop-shadow-lg">📈</span>
-                </div>
-                <h3 class="text-sm font-black uppercase tracking-widest text-white mb-2 group-hover:text-primary-400 transition-colors">Decent</h3>
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter leading-tight">Work</p>
-            </div>
-            <!-- Goal 10 -->
-            <div class="group relative bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl text-center hover:bg-white/10 hover:border-primary-500/50 transition-all duration-500 hover:-translate-y-2 shadow-2xl">
-                <div class="w-20 h-20 bg-gradient-to-br from-white/10 to-white/5 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
-                    <span class="text-4xl filter drop-shadow-lg">⚖️</span>
-                </div>
-                <h3 class="text-sm font-black uppercase tracking-widest text-white mb-2 group-hover:text-primary-400 transition-colors">Equal</h3>
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter leading-tight">Rights</p>
-            </div>
-            <!-- Goal 17 -->
-            <div class="group relative bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl text-center hover:bg-white/10 hover:border-primary-500/50 transition-all duration-500 hover:-translate-y-2 shadow-2xl">
-                <div class="w-20 h-20 bg-gradient-to-br from-white/10 to-white/5 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
-                    <span class="text-4xl filter drop-shadow-lg">🤝</span>
-                </div>
-                <h3 class="text-sm font-black uppercase tracking-widest text-white mb-2 group-hover:text-primary-400 transition-colors">Global</h3>
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter leading-tight">Partnerships</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Donation Form (Refined) -->
-<section id="donate" class="py-24 bg-white relative">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-16 items-start">
-        <div class="sticky top-28">
-            <span class="text-primary-600 font-black tracking-[0.3em] uppercase text-xs">Contribution</span>
-            <h2 class="text-4xl font-serif font-black text-gray-900 mt-4 leading-tight">Every rupee counts.</h2>
-            <p class="mt-8 text-lg text-gray-600 leading-relaxed font-medium">
-                Choose a custom amount or select a cause to contribute. Your details are safe with us, and we'll send you a receipt for tax deduction under Section 80G.
-            </p>
-
-            <div class="mt-12 p-8 bg-gray-50 rounded-[2rem] border border-gray-100">
-                <div class="flex items-start space-x-4 mb-6">
-                    <div class="bg-green-100 p-2 rounded-lg text-green-600">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    </div>
-                    <div>
-                        <p class="font-black text-gray-900 uppercase text-xs tracking-widest mb-1">Tax Benefits</p>
-                        <p class="text-sm text-gray-500 font-medium leading-relaxed">All donations are exempt from tax under Section 80G of the Income Tax Act.</p>
-                    </div>
-                </div>
-                <div class="flex items-start space-x-4">
-                    <div class="bg-blue-100 p-2 rounded-lg text-blue-600">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    </div>
-                    <div>
-                        <p class="font-black text-gray-900 uppercase text-xs tracking-widest mb-1">Support Center</p>
-                        <p class="text-sm text-gray-500 font-medium leading-relaxed">Need help? Call us at +91 00 000 00000 or WhatsApp us for bulk donations.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="relative">
-            <div class="absolute -inset-4 bg-gray-900/5 rounded-[3rem] -rotate-1"></div>
-            <form id="donationForm" class="relative bg-white p-10 rounded-[2.5rem] shadow-2xl border border-gray-100" method="post" action="{{url_for('main.donate')}}">
-                <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-
-                {% if matching.active %}
-                <div class="mb-8 p-4 bg-gradient-to-r from-primary-600 to-primary-700 rounded-2xl shadow-lg transform -rotate-1">
-                    <div class="flex items-center space-x-3 text-white">
-                        <div class="flex-shrink-0 w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center font-black text-xl">{{ matching.multiplier }}X</div>
-                        <div>
-                            <p class="text-[10px] font-black uppercase tracking-widest opacity-80">Donation Matching</p>
-                            <p class="text-xs font-bold leading-tight">{{ matching.text }}</p>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-
-                <div class="mb-8">
-                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Select Impact Frequency</label>
-                    <div class="grid grid-cols-2 gap-4">
-                        <label class="relative group cursor-pointer">
-                            <input type="radio" name="frequency" value="MONTHLY" class="sr-only peer" checked>
-                            <div class="w-full py-4 text-center rounded-2xl border-2 border-gray-100 font-black text-xs uppercase tracking-widest peer-checked:border-primary-600 peer-checked:text-primary-600 transition-all hover:bg-gray-50">Monthly</div>
-                        </label>
-                        <label class="relative group cursor-pointer">
-                            <input type="radio" name="frequency" value="ONE_TIME" class="sr-only peer">
-                            <div class="w-full py-4 text-center rounded-2xl border-2 border-gray-100 font-black text-xs uppercase tracking-widest peer-checked:border-primary-600 peer-checked:text-primary-600 transition-all hover:bg-gray-50">One-time</div>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Live from the Field (Ground Reports) -->
-{% if ground_reports %}
-<section class="py-24 bg-white border-y border-gray-100 overflow-hidden">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center space-x-3 mb-12">
-            <div class="w-3 h-3 bg-red-600 rounded-full animate-pulse shadow-[0_0_10px_#dc2626]"></div>
-            <p class="text-xs font-black uppercase tracking-[0.3em] text-gray-900">Live From The Field</p>
-        </div>
-
-        <div class="flex space-x-6 overflow-x-auto pb-8 scrollbar-hide">
-            {% for r in ground_reports %}
-            <div class="flex-shrink-0 w-64 md:w-80 group cursor-pointer">
-                <div class="relative h-96 rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white">
-                    <img src="{{ r.image_url }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                    <div class="absolute bottom-8 left-8 right-8 text-white">
-                        <p class="text-[9px] font-black uppercase tracking-widest text-primary-400 mb-2">{{ r.location }}</p>
-                        <h3 class="text-lg font-bold leading-tight line-clamp-2">{{ r.title }}</h3>
-                        <p class="text-[8px] text-gray-400 mt-4 uppercase font-bold tracking-widest">{{ r.created_at.strftime('%d %b, %H:%M') }}</p>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-{% endif %}
-
-<!-- Kindness Leaderboard (Monthly Champions) -->
-{% if leaderboard %}
-<section class="py-24 bg-[#0a1128] text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-20">
-            <span class="text-primary-500 font-black tracking-[0.4em] uppercase text-[10px] mb-4">Hall of Honor</span>
-            <h2 class="text-4xl md:text-6xl font-serif font-black italic">Kindness Leaderboard</h2>
-            <p class="mt-6 text-gray-400 font-medium">Monthly Top Donors — Our pillars of strength this month.</p>
-        </div>
-
-        <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
-            {% for name, total in leaderboard %}
-            {% set rank = loop.index %}
-            <div class="flex flex-col items-center">
-                <div class="w-full bg-white/5 backdrop-blur-xl border border-white/10 rounded-t-[2rem] p-6 text-center
-                            {% if rank == 1 %}h-64 border-primary-500/50 bg-primary-600/10 order-1 md:order-3{% elif rank == 2 %}h-56 order-2 md:order-2{% elif rank == 3 %}h-48 order-3 md:order-4{% else %}h-40 order-4 md:order-{% if rank == 4 %}1{% else %}5{% endif %}{% endif %}">
-
-                    <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 font-black text-xl
-                                {% if rank == 1 %}bg-yellow-400 text-yellow-900{% elif rank == 2 %}bg-gray-300 text-gray-800{% elif rank == 3 %}bg-orange-400 text-orange-900{% else %}bg-white/10 text-white{% endif %}">
-                        {{ rank }}
-                    </div>
-
-                    <p class="text-xs font-black uppercase tracking-tight truncate w-full">{{ name }}</p>
-                    <p class="text-xl font-black text-primary-500 mt-2">₹{{ total|int }}</p>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-{% endif %}
-
-<!-- Adopt-a-Day (Calendar Sponsorship) -->
-<section id="adopt-a-day" class="py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-gray-900 rounded-[3rem] p-10 lg:p-20 relative overflow-hidden flex flex-col lg:flex-row items-center gap-16">
-            <div class="absolute top-0 right-0 w-96 h-96 bg-primary-600/10 rounded-full blur-[100px]"></div>
-
-            <div class="lg:w-1/2 text-white relative z-10">
-                <span class="text-primary-500 font-black tracking-[0.3em] uppercase text-xs">Meaningful Celebrations</span>
-                <h2 class="text-4xl md:text-6xl font-serif font-black mt-6 leading-tight">Adopt a Day of Kindness.</h2>
-                <p class="mt-8 text-xl text-gray-400 font-medium leading-relaxed">
-                    Sponsor all meals, education, or healthcare for a full day. Choose your special date—be it your birthday, anniversary, or in memory of a loved one.
-                </p>
-                <div class="mt-12 flex flex-wrap gap-4">
-                    <div class="bg-white/5 border border-white/10 px-6 py-4 rounded-2xl">
-                        <p class="text-[10px] font-black uppercase text-gray-500">Includes</p>
-                        <p class="font-bold">Social Media Shoutout</p>
-                    </div>
-                    <div class="bg-white/5 border border-white/10 px-6 py-4 rounded-2xl">
-                        <p class="text-[10px] font-black uppercase text-gray-500">Includes</p>
-                        <p class="font-bold">Personalized Video Report</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="lg:w-1/2 w-full relative z-10">
-                <div class="bg-white rounded-[2.5rem] p-10 shadow-2xl">
-                    <h3 class="text-2xl font-black text-gray-900 mb-8 uppercase tracking-tighter">Choose Your Special Date</h3>
-                    <form method="post" action="{{ url_for('main.donate') }}" class="space-y-6">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                        <input type="hidden" name="cause" value="Adopt-a-Day Sponsorship">
-                        <input type="hidden" name="frequency" value="ONE_TIME">
-
-                        <div>
-                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Select Date</label>
-                            <input type="date" name="sponsored_date" required class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-5 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
-                        </div>
-
-                        <div>
-                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Sponsorship Amount (Full Day)</label>
-                            <div class="grid grid-cols-2 gap-4">
-                                <label class="cursor-pointer">
-                                    <input type="radio" name="amount" value="5000" class="sr-only peer" checked>
-                                    <div class="py-4 text-center border-2 border-gray-100 rounded-2xl font-black text-xs uppercase peer-checked:border-primary-600 peer-checked:text-primary-600 transition-all">₹5,000</div>
-                                </label>
-                                <label class="cursor-pointer">
-                                    <input type="radio" name="amount" value="10000" class="sr-only peer">
-                                    <div class="py-4 text-center border-2 border-gray-100 rounded-2xl font-black text-xs uppercase peer-checked:border-primary-600 peer-checked:text-primary-600 transition-all">₹10,000</div>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <input name="donor_name" placeholder="Full Name" required class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600">
-                            <input name="phone" placeholder="Phone Number" required class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600">
-                        </div>
-
-                        <button class="w-full py-5 bg-primary-600 text-white rounded-2xl font-black uppercase text-xs tracking-[0.2em] shadow-xl hover:bg-primary-700 transition-all transform active:scale-95">
-                            Sponsor This Day
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Luxury Swap Widget -->
-                <div class="mb-10 p-6 bg-gray-50 rounded-[2rem] border border-gray-100">
-                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-6 text-center">Swap a Luxury for a Life</p>
-                    <div class="flex items-center justify-between gap-2 overflow-x-auto pb-4 scrollbar-hide">
-                        <button type="button" onclick="swapLuxury('Chai', 20, 1)" class="flex-shrink-0 flex flex-col items-center group">
-                            <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform">☕</div>
-                            <span class="text-[8px] font-bold mt-2 uppercase">Chai</span>
-                        </button>
-                        <button type="button" onclick="swapLuxury('Coffee', 150, 2)" class="flex-shrink-0 flex flex-col items-center group">
-                            <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform">☕</div>
-                            <span class="text-[8px] font-bold mt-2 uppercase">Coffee</span>
-                        </button>
-                        <button type="button" onclick="swapLuxury('Movie', 300, 5)" class="flex-shrink-0 flex flex-col items-center group">
-                            <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform">🎬</div>
-                            <span class="text-[8px] font-bold mt-2 uppercase">Movie</span>
-                        </button>
-                        <button type="button" onclick="swapLuxury('Pizza', 500, 8)" class="flex-shrink-0 flex flex-col items-center group">
-                            <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform">🍕</div>
-                            <span class="text-[8px] font-bold mt-2 uppercase">Pizza</span>
-                        </button>
-                        <button type="button" onclick="swapLuxury('Dinner', 1500, 25)" class="flex-shrink-0 flex flex-col items-center group">
-                            <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform">🍱</div>
-                            <span class="text-[8px] font-bold mt-2 uppercase">Dinner</span>
-                        </button>
-                    </div>
-                    <div id="swapMessage" class="hidden mt-4 text-center">
-                        <p class="text-[10px] font-bold text-primary-600 bg-primary-50 py-2 px-4 rounded-full inline-block">Great! Skipping 1 <span id="swapItem"></span> can feed <span id="swapKids"></span> kids today.</p>
-                    </div>
-                </div>
-
-                <div class="mb-8">
-                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Donation Amount (₹)</label>
-                    <input id="donationAmount" name="amount" type="number" min="100" placeholder="Enter amount..." required oninput="updateImpact()" class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-5 text-lg font-black text-gray-900 focus:ring-2 focus:ring-primary-600 transition-all shadow-inner">
-
-                    <div id="impactDisplay" class="hidden mt-4 p-4 bg-primary-50 rounded-2xl border border-primary-100 flex items-center space-x-3">
-                        <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-primary-600 shadow-sm">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                        </div>
-                        <p class="text-xs font-bold text-gray-700 leading-tight">Your contribution will provide <span id="impactQuantity" class="text-primary-600 font-black">0</span> <span id="impactUnit">Units</span>.</p>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-2 mt-3">
-                        <button type="button" onclick="setAmount(500)" class="py-2 text-[10px] font-bold border border-gray-200 rounded-lg hover:bg-gray-50 uppercase tracking-widest transition-colors">₹500</button>
-                        <button type="button" onclick="setAmount(1000)" class="py-2 text-[10px] font-bold border border-gray-200 rounded-lg hover:bg-gray-50 uppercase tracking-widest transition-colors">₹1000</button>
-                        <button type="button" onclick="setAmount(2000)" class="py-2 text-[10px] font-bold border border-gray-200 rounded-lg hover:bg-gray-50 uppercase tracking-widest transition-colors">₹2000</button>
-                    </div>
-                </div>
-
-                <div class="mb-8">
-                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Choose Cause</label>
-                    <select id="donationCause" name="cause" onchange="updateImpact()" class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 transition-all shadow-inner">
-                        <option value="General Fund" data-unit="" data-cost="0">General Fund</option>
-                        {% for pkg in packages %}
-                        <option value="{{ pkg.title }}" data-unit="{{ pkg.impact_unit_name }}" data-cost="{{ pkg.impact_unit_cost }}">{{ pkg.title }} (₹{{ pkg.amount|int }})</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="mb-8">
-                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Is this in Honor/Memory of someone? (Optional)</label>
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                        <select name="honor_type" class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-xs font-bold focus:ring-2 focus:ring-primary-600 outline-none">
-                            <option value="">Select Type...</option>
-                            <option value="MEMORY">In Memory of</option>
-                            <option value="HONOR">In Honor of</option>
-                            <option value="BIRTHDAY">On Birthday of</option>
-                        </select>
-                        <input name="honor_name" placeholder="Name of Person" class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-xs font-bold focus:ring-2 focus:ring-primary-600 outline-none">
-                    </div>
-                </div>
-
-                <div class="mb-8">
-                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Leave a Wish / Prayer (Wall of Wishes)</label>
-                    <textarea name="wish" rows="2" placeholder="e.g. For my family's well-being or in memory of..." class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-xs font-bold focus:ring-2 focus:ring-primary-600 outline-none"></textarea>
-                    <p class="text-[8px] text-gray-400 mt-2 italic">* Your wish will appear on our Digital Mannat Wall once verified.</p>
-                </div>
-
-                <div class="mb-8 p-6 bg-blue-50 rounded-[2rem] border border-blue-100">
-                    <div class="flex items-center space-x-2 mb-4">
-                        <svg class="h-4 w-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path></svg>
-                        <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest">Gift this Donation (Optional)</p>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <input name="recipient_name" placeholder="Recipient's Name" class="w-full bg-white border-0 rounded-2xl px-4 py-3 text-[10px] font-bold focus:ring-2 focus:ring-blue-600 outline-none">
-                        <input name="recipient_email" type="email" placeholder="Recipient's Email" class="w-full bg-white border-0 rounded-2xl px-4 py-3 text-[10px] font-bold focus:ring-2 focus:ring-blue-600 outline-none">
-                    </div>
-                    <p class="text-[8px] text-blue-400 mt-3 font-medium italic">We'll send a beautiful E-Certificate to them!</p>
-                </div>
-
-                <div class="space-y-4 mb-8">
-                    <input name="donor_name" placeholder="Full Name" required class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 transition-all shadow-inner">
-                    <div class="grid grid-cols-2 gap-4">
-                        <input name="email" type="email" placeholder="Email" required class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 transition-all shadow-inner">
-                        <input name="phone" placeholder="Phone" required class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 transition-all shadow-inner">
-                    </div>
-                    <textarea name="address" placeholder="Communication Address" required rows="3" class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 transition-all shadow-inner"></textarea>
-                </div>
-
-                <button class="w-full py-5 rounded-2xl bg-primary-600 hover:bg-primary-700 font-black text-white shadow-2xl shadow-primary-200 transition-all transform active:scale-95 uppercase tracking-widest">
-                    Create Donation Request
-                </button>
-            </form>
-        </div>
-    </div>
-</section>
-
-<!-- Volunteer Section (Professional) -->
-<section id="volunteer" class="py-24 bg-gray-900 overflow-hidden">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-primary-600 rounded-[3rem] p-10 lg:p-20 relative overflow-hidden">
-            <div class="absolute -top-24 -right-24 h-64 w-64 bg-white/10 rounded-full blur-3xl"></div>
-            <div class="lg:flex lg:items-center lg:justify-between relative z-10">
-                <div class="lg:max-w-xl text-white">
-                    <h2 class="text-4xl md:text-5xl font-serif font-black mb-8 leading-tight">Be more than a donor. Be a volunteer.</h2>
-                    <p class="text-xl text-primary-50 font-medium mb-12 leading-relaxed">Share your time and skills with our community projects. We're looking for passionate individuals for our field work and digital missions.</p>
-                    <div class="flex flex-wrap gap-4">
-                        <span class="bg-white/20 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest">Digital Mentoring</span>
-                        <span class="bg-white/20 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest">Food Drives</span>
-                        <span class="bg-white/20 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest">Tree Plantation</span>
-                    </div>
-                </div>
-                <div class="mt-12 lg:mt-0 lg:ml-12">
-                    <a href="#" class="inline-flex items-center justify-center px-12 py-6 bg-white text-gray-900 text-lg font-black rounded-[2rem] shadow-2xl hover:bg-gray-50 transition-all transform hover:-translate-y-1 uppercase tracking-widest">
-                        Join Our Team
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Contact Section (Clean) -->
-<section id="contact" class="py-24 bg-white border-t border-gray-100 text-center">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-4xl font-serif font-black text-gray-900 mb-8 leading-tight">Got Questions? Let's Talk.</h2>
-        <div class="grid md:grid-cols-3 gap-8 mb-16">
-            <div class="p-8 bg-gray-50 rounded-3xl border border-gray-100">
-                <p class="text-[10px] font-black text-primary-600 uppercase tracking-widest mb-2">WhatsApp</p>
-                <p class="text-lg font-bold text-gray-900">+91 00 000 00000</p>
-            </div>
-            <div class="p-8 bg-gray-50 rounded-3xl border border-gray-100">
-                <p class="text-[10px] font-black text-primary-600 uppercase tracking-widest mb-2">Email Us</p>
-                <p class="text-lg font-bold text-gray-900">care@navsahaay.org</p>
-            </div>
-            <div class="p-8 bg-gray-50 rounded-3xl border border-gray-100">
-                <p class="text-[10px] font-black text-primary-600 uppercase tracking-widest mb-2">Visit Office</p>
-                <p class="text-lg font-bold text-gray-900">New Delhi, India</p>
-            </div>
-        </div>
-
-        <form class="space-y-6 max-w-2xl mx-auto text-left" method="post" action="{{url_for('main.contact')}}">
-            <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-            <div class="grid grid-cols-2 gap-6">
-                <input name="name" placeholder="Full Name" required class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-gray-900 transition-all">
-                <input name="email" type="email" placeholder="Email Address" required class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-gray-900 transition-all">
-            </div>
-            <textarea name="message" placeholder="How can we help you?" rows="5" required class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-gray-900 transition-all"></textarea>
-            <button class="w-full py-5 rounded-2xl bg-gray-900 text-white font-black uppercase tracking-widest shadow-xl hover:bg-black transition-all transform active:scale-95">
-                Send Inquiry
-            </button>
-        </form>
-    </div>
-</section>
 {% endblock %}
-
-<!-- Birthday Donation Modal -->
-<div id="birthdayModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 sm:p-6">
-    <!-- Backdrop -->
-    <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onclick="closeBirthdayModal()"></div>
-
-    <!-- Modal Content -->
-    <div class="relative bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden transform transition-all scale-95 opacity-0 duration-300" id="modalContent">
-        <div class="absolute top-6 right-6 z-10">
-            <button onclick="closeBirthdayModal()" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-500 hover:bg-primary-600 hover:text-white transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-        </div>
-
-        <div class="p-8 sm:p-12">
-            <div class="text-center mb-10">
-                <span class="text-[10px] font-black uppercase tracking-[0.4em] text-primary-600 mb-2 block">Special Celebration</span>
-                <h3 class="text-3xl font-serif font-black text-gray-900">Birthday Donation</h3>
-                <p class="text-sm text-gray-500 mt-2 font-medium">Fill in your details to celebrate with us.</p>
-            </div>
-
-            <form class="space-y-6" onsubmit="event.preventDefault(); alert('Redirecting to payment integration...');">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 ml-1">Full Name</label>
-                        <input type="text" required placeholder="John Doe" class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 ml-1">Phone Number</label>
-                        <input type="tel" required placeholder="+91 00000 00000" class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 ml-1">Birthday Date</label>
-                    <input type="date" required class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all">
-                </div>
-
-                <div>
-                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 ml-1">Select Package</label>
-                    <div class="grid grid-cols-2 gap-4">
-                        <label class="relative cursor-pointer group">
-                            <input type="radio" name="pkg" class="peer hidden" checked>
-                            <div class="p-4 border-2 border-gray-100 rounded-2xl peer-checked:border-primary-500 peer-checked:bg-primary-50 transition-all text-center">
-                                <p class="text-[10px] font-black uppercase tracking-widest text-gray-900 mb-1">Full Meal</p>
-                                <p class="text-lg font-black text-primary-600">₹4000</p>
-                            </div>
-                        </label>
-                        <label class="relative cursor-pointer group">
-                            <input type="radio" name="pkg" class="peer hidden">
-                            <div class="p-4 border-2 border-gray-100 rounded-2xl peer-checked:border-primary-500 peer-checked:bg-primary-50 transition-all text-center">
-                                <p class="text-[10px] font-black uppercase tracking-widest text-gray-900 mb-1">Custom</p>
-                                <p class="text-lg font-black text-gray-400">Any</p>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <button type="submit" class="w-full py-5 bg-gray-900 text-white rounded-2xl font-black uppercase text-xs tracking-[0.2em] shadow-xl hover:bg-primary-600 transition-all transform active:scale-95">
-                    Proceed to Payment
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
 
 {% block extra_js %}
 <script>
-function openBirthdayModal() {
-    const modal = document.getElementById('birthdayModal');
-    const content = document.getElementById('modalContent');
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-    setTimeout(() => {
-        content.classList.remove('scale-95', 'opacity-0');
-        content.classList.add('scale-100', 'opacity-100');
-    }, 10);
-}
-
-function closeBirthdayModal() {
-    const modal = document.getElementById('birthdayModal');
-    const content = document.getElementById('modalContent');
-    content.classList.remove('scale-100', 'opacity-100');
-    content.classList.add('scale-95', 'opacity-0');
-    setTimeout(() => {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-    }, 300);
-}
-
-const swiper = new Swiper('.hero-swiper', {
+// Swiper & Conversion Logic
+const heroSwiper = new Swiper('.hero-swiper', {
     loop: true,
-    autoplay: {
-        delay: 5000,
-        disableOnInteraction: false,
-    },
-    pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-    },
-    navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-    },
+    effect: 'fade',
+    autoplay: { delay: 5000 },
 });
 
 const testimonialSwiper = new Swiper('.testimonial-swiper', {
     loop: true,
     slidesPerView: 1,
-    spaceBetween: 30,
-    autoplay: {
-        delay: 4000,
-        disableOnInteraction: false,
-    },
-    pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-    },
+    spaceBetween: 40,
+    autoplay: { delay: 4000 },
+    pagination: { el: '.swiper-pagination', clickable: true },
     breakpoints: {
-        768: {
-            slidesPerView: 2,
-        },
-        1024: {
-            slidesPerView: 3,
-        }
+        768: { slidesPerView: 2 },
+        1024: { slidesPerView: 3 }
     }
 });
 
-function quickDonate(cause, amount) {
-    const select = document.getElementById('donationCause');
-    const optionValue = cause + ' (₹' + amount + ')';
-
-    // Check if option already exists
-    let exists = false;
-    for (let i = 0; i < select.options.length; i++) {
-        if (select.options[i].text === optionValue) {
-            select.selectedIndex = i;
-            exists = true;
-            break;
-        }
-    }
-
-    // If not, add it
-    if (!exists) {
-        const newOpt = new Option(optionValue, cause);
-        select.add(newOpt);
-        select.value = cause;
-    }
-
-    document.getElementById('donationAmount').value = amount;
-    document.getElementById('donate').scrollIntoView({ behavior: 'smooth' });
-}
-
-function setAmount(amount) {
-    document.getElementById('donationAmount').value = amount;
-    updateImpact();
-    // Hide swap message if custom amount set manually
-    document.getElementById('swapMessage').classList.add('hidden');
-}
-
 function swapLuxury(item, amount, kids) {
-    document.getElementById('donationAmount').value = amount;
+    const el = document.getElementById('donationAmount');
+    el.value = amount;
+    const msg = document.getElementById('swapMessage');
     document.getElementById('swapItem').innerText = item;
     document.getElementById('swapKids').innerText = kids;
-    document.getElementById('swapMessage').classList.remove('hidden');
+    msg.classList.remove('hidden');
     updateImpact();
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 function updateImpact() {
     const amount = document.getElementById('donationAmount').value;
     const select = document.getElementById('donationCause');
-    const selectedOption = select.options[select.selectedIndex];
-    const unit = selectedOption.getAttribute('data-unit');
-    const cost = parseFloat(selectedOption.getAttribute('data-cost'));
+    const opt = select.options[select.selectedIndex];
+    const unit = opt.getAttribute('data-unit');
+    const cost = parseFloat(opt.getAttribute('data-cost'));
     const display = document.getElementById('impactDisplay');
 
-    if (amount && cost && cost > 0 && unit) {
-        const quantity = Math.floor(amount / cost);
-        if (quantity > 0) {
+    if (amount && cost > 0 && unit) {
+        const qty = Math.floor(amount / cost);
+        if (qty > 0) {
             display.classList.remove('hidden');
-            document.getElementById('impactQuantity').innerText = quantity;
-            document.getElementById('impactUnit').innerText = unit + (quantity > 1 ? 's' : '');
+            document.getElementById('impactQuantity').innerText = qty;
+            document.getElementById('impactUnit').innerText = unit + (qty > 1 ? 's' : '');
             return;
         }
     }
     display.classList.add('hidden');
 }
 
-function registerEvent(eventId) {
-    const name = prompt("Please enter your name:");
-    const email = prompt("Please enter your email:");
-    const phone = prompt("Please enter your phone:");
-
-    if (name && email && phone) {
-        const formData = new FormData();
-        formData.append('name', name);
-        formData.append('email', email);
-        formData.append('phone', phone);
-        formData.append('csrf_token', '{{csrf_token()}}');
-
-        fetch(`/events/${eventId}/register`, {
-            method: 'POST',
-            body: formData
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.message) alert(data.message);
-            else alert(data.error);
-        });
-    }
+function setAmount(amt) {
+    document.getElementById('donationAmount').value = amt;
+    updateImpact();
 }
 </script>
 {% endblock %}

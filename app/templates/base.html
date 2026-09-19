@@ -103,51 +103,61 @@
         .btn-brand {
             background-color: var(--brand-primary);
             color: white;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
         .btn-brand:hover {
             background-color: #047857;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(5, 150, 105, 0.25);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(5, 150, 105, 0.3);
+        }
+        .btn-brand:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        /* Global Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hover Lift Animation */
+        .hover-lift {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hover-lift:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
         }
     </style>
 </head>
-<body class="site-theme font-sans text-slate-900 antialiased bg-white">
+<body class="site-theme font-sans text-slate-900 antialiased bg-white overflow-x-hidden">
     <!-- Urgent Appeal Banner -->
     {% if urgent_appeal.active %}
-    <div class="bg-[#1e3a8a] text-white py-3 px-4 relative z-[60] shadow-xl">
+    <div class="bg-[#1e3a8a] text-white py-3 px-4 relative z-[60] shadow-xl animate-fade-in-down">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
-            <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-2">
                 <span class="flex h-2.5 w-2.5 relative">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
                 </span>
                 <p class="text-xs sm:text-sm font-extrabold uppercase tracking-widest">{{ urgent_appeal.text }}</p>
             </div>
-            <a href="{{ urgent_appeal.link }}" class="px-6 py-2 bg-white text-[#1e3a8a] rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-blue-50 transition-all shadow-lg">
+            <a href="{{ urgent_appeal.link }}" class="px-6 py-2 bg-white text-[#1e3a8a] rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-blue-50 transition-all shadow-lg hover:scale-105 active:scale-95">
                 {{ urgent_appeal.btn_text or 'Donate Now' }}
             </a>
         </div>
     </div>
     {% endif %}
 
-    <!-- Top Ticker -->
-    <div class="ticker-wrap hidden sm:block">
-        <div class="ticker text-[10px] sm:text-xs font-bold uppercase tracking-widest">
-            {% if recent_ticker %}
-                {% for d in recent_ticker %}
-                    <span>{{ d.donor_name if not d.anonymous else 'Anonymous' }} donated ₹{{ d.amount|int }} for {{ d.cause }}</span> &nbsp; | &nbsp;
-                {% endfor %}
-            {% else %}
-                <span>Someone just donated ₹500 for Child Education</span> &nbsp; | &nbsp;
-                <span>NavSahaay provides 100% Transparency with Photo/Video Proof</span> &nbsp; | &nbsp;
-                <span>Join 1,200+ volunteers making a difference</span>
-            {% endif %}
-        </div>
-    </div>
-
     <!-- Navbar -->
-    <header class="sticky top-0 w-full z-50 glass-nav border-b border-gray-100 shadow-sm">
+    <header class="sticky top-0 w-full z-50 glass-nav border-b border-gray-100 shadow-sm transition-all duration-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-24 md:h-28">
                 <div class="flex justify-start lg:w-0 lg:flex-1 h-full">
@@ -285,6 +295,25 @@
 
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+        // Reveal on Scroll Logic
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        // Run once on load
+        reveal();
+    </script>
+
     {% block extra_js %}{% endblock %}
 </body>
 </html>
