@@ -31,12 +31,13 @@
                     },
                     colors: {
                         primary: {
-                            50: '#f8fafc',
-                            100: '#f1f5f9',
-                            500: '#334155',
-                            600: '#1e293b',
-                            700: '#0f172a',
-                            800: '#020617',
+                            50: '#ffffff',
+                            100: '#f8fafc',
+                            500: '#2563eb',
+                            600: '#1d4ed8',
+                            700: '#1e40af',
+                            800: '#1e3a8a',
+                            900: '#000000',
                         },
                         accent: {
                             500: '#2563eb',
@@ -50,19 +51,19 @@
 
     <style>
         :root {
-            --brand-primary: #0f172a;
+            --brand-primary: #000000;
             --brand-accent: #2563eb;
-            --brand-navy: #0f172a;
-            --brand-navy-deep: #020617;
+            --brand-navy: #000000;
+            --brand-navy-deep: #000000;
             --bg-light: #ffffff;
             --bg-soft: #f8fafc;
-            --text-main: #1e293b;
+            --text-main: #000000;
         }
         .glass-nav {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid #f1f5f9;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
         .ticker-wrap {
             width: 100%;
@@ -84,10 +85,10 @@
         .site-theme .bg-gray-50 { background-color: var(--bg-soft); }
         .site-theme .bg-gray-900 { background-color: var(--brand-navy); }
         .site-theme .bg-gray-950 { background-color: var(--brand-navy-deep); }
-        .site-theme .text-gray-900 { color: #0f172a; }
-        .site-theme .text-gray-700 { color: #334155; }
-        .site-theme .border-gray-100 { border-color: #f1f5f9; }
-        .site-theme .shadow-xl, .site-theme .shadow-2xl { box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08); }
+        .site-theme .text-gray-900 { color: #000000; }
+        .site-theme .text-gray-700 { color: #111111; }
+        .site-theme .border-gray-100 { border-color: rgba(0,0,0,0.05); }
+        .site-theme .shadow-xl, .site-theme .shadow-2xl { box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05); }
 
         /* Modern Button Refinement */
         .btn-brand {
@@ -98,12 +99,12 @@
             overflow: hidden;
         }
         .btn-brand:hover {
-            background-color: #000000;
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            background-color: #2563eb;
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(37, 99, 235, 0.3);
         }
         .btn-brand:active {
-            transform: translateY(-1px) scale(0.98);
+            transform: translateY(-1px);
         }
 
         .btn-accent {
@@ -113,7 +114,7 @@
         }
         .btn-accent:hover {
             background-color: #1d4ed8;
-            transform: translateY(-3px);
+            transform: translateY(-4px);
             box-shadow: 0 15px 30px rgba(37, 99, 235, 0.3);
         }
 
@@ -158,40 +159,40 @@
     {% endif %}
 
     <!-- Navbar -->
-    <header class="sticky top-0 w-full z-50 glass-nav border-b border-gray-100 shadow-sm transition-all duration-500">
+    <header class="sticky top-0 w-full z-50 glass-nav border-b border-gray-100/10 shadow-sm transition-all duration-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16 md:h-20">
                 <div class="flex justify-start lg:w-0 lg:flex-1 h-full">
                     <a href="{{ url_for('main.home') }}" class="flex items-center space-x-3 group h-full py-1">
                         <div class="flex-shrink-0 h-full flex items-center">
-                            <img class="h-10 md:h-14 w-auto object-contain" src="{{ url_for('static', filename='images/logo2.png') }}" alt="NavSahaay Logo">
+                            <img class="h-10 md:h-12 w-auto object-contain" src="{{ url_for('static', filename='images/logo2.png') }}" alt="NavSahaay Logo">
                         </div>
                         <div class="leading-none flex flex-col justify-center">
-                            <span class="text-xl md:text-2xl font-black text-gray-900 tracking-tighter uppercase font-serif">NAVSAHAAY</span>
-                            <span class="block text-[8px] font-black text-primary-600 uppercase tracking-[0.4em] mt-0.5">Foundation</span>
+                            <span class="text-xl md:text-2xl font-bold text-black tracking-tight uppercase font-serif">NAVSAHAAY</span>
+                            <span class="block text-[9px] font-bold text-primary-500 uppercase tracking-[0.4em] mt-0.5">Foundation</span>
                         </div>
                     </a>
                 </div>
 
-                <nav class="hidden lg:flex space-x-8 items-center h-full">
-                    <a href="{{ url_for('main.home') }}" class="text-[10px] font-black text-slate-700 hover:text-primary-600 transition-all uppercase tracking-widest">Home</a>
-                    <a href="#about" class="text-[10px] font-black text-slate-700 hover:text-primary-600 transition-all uppercase tracking-widest">About Us</a>
+                <nav class="hidden lg:flex space-x-6 items-center h-full">
+                    <a href="{{ url_for('main.home') }}" class="text-xs font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">Home</a>
+                    <a href="#about" class="text-xs font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">About Us</a>
 
                     <!-- Mega Menu for Causes -->
                     <div class="relative group h-full flex items-center">
-                        <button class="text-[10px] font-black text-slate-700 group-hover:text-primary-600 transition-all uppercase tracking-widest flex items-center">
+                        <button class="text-xs font-bold text-black group-hover:text-primary-500 transition-colors uppercase tracking-widest flex items-center">
                             Causes
-                            <svg class="h-3 w-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
+                            <svg class="h-3 w-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
-                        <div class="absolute left-1/2 -translate-x-1/2 top-full w-full max-w-[1200px] bg-white shadow-2xl rounded-b-[3rem] border-t-4 border-primary-600 pt-16 pb-24 px-16 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 transform -translate-y-4 group-hover:translate-y-0 z-[100]">
-                            <div class="grid grid-cols-5 gap-12">
+                        <div class="absolute left-1/2 -translate-x-1/2 top-full w-screen max-w-6xl bg-white shadow-xl border border-gray-100 py-10 px-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-[100]">
+                            <div class="grid grid-cols-5 gap-8">
                                 {% for category in ['Food', 'Child', 'Education', 'Special Events', 'Others'] %}
                                 <div>
-                                    <h4 class="text-xs font-black text-slate-900 uppercase tracking-[0.25em] mb-10 pb-4 border-b-2 border-slate-50">{{ category }}</h4>
-                                    <ul class="space-y-6">
+                                    <h4 class="text-xs font-bold text-black uppercase tracking-wider mb-6 pb-2 border-b border-gray-100">{{ category }}</h4>
+                                    <ul class="space-y-4">
                                         {% for cause in mega_menu_causes.get(category, []) %}
                                         <li>
-                                            <a href="{{ url_for('main.cause_detail', slug=cause.slug) }}" class="text-[10px] font-black text-slate-500 hover:text-primary-600 transition-all block leading-relaxed hover:translate-x-1">
+                                            <a href="{{ url_for('main.cause_detail', slug=cause.slug) }}" class="text-xs text-gray-600 hover:text-primary-500 transition-colors block font-medium">
                                                 {{ cause.title }}
                                             </a>
                                         </li>
@@ -202,27 +203,27 @@
                             </div>
 
                             <!-- Monthly Promotion in Mega Menu -->
-                            <div class="mt-20 pt-10 border-t border-slate-50 flex items-center justify-between">
+                            <div class="mt-8 pt-6 border-t border-gray-100 flex items-center justify-between">
                                 <div class="flex items-center space-x-4">
-                                    <div class="w-12 h-12 bg-primary-50 rounded-2xl flex items-center justify-center text-2xl shadow-inner">🧡</div>
+                                    <div class="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center text-xl">💙</div>
                                     <div>
-                                        <p class="text-[10px] font-black text-slate-900 uppercase tracking-widest">Sustained Impact</p>
-                                        <p class="text-xs text-slate-400 font-bold">Join 5,000+ heroes who donate monthly.</p>
+                                        <p class="text-xs font-bold text-black uppercase tracking-wider">Sustained Impact</p>
+                                        <p class="text-xs text-gray-500">Join 5,000+ heroes who donate monthly.</p>
                                     </div>
                                 </div>
-                                <a href="#donate" class="btn-brand px-10 py-4 rounded-full font-black uppercase text-[10px] tracking-widest shadow-xl">Donate Monthly</a>
+                                <a href="#donate" class="bg-black text-white px-6 py-2.5 text-xs font-bold uppercase tracking-wider hover:bg-primary-500 transition-colors">Donate Monthly</a>
                             </div>
                         </div>
                     </div>
 
-                    <a href="#" class="text-[10px] font-black text-slate-700 hover:text-primary-600 transition-all uppercase tracking-widest">Blog</a>
-                    <a href="#" class="text-[10px] font-black text-slate-700 hover:text-primary-600 transition-all uppercase tracking-widest">CSR</a>
-                    <a href="#" class="text-[10px] font-black text-slate-700 hover:text-primary-600 transition-all uppercase tracking-widest">Gallery</a>
-                    <a href="#contact" class="text-[10px] font-black text-slate-700 hover:text-primary-600 transition-all uppercase tracking-widest">Contact</a>
+                    <a href="#" class="text-xs font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">Blog</a>
+                    <a href="#" class="text-xs font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">CSR</a>
+                    <a href="#" class="text-xs font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">Gallery</a>
+                    <a href="#contact" class="text-xs font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">Contact</a>
 
-                    <div class="h-8 w-px bg-slate-200 mx-2"></div>
+                    <div class="h-6 w-px bg-gray-200 mx-2"></div>
 
-                    <a href="#donate" class="inline-flex items-center justify-center px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-full shadow-lg shadow-primary-600/20 text-[10px] font-black uppercase tracking-widest transform transition-all hover:scale-105 active:scale-95">Donate Now</a>
+                    <a href="#donate" class="inline-flex items-center justify-center px-6 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-xs font-bold uppercase tracking-widest transition-colors">Donate Now</a>
                 </nav>
 
                 <div class="md:hidden flex items-center space-x-4">
