@@ -15,12 +15,38 @@
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                     },
+                    colors: {
+                        primary: {
+                            50: '#fbf6e8',
+                            100: '#f5e8c5',
+                            500: '#d2aa55',
+                            600: '#bd8f2f',
+                            700: '#a87920',
+                            800: '#805d15',
+                        }
+                    }
                 }
             }
         }
     </script>
+    <style>
+        :root { --navy: #12233f; --navy-deep: #0b172b; --gold: #bd8f2f; --ivory: #f8f6f0; --ink: #1c2533; }
+        .admin-theme { background: var(--ivory); color: var(--ink); }
+        .admin-theme .bg-white { background-color: #fffdf9; }
+        .admin-theme .bg-gray-50 { background-color: var(--ivory); }
+        .admin-theme .bg-gray-100 { background-color: #eeeae1; }
+        .admin-theme .bg-gray-900 { background-color: var(--navy); }
+        .admin-theme .bg-gray-800 { background-color: #1c3154; }
+        .admin-theme .text-gray-900 { color: var(--ink); }
+        .admin-theme .text-gray-700 { color: #4a5362; }
+        .admin-theme .text-gray-600 { color: #687181; }
+        .admin-theme .border-gray-100 { border-color: #e8e2d5; }
+        .admin-theme .border-gray-200 { border-color: #ddd7ca; }
+        .admin-theme .border-gray-800 { border-color: #263754; }
+        .admin-theme .shadow-sm { box-shadow: 0 8px 24px rgba(18, 35, 63, .06); }
+    </style>
 </head>
-<body class="bg-gray-50 font-sans antialiased text-gray-900">
+<body class="admin-theme bg-gray-50 font-sans antialiased text-gray-900">
     <div class="min-h-screen flex">
         <!-- Sidebar -->
         <aside class="w-64 bg-gray-900 text-white flex-shrink-0 hidden md:block">

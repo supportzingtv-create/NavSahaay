@@ -5,8 +5,8 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    color: #183028;
-    background: #fbfaf5;
+    color: #1c2533;
+    background: #f8f6f0;
     line-height: 1.6
 }
 
@@ -24,8 +24,8 @@ header {
     position: sticky;
     top: 0;
     z-index: 10;
-    background: #fbfaf5ee;
-    border-bottom: 1px solid #dde4de
+    background: #fffdf9ee;
+    border-bottom: 1px solid #e8e2d5
 }
 
 .nav {
@@ -40,7 +40,7 @@ header {
     align-items: center;
     font-weight: 700;
     font-size: 20px;
-    color: #126b4b
+    color: #12233f
 }
 
 .brand img {
@@ -71,12 +71,12 @@ nav {
 }
 
 nav a:hover {
-    color: #126b4b
+    color: #bd8f2f
 }
 
 .hero {
     padding: 100px 0;
-    background: linear-gradient(120deg, #f3eddf, #edf3ed)
+    background: linear-gradient(120deg, #f8f2e4, #eef1f4)
 }
 
 .hero-grid,
@@ -100,7 +100,7 @@ h3 {
 }
 
 .hero em {
-    color: #126b4b
+    color: #bd8f2f
 }
 
 .hero p {
@@ -110,7 +110,7 @@ h3 {
 
 .btn {
     display: inline-block;
-    background: #126b4b;
+    background: #12233f;
     color: white;
     border: 0;
     border-radius: 7px;
@@ -121,8 +121,8 @@ h3 {
 
 .btn.ghost {
     background: transparent;
-    color: #126b4b;
-    border: 1px solid #126b4b
+    color: #12233f;
+    border: 1px solid #12233f
 }
 
 .hero-box,
@@ -157,7 +157,7 @@ h3 {
 }
 
 .dark {
-    background: #0a4e37;
+    background: #12233f;
     color: #fff
 }
 
@@ -242,8 +242,8 @@ h3 {
 }
 
 footer {
-    background: #12231c;
-    color: #b7c8bf;
+    background: #0b172b;
+    color: #c8cfda;
     padding: 30px 0;
     margin-top: 0
 }

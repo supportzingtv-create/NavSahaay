@@ -24,7 +24,7 @@
         <p class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-1">Total Events</p>
         <div class="flex items-end justify-between">
             <h3 class="text-3xl font-extrabold text-gray-900">{{ event_count }}</h3>
-            <span class="text-orange-500 text-xs font-bold bg-orange-50 px-2 py-1 rounded-lg">Upcoming</span>
+            <span class="text-primary-700 text-xs font-bold bg-primary-50 px-2 py-1 rounded-lg">Upcoming</span>
         </div>
     </div>
 
@@ -63,7 +63,7 @@
                     <span class="font-bold">60%</span>
                 </div>
                 <div class="w-full bg-gray-100 rounded-full h-2">
-                    <div class="bg-green-600 h-2 rounded-full" style="width: 60%"></div>
+                    <div class="bg-primary-600 h-2 rounded-full" style="width: 60%"></div>
                 </div>
             </div>
             <div>
@@ -105,7 +105,7 @@
                     <td class="px-8 py-4 font-bold text-gray-900">₹{{ d.amount }}</td>
                     <td class="px-8 py-4 text-sm font-medium text-gray-500">{{ d.cause }}</td>
                     <td class="px-8 py-4">
-                        <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest {% if d.status == 'VERIFIED' %}bg-green-100 text-green-700{% else %}bg-orange-100 text-orange-700{% endif %}">
+                        <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest {% if d.status == 'VERIFIED' %}bg-green-100 text-green-700{% else %}bg-primary-100 text-primary-700{% endif %}">
                             {{ d.status }}
                         </span>
                     </td>
@@ -129,7 +129,7 @@
                 datasets: [{
                     label: 'Donations (₹)',
                     data: {{ chart_data | tojson }},
-                    borderColor: '#ea580c',
+                    borderColor: '#bd8f2f',
                     backgroundColor: 'rgba(234, 88, 12, 0.1)',
                     fill: true,
                     tension: 0.4
