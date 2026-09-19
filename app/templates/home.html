@@ -1,28 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
-<!-- Hero Section (Framed & Refined) -->
-<section class="reveal py-10 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="relative rounded-[3.5rem] overflow-hidden border-[12px] border-slate-50 shadow-2xl bg-slate-950">
-            <div class="swiper hero-swiper h-[350px] md:h-[550px]">
+<!-- Hero Section (Full Width & Cinematic) -->
+<section class="reveal bg-white">
+    <div class="w-full">
+        <div class="relative overflow-hidden bg-black shadow-2xl">
+            <div class="swiper hero-swiper h-[350px] md:h-[650px]">
                 <div class="swiper-wrapper">
                     {% for item in slider_items %}
-                    <div class="swiper-slide bg-slate-950">
+                    <div class="swiper-slide bg-black">
                         {% if item.type == 'video' %}
-                        <video autoplay muted loop class="w-full h-full object-cover opacity-30">
+                        <video autoplay muted loop class="w-full h-full object-cover opacity-40">
                             <source src="{{ item.url }}" type="video/mp4">
                         </video>
                         {% else %}
-                        <img src="{{ item.url }}" alt="Impact Work" class="w-full h-full object-cover opacity-30">
+                        <img src="{{ item.url }}" alt="Impact Work" class="w-full h-full object-cover opacity-40">
                         {% endif %}
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80"></div>
+                        <!-- Dark gradient overlay for depth -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/20"></div>
                     </div>
                     {% endfor %}
                 </div>
-                <!-- Navigation Controls -->
-                <div class="swiper-button-next !text-white !after:text-[10px] bg-white/10 hover:bg-white/20 backdrop-blur-md w-10 h-10 rounded-full !right-6 transition-all"></div>
-                <div class="swiper-button-prev !text-white !after:text-[10px] bg-white/10 hover:bg-white/20 backdrop-blur-md w-10 h-10 rounded-full !left-6 transition-all"></div>
+                <!-- Pagination Dots Only -->
                 <div class="swiper-pagination !bottom-8"></div>
             </div>
         </div>
@@ -451,15 +450,12 @@ function toggleFaq(btn) {
 // Swiper & Conversion Logic
 const heroSwiper = new Swiper('.hero-swiper', {
     loop: true,
-    speed: 1000,
+    speed: 1200,
     grabCursor: true,
+    simulateTouch: true,
     autoplay: {
         delay: 5000,
         disableOnInteraction: false
-    },
-    navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
     },
     pagination: {
         el: '.swiper-pagination',
