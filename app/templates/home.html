@@ -24,15 +24,15 @@
     </div>
 </section>
 
-<!-- Scrolling Marquee Section (Orange Bar) -->
-<section class="bg-primary-600 py-2 overflow-hidden border-y-4 border-primary-700 shadow-inner">
+<!-- Scrolling Marquee Section (Dynamic Activity Bar) -->
+<section class="bg-primary-600 py-3 overflow-hidden border-y border-white/10 shadow-lg relative z-20">
     <div class="flex whitespace-nowrap animate-marquee items-center space-x-12">
-        <span class="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter opacity-90">NAVSAHAAY FOUNDATION</span>
-        <span class="text-3xl md:text-5xl font-black text-primary-200 uppercase tracking-tighter opacity-40">NAVSAHAAY FOUNDATION</span>
-        <span class="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter opacity-90">NAVSAHAAY FOUNDATION</span>
-        <span class="text-3xl md:text-5xl font-black text-primary-200 uppercase tracking-tighter opacity-40">NAVSAHAAY FOUNDATION</span>
-        <span class="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter opacity-90">NAVSAHAAY FOUNDATION</span>
-        <span class="text-3xl md:text-5xl font-black text-primary-200 uppercase tracking-tighter opacity-40">NAVSAHAAY FOUNDATION</span>
+        <span class="text-2xl md:text-4xl font-black text-white uppercase tracking-tighter opacity-90">NAVSAHAAY FOUNDATION</span>
+        <span class="text-2xl md:text-4xl font-black text-orange-200 uppercase tracking-tighter opacity-40 italic">#HelpingHands</span>
+        <span class="text-2xl md:text-4xl font-black text-white uppercase tracking-tighter opacity-90">NAVSAHAAY FOUNDATION</span>
+        <span class="text-2xl md:text-4xl font-black text-orange-200 uppercase tracking-tighter opacity-40 italic">#BrighterTomorrow</span>
+        <span class="text-2xl md:text-4xl font-black text-white uppercase tracking-tighter opacity-90">NAVSAHAAY FOUNDATION</span>
+        <span class="text-2xl md:text-4xl font-black text-orange-200 uppercase tracking-tighter opacity-40 italic">#JoinTheMovement</span>
     </div>
 </section>
 
@@ -48,49 +48,50 @@
 </style>
 
 <!-- Impact Counters -->
-<section class="bg-gray-50 py-8 sm:py-12 border-y border-gray-100">
+<section class="bg-white py-16 sm:py-24 border-y border-slate-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-                <p class="text-3xl md:text-5xl font-black text-gray-900">{{ stats.lives_impacted }}</p>
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em] mt-2">Lives Impacted</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+            <div class="space-y-2">
+                <p class="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter">{{ stats.lives_impacted }}</p>
+                <p class="text-[10px] font-black text-primary-600 uppercase tracking-[0.3em]">Lives Impacted</p>
             </div>
-            <div>
-                <p class="text-3xl md:text-5xl font-black text-gray-900">{{ stats.volunteers_count }}</p>
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em] mt-2">Total Volunteers</p>
+            <div class="space-y-2">
+                <p class="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter">{{ stats.volunteers_count }}</p>
+                <p class="text-[10px] font-black text-primary-600 uppercase tracking-[0.3em]">Volunteers</p>
             </div>
-            <div>
-                <p class="text-3xl md:text-5xl font-black text-gray-900">{{ stats.total_donations }}</p>
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em] mt-2">Total Donations</p>
+            <div class="space-y-2">
+                <p class="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter">{{ stats.total_donations }}</p>
+                <p class="text-[10px] font-black text-primary-600 uppercase tracking-[0.3em]">Donations</p>
             </div>
-            <div>
-                <p class="text-3xl md:text-5xl font-black text-gray-900">100%</p>
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em] mt-2">Transparency</p>
+            <div class="space-y-2">
+                <p class="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter">100%</p>
+                <p class="text-[10px] font-black text-primary-600 uppercase tracking-[0.3em]">Transparency</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Our Programmes (Smile Foundation Inspired) -->
-<section id="programs" class="py-24 bg-white">
+<!-- Our Programmes -->
+<section id="programs" class="py-24 bg-gray-50/50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-20">
-            <h2 class="text-4xl md:text-6xl font-serif font-black text-gray-900 uppercase tracking-tighter">Our Programmes</h2>
-            <div class="h-1.5 w-24 bg-primary-600 mx-auto mt-4 rounded-full"></div>
+        <div class="text-center mb-24">
+            <span class="text-primary-600 font-black tracking-[0.3em] uppercase text-xs">How we help</span>
+            <h2 class="text-4xl md:text-6xl font-serif font-black text-slate-900 mt-4 leading-tight uppercase italic">Our Programmes</h2>
+            <div class="h-1 w-20 bg-primary-600 mx-auto mt-8 opacity-40"></div>
         </div>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-y-16 gap-x-12">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
             {% for prog in programmes %}
             <div class="flex items-start space-x-6 group">
-                <div class="flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center transition-colors duration-300"
+                <div class="flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:rotate-6 shadow-lg shadow-black/5"
                      style="background-color: {{ prog.bg_color }}; color: {{ prog.icon_color }}">
                     <div class="w-8 h-8">
                         {{ prog.svg | safe }}
                     </div>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-black uppercase mb-3 tracking-tight" style="color: {{ prog.icon_color }}CC">{{ prog.title }}</h3>
-                    <p class="text-gray-600 font-medium leading-relaxed">{{ prog.description }}</p>
+                    <h3 class="text-xl font-black uppercase mb-3 tracking-tight text-slate-800">{{ prog.title }}</h3>
+                    <p class="text-slate-500 font-medium leading-relaxed text-sm">{{ prog.description }}</p>
                 </div>
             </div>
             {% endfor %}
@@ -139,7 +140,7 @@
                     </div>
                     <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Impact</span>
                 </div>
-                <button onclick="quickDonate('{{ pkg.title }}', {{ pkg.amount }})" class="w-full py-4 rounded-xl bg-gray-900 text-white font-bold text-xs uppercase tracking-widest hover:bg-primary-600 transition-colors shadow-lg">Donate Now</button>
+                <button onclick="quickDonate('{{ pkg.title }}', {{ pkg.amount }})" class="w-full py-4 rounded-xl bg-slate-900 text-white font-black text-xs uppercase tracking-widest hover:bg-primary-600 transition-all shadow-lg active:scale-95">Donate Now</button>
             </div>
         </div>
         {% endfor %}
