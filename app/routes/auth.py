@@ -1,3 +1,4 @@
+import os
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, current_user
 from app.models import User
@@ -12,8 +13,23 @@ def login():
         email = request.form["email"].strip().lower()
         password = request.form["password"].strip()
 
-        # Always run seed_admin_and_events on login attempt to ensure
-        # credentials in Firestore perfectly sync with Vercel Environment Variables
+        # Fetch allowed admin credentials from Env Vars or default
+        env_email = os.getenv("ADMIN_EMAIL", "admin@navsahaay.org").strip().lower()
+        env_password = os.getenv("ADMIN_PASSWORD", "Admin@123").strip()
+
+        # Hardcoded/Env Bypass: If credentials match env variables directly, log them in instantly
+        # This bypasses any database connectivity/seeding issues entirely.
+        if email == env_email and password == env_password:
+            fallback_user = User(
+                id="admin_fallback",
+                name="NavSahaay Administrator",
+                email=env_email,
+                password_hash="",
+                role="SUPER_ADMIN"
+            )
+            login_user(fallback_user)
+            return redirect(url_for("admin.dashboard"))
+
         try:
             from app.services.seed import seed_admin_and_events
             seed_admin_and_events()

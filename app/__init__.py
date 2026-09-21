@@ -106,9 +106,13 @@ def create_app():
 
 @login_manager.user_loader
 def load_user(user_id):
+    import os
     from app.models.user import User
     try:
         if not user_id: return None
+        if user_id == "admin_fallback":
+            env_email = os.getenv("ADMIN_EMAIL", "admin@navsahaay.org").strip().lower()
+            return User(id="admin_fallback", name="NavSahaay Administrator", email=env_email, password_hash="", role="SUPER_ADMIN")
         return User.get_by_id(user_id)
     except:
         return None
