@@ -185,6 +185,21 @@
             box-shadow: 0 0 30px rgba(220, 38, 38, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.1);
             transform: translateY(-4px) scale(1.01);
         }
+
+        /* Custom Scrollbar for Sidebar */
+        .scrollbar-thin::-webkit-scrollbar {
+            width: 5px;
+        }
+        .scrollbar-thin::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+            background: rgba(220, 38, 38, 0.2);
+            border-radius: 10px;
+        }
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+            background: rgba(220, 38, 38, 0.5);
+        }
     </style>
 </head>
 <body class="admin-theme bg-zinc-950 font-sans antialiased text-zinc-100">
@@ -209,22 +224,24 @@
                     <span class="text-xl font-black tracking-tight uppercase">NavSahaay</span>
                 </a>
             </div>
-            <!-- Make feature list scrollable internally -->
-            <nav class="flex-1 overflow-y-auto px-4 space-y-2 pb-6 scrollbar-thin">
-                <a href="{{ url_for('admin.dashboard') }}" class="block px-4 py-3 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.dashboard' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Overview Dashboard</a>
-                <a href="{{ url_for('admin.donations') }}" class="block px-4 py-3 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.donations' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Donations</a>
-                <a href="{{ url_for('admin.volunteers') }}" class="block px-4 py-3 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.volunteers' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Volunteers</a>
-                <a href="{{ url_for('admin.causes') }}" class="block px-4 py-3 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.causes' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Donation Causes</a>
-                <a href="{{ url_for('admin.impact_map') }}" class="block px-4 py-3 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.impact_map' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Impact Map Pins</a>
-                <a href="{{ url_for('admin.reports') }}" class="block px-4 py-3 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.reports' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Ground Reports</a>
-                <a href="{{ url_for('admin.events') }}" class="block px-4 py-3 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.events' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Events</a>
-                <a href="{{ url_for('admin.contacts') }}" class="block px-4 py-3 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.contacts' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Contacts</a>
-                <a href="{{ url_for('admin.documents') }}" class="block px-4 py-3 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.documents' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Documents</a>
+            <!-- Sidebar Links -->
+            <nav class="flex-1 overflow-y-auto px-4 flex flex-col pb-10 scrollbar-thin">
+                <div class="space-y-1.5 flex-1">
+                    <a href="{{ url_for('admin.dashboard') }}" class="block px-4 py-3.5 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.dashboard' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Overview Dashboard</a>
+                    <a href="{{ url_for('admin.donations') }}" class="block px-4 py-3.5 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.donations' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Donations</a>
+                    <a href="{{ url_for('admin.volunteers') }}" class="block px-4 py-3.5 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.volunteers' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Volunteers</a>
+                    <a href="{{ url_for('admin.causes') }}" class="block px-4 py-3.5 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.causes' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Donation Causes</a>
+                    <a href="{{ url_for('admin.impact_map') }}" class="block px-4 py-3.5 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.impact_map' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Impact Map Pins</a>
+                    <a href="{{ url_for('admin.reports') }}" class="block px-4 py-3.5 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.reports' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Ground Reports</a>
+                    <a href="{{ url_for('admin.events') }}" class="block px-4 py-3.5 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.events' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Events</a>
+                    <a href="{{ url_for('admin.contacts') }}" class="block px-4 py-3.5 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.contacts' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Contacts</a>
+                    <a href="{{ url_for('admin.documents') }}" class="block px-4 py-3.5 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.documents' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Documents</a>
+                </div>
 
-                <div class="mt-8 pt-8 border-t border-zinc-800">
+                <div class="mt-auto pt-8 border-t border-zinc-800">
                     <p class="px-4 text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-4">Management</p>
-                    <a href="{{ url_for('admin.users') }}" class="block px-4 py-3 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.users' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">User Management</a>
-                    <a href="{{ url_for('admin.settings') }}" class="block px-4 py-3 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.settings' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Site Management</a>
+                    <a href="{{ url_for('admin.users') }}" class="block px-4 py-3.5 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.users' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">User Management</a>
+                    <a href="{{ url_for('admin.settings') }}" class="block px-4 py-3.5 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.settings' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Site Management</a>
                 </div>
             </nav>
         </aside>
