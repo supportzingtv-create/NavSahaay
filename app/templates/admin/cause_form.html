@@ -83,9 +83,69 @@
         </div>
 
         <div class="space-y-2">
-            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">Banner Image URL</label>
-            <input name="image_url" value="{{ cause.image_url if cause else '' }}" placeholder="https://..." class="w-full bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 transition-all shadow-inner">
+            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">Banner Image (Upload or URL)</label>
+            <div class="flex space-x-4">
+                <input name="image_url" id="image_url" value="{{ cause.image_url if cause else '' }}" placeholder="https://..." class="flex-1 bg-gray-50 border-0 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 transition-all shadow-inner">
+                <label class="cursor-pointer bg-gray-900 text-white px-6 py-4 rounded-2xl hover:bg-black transition-all flex items-center justify-center font-bold text-xs uppercase tracking-widest min-w-[140px]" id="upload_label">
+                    <span id="upload_text">Upload Image</span>
+                    <input type="file" accept="image/*" class="hidden" onchange="uploadCauseImage(this)">
+                </label>
+            </div>
+            {% if cause and cause.image_url %}
+            <div class="mt-2" id="image_preview_container">
+                <img src="{{ cause.image_url }}" id="image_preview" class="max-h-40 rounded-xl border border-gray-200">
+            </div>
+            {% else %}
+            <div class="mt-2 hidden" id="image_preview_container">
+                <img src="" id="image_preview" class="max-h-40 rounded-xl border border-gray-200">
+            </div>
+            {% endif %}
         </div>
+
+<script>
+async function uploadCauseImage(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    const textSpan = document.getElementById('upload_text');
+    const originalText = textSpan.innerText;
+    textSpan.innerHTML = '<svg class="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+        const response = await fetch('/admin/upload-media', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': document.querySelector('input[name="csrf_token"]').value
+            }
+        });
+        const data = await response.json();
+        if (data.url) {
+            document.getElementById('image_url').value = data.url;
+
+            const previewImg = document.getElementById('image_preview');
+            const previewContainer = document.getElementById('image_preview_container');
+            previewImg.src = data.url;
+            previewContainer.classList.remove('hidden');
+
+            textSpan.innerHTML = '<svg class="h-4 w-4 text-green-400 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Done';
+            setTimeout(() => {
+                textSpan.innerText = 'Upload New';
+            }, 2000);
+        } else {
+            alert('Upload failed: ' + (data.error || 'Unknown error'));
+            textSpan.innerText = originalText;
+        }
+    } catch (e) {
+        console.error(e);
+        alert('Upload failed.');
+        textSpan.innerText = originalText;
+    }
+}
+</script>
 
         <div class="space-y-2">
             <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">Short Description (for Cards)</label>

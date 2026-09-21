@@ -68,7 +68,7 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Content Position Template (Click Arrow)</label>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Content Position Template (Fine-tune with clicks)</label>
                                 <input type="hidden" name="position[]" value="{{ item.position | default('center') }}" class="position-input">
                                 <div class="grid grid-cols-3 gap-1 w-36 bg-gray-200 p-1 rounded-xl">
                                     <button type="button" onclick="selectPosition(this, 'top-left')" class="p-1.5 rounded text-center text-xs font-bold {% if item.position == 'top-left' %}bg-blue-600 text-white{% else %}bg-white text-gray-700 hover:bg-gray-100{% endif %}">↖</button>
@@ -559,7 +559,7 @@
                 </select>
             </div>
             <div>
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Content Position Template (Click Arrow)</label>
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Content Position Template (Fine-tune with clicks)</label>
                 <input type="hidden" name="position[]" value="center" class="position-input">
                 <div class="grid grid-cols-3 gap-1 w-36 bg-gray-200 p-1 rounded-xl">
                     <button type="button" onclick="selectPosition(this, 'top-left')" class="p-1.5 rounded text-center text-xs font-bold bg-white text-gray-700 hover:bg-gray-100">↖</button>
