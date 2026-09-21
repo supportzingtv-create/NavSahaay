@@ -35,9 +35,9 @@
                                 <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Media Image (Upload or URL)</label>
                                 <div class="flex space-x-2">
                                     <input name="url[]" value="{{ item.url }}" placeholder="https://..." class="flex-1 bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-                                    <label class="cursor-pointer bg-slate-100 px-4 py-3 rounded-xl hover:bg-slate-200 transition-all flex items-center">
-                                        <svg class="h-4 w-4 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-                                        <input type="file" name="slide_file[]" class="hidden" onchange="uploadToCloudflare(this)">
+                                    <label class="cursor-pointer bg-slate-800 text-white px-4 py-3 rounded-xl hover:bg-black transition-all flex items-center justify-center font-bold text-xs uppercase tracking-widest min-w-[120px]">
+                                        <span>Upload File</span>
+                                        <input type="file" class="hidden" onchange="uploadToCloudflare(this)">
                                     </label>
                                 </div>
                             </div>
@@ -529,8 +529,14 @@
     <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Media URL</label>
-                <input name="url[]" placeholder="https://..." class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Media Image (Upload or URL)</label>
+                <div class="flex space-x-2">
+                    <input name="url[]" placeholder="https://..." class="flex-1 bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+                    <label class="cursor-pointer bg-slate-800 text-white px-4 py-3 rounded-xl hover:bg-black transition-all flex items-center justify-center font-bold text-xs uppercase tracking-widest min-w-[120px]">
+                        <span>Upload File</span>
+                        <input type="file" class="hidden" onchange="uploadToCloudflare(this)">
+                    </label>
+                </div>
             </div>
             <div>
                 <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Media Type</label>
