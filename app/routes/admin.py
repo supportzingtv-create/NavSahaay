@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, send_from_directory
+from flask import Blueprint, render_template, request, redirect, url_for, flash, send_from_directory, jsonify
 from flask_login import login_required, current_user
 from app.models import Donation, Volunteer, Event, Contact, Document, AuditLog, User, Setting
 from app.utils.security import roles_required
 from werkzeug.utils import secure_filename
+from app.services.r2_service import r2_service
 import os
 from collections import defaultdict
 
@@ -55,8 +56,20 @@ def settings():
             items = []
             urls = request.form.getlist("url[]")
             types = request.form.getlist("type[]")
+            titles = request.form.getlist("title[]")
+            subtitles = request.form.getlist("subtitle[]")
+            positions = request.form.getlist("position[]")
+            opacities = request.form.getlist("opacity[]")
             for i in range(len(urls)):
-                if urls[i]: items.append({"url": urls[i], "type": types[i]})
+                if urls[i]:
+                    items.append({
+                        "url": urls[i],
+                        "type": types[i] if i < len(types) else "image",
+                        "title": titles[i] if i < len(titles) else "",
+                        "subtitle": subtitles[i] if i < len(subtitles) else "",
+                        "position": positions[i] if i < len(positions) else "center",
+                        "opacity": opacities[i] if i < len(opacities) else "100"
+                    })
             Setting.set("hero_slider", items)
             flash("Slider updated.", "success")
 
@@ -212,14 +225,11 @@ def upload_media():
     f = request.files.get("file")
     if not f: return jsonify({"error": "No file"}), 400
 
-    # Secure filename and save to local uploads first
-    # In a real Cloudflare setup, you'd stream this to R2 here.
-    filename = secure_filename(f.filename)
-    upload_path = os.path.join(os.getcwd(), "app", "static", "uploads")
-    os.makedirs(upload_path, exist_ok=True)
-    f.save(os.path.join(upload_path, filename))
-
-    return jsonify({"url": url_for('static', filename='uploads/' + filename)})
+    try:
+        url = r2_service.upload_file(f, folder="media")
+        return jsonify({"url": url})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @admin_bp.route("/donations/<string:id>/verify", methods=["POST"])
 @login_required
@@ -299,19 +309,25 @@ def documents():
         f=request.files.get("file")
         if not f or not f.filename:
             flash("Select a file.","error"); return redirect(url_for("admin.documents"))
-        filename=secure_filename(f.filename)
-        path=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),"uploads",filename)
-        f.save(path)
-        d=Document(title=request.form["title"],category=request.form["category"],filename=filename,description=request.form.get("description"))
-        d.save()
-        flash("Document uploaded.","success")
+
+        try:
+            url = r2_service.upload_file(f, folder="documents")
+            d=Document(title=request.form["title"], category=request.form["category"],
+                       filename=url, description=request.form.get("description"))
+            d.save()
+            flash("Document uploaded to R2.","success")
+        except Exception as e:
+            flash(f"Upload failed: {str(e)}", "error")
+
     return render_template("admin/documents.html", documents=Document.get_all())
 
 @admin_bp.route("/documents/<string:id>/download")
 @login_required
 def download_document(id):
     d=Document.get_by_id(id)
-    if not d:return ("Not found",404)
+    if not d: return ("Not found", 404)
+    if d.filename.startswith("http"):
+        return redirect(d.filename)
     folder=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),"uploads")
     return send_from_directory(folder,d.filename,as_attachment=True)
 

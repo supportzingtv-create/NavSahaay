@@ -42,11 +42,45 @@
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Overlay Intensity (Darkness)</label>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Media Type</label>
                                 <select name="type[]" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-                                    <option value="image" {% if item.type == 'image' %}selected{% endif %}>Standard</option>
+                                    <option value="image" {% if item.type == 'image' %}selected{% endif %}>Image</option>
                                     <option value="video" {% if item.type == 'video' %}selected{% endif %}>Video</option>
                                 </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Banner Title / Heading Text</label>
+                                <input name="title[]" value="{{ item.title | default('') }}" placeholder="e.g. Empowering Rural Communities" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Banner Subtitle / Numbers Text</label>
+                                <input name="subtitle[]" value="{{ item.subtitle | default('') }}" placeholder="e.g. 50,000+ Lives Impacted" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Brightness / Opacity</label>
+                                <select name="opacity[]" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+                                    <option value="100" {% if item.opacity == '100' or not item.opacity %}selected{% endif %}>100% (Brightest)</option>
+                                    <option value="90" {% if item.opacity == '90' %}selected{% endif %}>90%</option>
+                                    <option value="80" {% if item.opacity == '80' %}selected{% endif %}>80%</option>
+                                    <option value="70" {% if item.opacity == '70' %}selected{% endif %}>70%</option>
+                                    <option value="50" {% if item.opacity == '50' %}selected{% endif %}>50%</option>
+                                    <option value="30" {% if item.opacity == '30' %}selected{% endif %}>30% (Dim)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Content Position Template (Click Arrow)</label>
+                                <input type="hidden" name="position[]" value="{{ item.position | default('center') }}" class="position-input">
+                                <div class="grid grid-cols-3 gap-1 w-36 bg-gray-200 p-1 rounded-xl">
+                                    <button type="button" onclick="selectPosition(this, 'top-left')" class="p-1.5 rounded text-center text-xs font-bold {% if item.position == 'top-left' %}bg-blue-600 text-white{% else %}bg-white text-gray-700 hover:bg-gray-100{% endif %}">↖</button>
+                                    <button type="button" onclick="selectPosition(this, 'top-center')" class="p-1.5 rounded text-center text-xs font-bold {% if item.position == 'top-center' %}bg-blue-600 text-white{% else %}bg-white text-gray-700 hover:bg-gray-100{% endif %}">↑</button>
+                                    <button type="button" onclick="selectPosition(this, 'top-right')" class="p-1.5 rounded text-center text-xs font-bold {% if item.position == 'top-right' %}bg-blue-600 text-white{% else %}bg-white text-gray-700 hover:bg-gray-100{% endif %}">↗</button>
+                                    <button type="button" onclick="selectPosition(this, 'center-left')" class="p-1.5 rounded text-center text-xs font-bold {% if item.position == 'center-left' %}bg-blue-600 text-white{% else %}bg-white text-gray-700 hover:bg-gray-100{% endif %}">←</button>
+                                    <button type="button" onclick="selectPosition(this, 'center')" class="p-1.5 rounded text-center text-xs font-bold {% if item.position == 'center' or not item.position %}bg-blue-600 text-white{% else %}bg-white text-gray-700 hover:bg-gray-100{% endif %}">•</button>
+                                    <button type="button" onclick="selectPosition(this, 'center-right')" class="p-1.5 rounded text-center text-xs font-bold {% if item.position == 'center-right' %}bg-blue-600 text-white{% else %}bg-white text-gray-700 hover:bg-gray-100{% endif %}">→</button>
+                                    <button type="button" onclick="selectPosition(this, 'bottom-left')" class="p-1.5 rounded text-center text-xs font-bold {% if item.position == 'bottom-left' %}bg-blue-600 text-white{% else %}bg-white text-gray-700 hover:bg-gray-100{% endif %}">↙</button>
+                                    <button type="button" onclick="selectPosition(this, 'bottom-center')" class="p-1.5 rounded text-center text-xs font-bold {% if item.position == 'bottom-center' %}bg-blue-600 text-white{% else %}bg-white text-gray-700 hover:bg-gray-100{% endif %}">↓</button>
+                                    <button type="button" onclick="selectPosition(this, 'bottom-right')" class="p-1.5 rounded text-center text-xs font-bold {% if item.position == 'bottom-right' %}bg-blue-600 text-white{% else %}bg-white text-gray-700 hover:bg-gray-100{% endif %}">↘</button>
+                                </div>
                             </div>
                         </div>
                         <button type="button" onclick="this.parentElement.remove()" class="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 shadow-lg">
@@ -505,6 +539,40 @@
                     <option value="video">Video</option>
                 </select>
             </div>
+            <div>
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Banner Title / Heading Text</label>
+                <input name="title[]" placeholder="e.g. Empowering Rural Communities" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Banner Subtitle / Numbers Text</label>
+                <input name="subtitle[]" placeholder="e.g. 50,000+ Lives Impacted" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Brightness / Opacity</label>
+                <select name="opacity[]" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+                    <option value="100">100% (Brightest)</option>
+                    <option value="90">90%</option>
+                    <option value="80">80%</option>
+                    <option value="70">70%</option>
+                    <option value="50">50%</option>
+                    <option value="30">30% (Dim)</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Content Position Template (Click Arrow)</label>
+                <input type="hidden" name="position[]" value="center" class="position-input">
+                <div class="grid grid-cols-3 gap-1 w-36 bg-gray-200 p-1 rounded-xl">
+                    <button type="button" onclick="selectPosition(this, 'top-left')" class="p-1.5 rounded text-center text-xs font-bold bg-white text-gray-700 hover:bg-gray-100">↖</button>
+                    <button type="button" onclick="selectPosition(this, 'top-center')" class="p-1.5 rounded text-center text-xs font-bold bg-white text-gray-700 hover:bg-gray-100">↑</button>
+                    <button type="button" onclick="selectPosition(this, 'top-right')" class="p-1.5 rounded text-center text-xs font-bold bg-white text-gray-700 hover:bg-gray-100">↗</button>
+                    <button type="button" onclick="selectPosition(this, 'center-left')" class="p-1.5 rounded text-center text-xs font-bold bg-white text-gray-700 hover:bg-gray-100">←</button>
+                    <button type="button" onclick="selectPosition(this, 'center')" class="p-1.5 rounded text-center text-xs font-bold bg-blue-600 text-white">•</button>
+                    <button type="button" onclick="selectPosition(this, 'center-right')" class="p-1.5 rounded text-center text-xs font-bold bg-white text-gray-700 hover:bg-gray-100">→</button>
+                    <button type="button" onclick="selectPosition(this, 'bottom-left')" class="p-1.5 rounded text-center text-xs font-bold bg-white text-gray-700 hover:bg-gray-100">↙</button>
+                    <button type="button" onclick="selectPosition(this, 'bottom-center')" class="p-1.5 rounded text-center text-xs font-bold bg-white text-gray-700 hover:bg-gray-100">↓</button>
+                    <button type="button" onclick="selectPosition(this, 'bottom-right')" class="p-1.5 rounded text-center text-xs font-bold bg-white text-gray-700 hover:bg-gray-100">↘</button>
+                </div>
+            </div>
         </div>
         <button type="button" onclick="this.parentElement.remove()" class="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 shadow-lg">
             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -685,6 +753,15 @@ async function uploadToCloudflare(input) {
         alert('Upload failed. Using local fallback.');
         label.innerHTML = 'Error';
     }
+}
+
+function selectPosition(btn, pos) {
+    const container = btn.parentElement;
+    container.parentElement.querySelector('.position-input').value = pos;
+    container.querySelectorAll('button').forEach(b => {
+        b.className = 'p-1.5 rounded text-center text-xs font-bold bg-white text-gray-700 hover:bg-gray-100';
+    });
+    btn.className = 'p-1.5 rounded text-center text-xs font-bold bg-blue-600 text-white';
 }
 </script>
 {% endblock %}

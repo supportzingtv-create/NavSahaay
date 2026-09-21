@@ -10,14 +10,39 @@
                     {% for item in slider_items %}
                     <div class="swiper-slide bg-black relative p-0 m-0">
                         {% if item.type == 'video' %}
-                        <video autoplay muted loop class="w-full h-full object-cover opacity-30">
+                        <video autoplay muted loop class="w-full h-full object-cover" style="opacity: {{ (item.opacity | default(100) | int) / 100 }};">
                             <source src="{{ item.url }}" type="video/mp4">
                         </video>
                         {% else %}
-                        <img src="{{ item.url }}" alt="Impact Work" class="w-full h-full object-cover opacity-30">
+                        <img src="{{ item.url }}" alt="Impact Work" class="w-full h-full object-cover" style="opacity: {{ (item.opacity | default(100) | int) / 100 }};">
                         {% endif %}
-                        <!-- Deep black overlay for a serious tone -->
-                        <div class="absolute inset-0 bg-black/40"></div>
+
+                        <!-- Overlay positioning template -->
+                        {% set pos_class = "items-center justify-center text-center" %}
+                        {% if item.position == "top-left" %}{% set pos_class = "items-start justify-start text-left" %}
+                        {% elif item.position == "top-center" %}{% set pos_class = "items-start justify-center text-center" %}
+                        {% elif item.position == "top-right" %}{% set pos_class = "items-start justify-end text-right" %}
+                        {% elif item.position == "center-left" %}{% set pos_class = "items-center justify-start text-left" %}
+                        {% elif item.position == "center" %}{% set pos_class = "items-center justify-center text-center" %}
+                        {% elif item.position == "center-right" %}{% set pos_class = "items-center justify-end text-right" %}
+                        {% elif item.position == "bottom-left" %}{% set pos_class = "items-end justify-start text-left" %}
+                        {% elif item.position == "bottom-center" %}{% set pos_class = "items-end justify-center text-center" %}
+                        {% elif item.position == "bottom-right" %}{% set pos_class = "items-end justify-end text-right" %}{% endif %}
+
+                        <div class="absolute inset-0 flex {{ pos_class }} p-8 md:p-16 bg-black/20 z-10">
+                            <div class="max-w-2xl text-white">
+                                {% if item.subtitle %}
+                                <p class="text-xs md:text-sm font-black uppercase tracking-widest text-blue-400 mb-2 drop-shadow-md">
+                                    {{ item.subtitle }}
+                                </p>
+                                {% endif %}
+                                {% if item.title %}
+                                <h1 class="text-xl md:text-3xl lg:text-4xl font-serif font-black uppercase tracking-tight leading-tight drop-shadow-lg text-white">
+                                    {{ item.title }}
+                                </h1>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                     {% endfor %}
                 </div>
