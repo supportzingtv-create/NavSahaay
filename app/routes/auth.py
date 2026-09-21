@@ -7,7 +7,7 @@ auth_bp=Blueprint("auth",__name__)
 @auth_bp.route("/login", methods=["GET","POST"])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for("admin.dashboard", _external=True))
+        return redirect(url_for("admin.dashboard"))
     if request.method=="POST":
         email = request.form["email"]
         password = request.form["password"]
@@ -22,8 +22,7 @@ def login():
 
         if user and user.active and user.check_password(password):
             login_user(user)
-            # Use absolute URL to ensure we stay on the correct subdomain
-            return redirect(url_for("admin.dashboard", _external=True))
+            return redirect(url_for("admin.dashboard"))
 
         flash("Invalid email or password.", "error")
     return render_template("login.html")
@@ -31,4 +30,4 @@ def login():
 @auth_bp.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for("main.home", _external=True))
+    return redirect(url_for("main.home"))

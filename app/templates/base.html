@@ -161,7 +161,7 @@
     <!-- Navbar -->
     <header class="sticky top-0 w-full z-50 glass-nav border-b border-gray-100/10 shadow-sm transition-all duration-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16 md:h-20">
+            <div class="flex justify-between items-center h-16">
                 <div class="flex justify-start lg:w-0 lg:flex-1 h-full">
                     <a href="{{ url_for('main.home') }}" class="flex items-center space-x-3 group h-full py-1">
                         <div class="flex-shrink-0 h-full flex items-center">
@@ -175,12 +175,12 @@
                 </div>
 
                 <nav class="hidden lg:flex space-x-6 items-center h-full">
-                    <a href="{{ url_for('main.home') }}" class="text-xs font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">Home</a>
-                    <a href="#about" class="text-xs font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">About Us</a>
+                    <a href="{{ url_for('main.home') }}" class="text-[10px] font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">Home</a>
+                    <a href="#about" class="text-[10px] font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">About Us</a>
 
                     <!-- Mega Menu for Causes -->
                     <div class="relative group h-full flex items-center">
-                        <button class="text-xs font-bold text-black group-hover:text-primary-500 transition-colors uppercase tracking-widest flex items-center">
+                        <button class="text-[10px] font-bold text-black group-hover:text-primary-500 transition-colors uppercase tracking-widest flex items-center">
                             Causes
                             <svg class="h-3 w-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
@@ -188,11 +188,11 @@
                             <div class="grid grid-cols-5 gap-8">
                                 {% for category in ['Food', 'Child', 'Education', 'Special Events', 'Others'] %}
                                 <div>
-                                    <h4 class="text-xs font-bold text-black uppercase tracking-wider mb-6 pb-2 border-b border-gray-100">{{ category }}</h4>
+                                    <h4 class="text-[10px] font-bold text-black uppercase tracking-wider mb-6 pb-2 border-b border-gray-100">{{ category }}</h4>
                                     <ul class="space-y-4">
                                         {% for cause in mega_menu_causes.get(category, []) %}
                                         <li>
-                                            <a href="{{ url_for('main.cause_detail', slug=cause.slug) }}" class="text-xs text-gray-600 hover:text-primary-500 transition-colors block font-medium">
+                                            <a href="{{ url_for('main.cause_detail', slug=cause.slug) }}" class="text-[10px] text-gray-600 hover:text-primary-500 transition-colors block font-medium">
                                                 {{ cause.title }}
                                             </a>
                                         </li>
@@ -201,29 +201,17 @@
                                 </div>
                                 {% endfor %}
                             </div>
-
-                            <!-- Monthly Promotion in Mega Menu -->
-                            <div class="mt-8 pt-6 border-t border-gray-100 flex items-center justify-between">
-                                <div class="flex items-center space-x-4">
-                                    <div class="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center text-xl">💙</div>
-                                    <div>
-                                        <p class="text-xs font-bold text-black uppercase tracking-wider">Sustained Impact</p>
-                                        <p class="text-xs text-gray-500">Join 5,000+ heroes who donate monthly.</p>
-                                    </div>
-                                </div>
-                                <a href="#donate" class="bg-black text-white px-6 py-2.5 text-xs font-bold uppercase tracking-wider hover:bg-primary-500 transition-colors">Donate Monthly</a>
-                            </div>
                         </div>
                     </div>
 
-                    <a href="#" class="text-xs font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">Blog</a>
-                    <a href="#" class="text-xs font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">CSR</a>
-                    <a href="#" class="text-xs font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">Gallery</a>
-                    <a href="#contact" class="text-xs font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">Contact</a>
+                    <a href="#" class="text-[10px] font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">Blog</a>
+                    <a href="#" class="text-[10px] font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">CSR</a>
+                    <a href="#" class="text-[10px] font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">Gallery</a>
+                    <a href="#contact" class="text-[10px] font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">Contact</a>
 
-                    <div class="h-6 w-px bg-gray-200 mx-2"></div>
+                    <div class="h-8 w-px bg-gray-100 mx-2"></div>
 
-                    <a href="#donate" class="inline-flex items-center justify-center px-6 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-xs font-bold uppercase tracking-widest transition-colors">Donate Now</a>
+                    <a href="#donate" class="inline-flex items-center justify-center px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-full shadow-lg text-[10px] font-black uppercase tracking-widest transform transition-all hover:scale-105 active:scale-95">Donate Now</a>
                 </nav>
 
                 <div class="md:hidden flex items-center space-x-4">
