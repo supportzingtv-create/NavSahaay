@@ -45,26 +45,29 @@
             overflow-x: hidden;
         }
 
-        /* Beautiful Dynamic Red Motion/Pulse Background */
+        /* Enhanced Dynamic Moving/Flowing Red & Purple Cyberpunk Neon Motion Background */
         body::before {
             content: "";
             position: fixed;
-            top: -20%;
-            left: -20%;
-            width: 140%;
-            height: 140%;
-            background: radial-gradient(circle at 10% 20%, rgba(239, 68, 68, 0.07) 0%, transparent 40%),
-                        radial-gradient(circle at 90% 80%, rgba(220, 38, 38, 0.06) 0%, transparent 45%),
-                        radial-gradient(circle at 50% 50%, rgba(185, 28, 28, 0.04) 0%, transparent 50%);
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 30%, rgba(239, 68, 68, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(185, 28, 28, 0.12) 0%, transparent 50%),
+                        radial-gradient(circle at 50% 20%, rgba(220, 38, 38, 0.08) 0%, transparent 40%),
+                        radial-gradient(circle at 75% 15%, rgba(147, 51, 234, 0.07) 0%, transparent 45%);
             z-index: -1;
             pointer-events: none;
-            animation: redMotion 25s ease-in-out infinite alternate;
+            filter: blur(40px);
+            animation: flowingMotion 15s linear infinite;
         }
 
-        @keyframes redMotion {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(2%, 4%) scale(1.05); }
-            100% { transform: translate(-1%, -3%) scale(0.98); }
+        @keyframes flowingMotion {
+            0% { transform: rotate(0deg) translate(0px, 0px) scale(1); }
+            33% { transform: rotate(4deg) translate(30px, -50px) scale(1.05); }
+            66% { transform: rotate(-3deg) translate(-20px, 40px) scale(0.95); }
+            100% { transform: rotate(0deg) translate(0px, 0px) scale(1); }
         }
 
         /* Theme Overrides for Total Dark Mode and White Text */
@@ -100,10 +103,29 @@
             border-color: var(--border-color) !important;
         }
 
-        /* Sidebar styling override */
+        /* Glassmorphism Sidebar */
         aside {
-            background-color: #0c0c0e !important;
-            border-right: 1px solid var(--border-color);
+            background-color: rgba(9, 9, 11, 0.9) !important;
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        header {
+            background-color: rgba(18, 18, 20, 0.7) !important;
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        }
+
+        .stat-card {
+            background: linear-gradient(145deg, rgba(24, 24, 27, 0.9), rgba(18, 18, 20, 0.9));
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(239, 68, 68, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
         }
     </style>
 </head>

@@ -4,35 +4,63 @@
 
 {% block content %}
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-        <p class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-1">Total Donations</p>
+    <div class="stat-card p-6 rounded-2xl shadow-sm">
+        <div class="flex justify-between items-start mb-4">
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Total Donations</p>
+            <div class="p-2 rounded-xl bg-red-500/10 text-red-400">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+        </div>
         <div class="flex items-end justify-between">
-            <h3 class="text-3xl font-extrabold text-gray-900">{{ donation_count }}</h3>
-            <span class="text-green-500 text-xs font-bold bg-green-50 px-2 py-1 rounded-lg">+12%</span>
+            <h3 class="text-3xl font-extrabold text-gray-100">{{ donation_count }}</h3>
+            <span class="text-green-400 text-xs font-bold bg-green-500/10 px-2 py-1 rounded-lg">+12%</span>
         </div>
     </div>
 
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-        <p class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-1">Volunteers</p>
+    <div class="stat-card p-6 rounded-2xl shadow-sm">
+        <div class="flex justify-between items-start mb-4">
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Volunteers</p>
+            <div class="p-2 rounded-xl bg-purple-500/10 text-purple-400">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                </svg>
+            </div>
+        </div>
         <div class="flex items-end justify-between">
-            <h3 class="text-3xl font-extrabold text-gray-900">{{ volunteer_count }}</h3>
-            <span class="text-blue-500 text-xs font-bold bg-blue-50 px-2 py-1 rounded-lg">Active</span>
+            <h3 class="text-3xl font-extrabold text-gray-100">{{ volunteer_count }}</h3>
+            <span class="text-blue-400 text-xs font-bold bg-blue-500/10 px-2 py-1 rounded-lg">Active</span>
         </div>
     </div>
 
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-        <p class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-1">Total Events</p>
+    <div class="stat-card p-6 rounded-2xl shadow-sm">
+        <div class="flex justify-between items-start mb-4">
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Total Events</p>
+            <div class="p-2 rounded-xl bg-emerald-500/10 text-emerald-400">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 002-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+            </div>
+        </div>
         <div class="flex items-end justify-between">
-            <h3 class="text-3xl font-extrabold text-gray-900">{{ event_count }}</h3>
-            <span class="text-primary-700 text-xs font-bold bg-primary-50 px-2 py-1 rounded-lg">Upcoming</span>
+            <h3 class="text-3xl font-extrabold text-gray-100">{{ event_count }}</h3>
+            <span class="text-emerald-400 text-xs font-bold bg-emerald-500/10 px-2 py-1 rounded-lg">Upcoming</span>
         </div>
     </div>
 
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-        <p class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-1">Total Inquiries</p>
+    <div class="stat-card p-6 rounded-2xl shadow-sm">
+        <div class="flex justify-between items-start mb-4">
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Total Inquiries</p>
+            <div class="p-2 rounded-xl bg-amber-500/10 text-amber-400">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                </svg>
+            </div>
+        </div>
         <div class="flex items-end justify-between">
-            <h3 class="text-3xl font-extrabold text-gray-900">{{ contact_count }}</h3>
-            <span class="text-purple-500 text-xs font-bold bg-purple-50 px-2 py-1 rounded-lg">Pending</span>
+            <h3 class="text-3xl font-extrabold text-gray-100">{{ contact_count }}</h3>
+            <span class="text-amber-400 text-xs font-bold bg-amber-500/10 px-2 py-1 rounded-lg">Pending</span>
         </div>
     </div>
 </div>
