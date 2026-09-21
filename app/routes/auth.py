@@ -9,16 +9,18 @@ def login():
     if current_user.is_authenticated:
         return redirect(url_for("admin.dashboard"))
     if request.method=="POST":
-        email = request.form["email"]
-        password = request.form["password"]
+        email = request.form["email"].strip().lower()
+        password = request.form["password"].strip()
 
-        user = User.get_by_email(email)
-
-        # If user not found, try to run seeding once to ensure admin exists
-        if not user:
+        # Always run seed_admin_and_events on login attempt to ensure
+        # credentials in Firestore perfectly sync with Vercel Environment Variables
+        try:
             from app.services.seed import seed_admin_and_events
             seed_admin_and_events()
-            user = User.get_by_email(email)
+        except Exception as e:
+            print(f"Login seeding failed: {e}")
+
+        user = User.get_by_email(email)
 
         if user and user.active and user.check_password(password):
             login_user(user)
