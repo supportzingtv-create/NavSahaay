@@ -31,52 +31,65 @@
     </script>
     <style>
         :root {
-            --dark-bg: #09090b;
-            --card-bg: #121214;
-            --border-color: #27272a;
-            --text-main: #fafafa;
+            --dark-bg: #030303;
+            --card-bg: #09090b;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
             --text-muted: #a1a1aa;
         }
 
-        body {
+        html, body {
             background-color: var(--dark-bg);
             color: var(--text-main);
             position: relative;
             overflow-x: hidden;
+            width: 100%;
+            margin: 0;
+            padding: 0;
         }
 
-        /* Enhanced Dynamic Moving/Flowing Red & Purple Cyberpunk Neon Motion Background */
+        /* High-Contrast Vibrant Moving Red Ambient Aurora Backdrop (ZingTV Fill Style) */
         body::before {
             content: "";
             position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 20% 30%, rgba(239, 68, 68, 0.15) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 70%, rgba(185, 28, 28, 0.12) 0%, transparent 50%),
-                        radial-gradient(circle at 50% 20%, rgba(220, 38, 38, 0.08) 0%, transparent 40%),
-                        radial-gradient(circle at 75% 15%, rgba(147, 51, 234, 0.07) 0%, transparent 45%);
-            z-index: -1;
+            top: -40%;
+            left: -40%;
+            width: 180%;
+            height: 180%;
+            background: radial-gradient(circle at 15% 25%, rgba(220, 38, 38, 0.28) 0%, transparent 45%),
+                        radial-gradient(circle at 85% 75%, rgba(153, 27, 27, 0.25) 0%, transparent 45%),
+                        radial-gradient(circle at 50% 50%, rgba(239, 68, 68, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(126, 34, 206, 0.12) 0%, transparent 40%);
+            z-index: -2;
             pointer-events: none;
-            filter: blur(40px);
-            animation: flowingMotion 15s linear infinite;
+            filter: blur(50px);
+            animation: flowingMotion 12s ease-in-out infinite alternate;
         }
 
         @keyframes flowingMotion {
-            0% { transform: rotate(0deg) translate(0px, 0px) scale(1); }
-            33% { transform: rotate(4deg) translate(30px, -50px) scale(1.05); }
-            66% { transform: rotate(-3deg) translate(-20px, 40px) scale(0.95); }
-            100% { transform: rotate(0deg) translate(0px, 0px) scale(1); }
+            0% { transform: translate(0px, 0px) scale(1) rotate(0deg); }
+            50% { transform: translate(40px, 60px) scale(1.12) rotate(3deg); }
+            100% { transform: translate(-20px, -40px) scale(0.95) rotate(-2deg); }
+        }
+
+        /* Subtle animated overlay pattern for rich digital feel */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 24px 24px;
+            z-index: -1;
+            pointer-events: none;
         }
 
         /* Theme Overrides for Total Dark Mode and White Text */
         .admin-theme { background: var(--dark-bg); color: var(--text-main); }
         .admin-theme .bg-white { background-color: var(--card-bg) !important; color: var(--text-main) !important; }
         .admin-theme .bg-gray-50 { background-color: var(--dark-bg) !important; }
-        .admin-theme .bg-gray-100 { background-color: #1f1f23 !important; }
-        .admin-theme .bg-gray-900 { background-color: #040405 !important; }
-        .admin-theme .bg-gray-800 { background-color: #1e1e24 !important; }
+        .admin-theme .bg-gray-100 { background-color: #141416 !important; }
+        .admin-theme .bg-gray-900 { background-color: #050506 !important; }
+        .admin-theme .bg-gray-800 { background-color: #18181b !important; }
 
         .admin-theme .text-gray-900 { color: var(--text-main) !important; }
         .admin-theme .text-gray-800 { color: #f4f4f5 !important; }
@@ -117,51 +130,52 @@
         }
 
         .stat-card {
-            background: linear-gradient(145deg, rgba(24, 24, 27, 0.9), rgba(18, 18, 20, 0.9));
+            background: linear-gradient(135deg, rgba(20, 20, 25, 0.7), rgba(10, 10, 12, 0.8));
             border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05), 0 10px 25px -5px rgba(0, 0, 0, 0.6);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .stat-card:hover {
-            border-color: rgba(239, 68, 68, 0.2);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+            border-color: rgba(220, 38, 38, 0.4);
+            box-shadow: 0 0 30px rgba(220, 38, 38, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            transform: translateY(-4px) scale(1.01);
         }
     </style>
 </head>
 <body class="admin-theme bg-zinc-950 font-sans antialiased text-zinc-100">
-    <div class="min-h-screen flex">
+    <div class="min-h-screen flex overflow-hidden w-full">
         <!-- Sidebar -->
         <aside class="w-64 bg-zinc-950 text-white flex-shrink-0 hidden md:block">
             <div class="p-6">
                 <a href="{{ url_for('main.home') }}" class="flex items-center space-x-3">
-                    <img class="h-10 w-auto object-contain" src="{{ url_for('static', filename='images/logo2.png') }}" alt="Logo">
-                    <span class="text-lg font-bold tracking-tighter uppercase font-serif">NavSahaay</span>
+                    <div class="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center font-bold text-white shadow-lg shadow-red-600/30">N</div>
+                    <span class="text-xl font-black tracking-tight uppercase">NavSahaay</span>
                 </a>
             </div>
             <nav class="mt-6 px-4 space-y-2">
-                <a href="{{ url_for('admin.dashboard') }}" class="block px-4 py-2.5 rounded-lg hover:bg-gray-800 transition-colors {% if request.endpoint == 'admin.dashboard' %}bg-gray-800 text-white font-semibold{% else %}text-gray-400{% endif %}">Dashboard</a>
-                <a href="{{ url_for('admin.donations') }}" class="block px-4 py-2.5 rounded-lg hover:bg-gray-800 transition-colors {% if request.endpoint == 'admin.donations' %}bg-gray-800 text-white font-semibold{% else %}text-gray-400{% endif %}">Donations</a>
-                <a href="{{ url_for('admin.volunteers') }}" class="block px-4 py-2.5 rounded-lg hover:bg-gray-800 transition-colors {% if request.endpoint == 'admin.volunteers' %}bg-gray-800 text-white font-semibold{% else %}text-gray-400{% endif %}">Volunteers</a>
-                <a href="{{ url_for('admin.causes') }}" class="block px-4 py-2.5 rounded-lg hover:bg-gray-800 transition-colors {% if request.endpoint == 'admin.causes' %}bg-gray-800 text-white font-semibold{% else %}text-gray-400{% endif %}">Donation Causes</a>
-                <a href="{{ url_for('admin.impact_map') }}" class="block px-4 py-2.5 rounded-lg hover:bg-gray-800 transition-colors {% if request.endpoint == 'admin.impact_map' %}bg-gray-800 text-white font-semibold{% else %}text-gray-400{% endif %}">Impact Map Pins</a>
-                <a href="{{ url_for('admin.reports') }}" class="block px-4 py-2.5 rounded-lg hover:bg-gray-800 transition-colors {% if request.endpoint == 'admin.reports' %}bg-gray-800 text-white font-semibold{% else %}text-gray-400{% endif %}">Ground Reports</a>
-                <a href="{{ url_for('admin.events') }}" class="block px-4 py-2.5 rounded-lg hover:bg-gray-800 transition-colors {% if request.endpoint == 'admin.events' %}bg-gray-800 text-white font-semibold{% else %}text-gray-400{% endif %}">Events</a>
-                <a href="{{ url_for('admin.contacts') }}" class="block px-4 py-2.5 rounded-lg hover:bg-gray-800 transition-colors {% if request.endpoint == 'admin.contacts' %}bg-gray-800 text-white font-semibold{% else %}text-gray-400{% endif %}">Contacts</a>
-                <a href="{{ url_for('admin.documents') }}" class="block px-4 py-2.5 rounded-lg hover:bg-gray-800 transition-colors {% if request.endpoint == 'admin.documents' %}bg-gray-800 text-white font-semibold{% else %}text-gray-400{% endif %}">Documents</a>
+                <a href="{{ url_for('admin.dashboard') }}" class="block px-4 py-3 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.dashboard' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Overview Dashboard</a>
+                <a href="{{ url_for('admin.donations') }}" class="block px-4 py-3 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.donations' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Donations</a>
+                <a href="{{ url_for('admin.volunteers') }}" class="block px-4 py-3 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.volunteers' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Volunteers</a>
+                <a href="{{ url_for('admin.causes') }}" class="block px-4 py-3 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.causes' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Donation Causes</a>
+                <a href="{{ url_for('admin.impact_map') }}" class="block px-4 py-3 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.impact_map' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Impact Map Pins</a>
+                <a href="{{ url_for('admin.reports') }}" class="block px-4 py-3 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.reports' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Ground Reports</a>
+                <a href="{{ url_for('admin.events') }}" class="block px-4 py-3 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.events' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Events</a>
+                <a href="{{ url_for('admin.contacts') }}" class="block px-4 py-3 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.contacts' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Contacts</a>
+                <a href="{{ url_for('admin.documents') }}" class="block px-4 py-3 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.documents' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Documents</a>
 
-                <div class="mt-8 pt-8 border-t border-gray-800">
-                    <p class="px-4 text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">Management</p>
-                    <a href="{{ url_for('admin.users') }}" class="block px-4 py-2.5 rounded-lg hover:bg-gray-800 transition-colors {% if request.endpoint == 'admin.users' %}bg-gray-800 text-white font-semibold{% else %}text-gray-400{% endif %}">User Management</a>
-                    <a href="{{ url_for('admin.settings') }}" class="block px-4 py-2.5 rounded-lg hover:bg-gray-800 transition-colors {% if request.endpoint == 'admin.settings' %}bg-gray-800 text-white font-semibold{% else %}text-gray-400{% endif %}">Site Management</a>
+                <div class="mt-8 pt-8 border-t border-zinc-800">
+                    <p class="px-4 text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-4">Management</p>
+                    <a href="{{ url_for('admin.users') }}" class="block px-4 py-3 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.users' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">User Management</a>
+                    <a href="{{ url_for('admin.settings') }}" class="block px-4 py-3 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.settings' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Site Management</a>
                 </div>
             </nav>
         </aside>
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col min-w-0">
-            <header class="bg-white border-b border-gray-200 px-8 py-4 flex justify-between items-center sticky top-0 z-10">
-                <h1 class="text-xl font-bold">{% block header_title %}Dashboard{% endblock %}</h1>
+        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto overflow-x-hidden h-screen">
+            <header class="px-8 py-5 flex justify-between items-center sticky top-0 z-10">
+                <h1 class="text-2xl font-black tracking-tight text-white">{% block header_title %}Dashboard{% endblock %}</h1>
                 <div class="flex items-center space-x-4">
                     <span class="text-sm font-medium text-gray-500">{{ current_user.name if current_user.is_authenticated else 'Admin' }}</span>
                     <a href="{{ url_for('auth.logout') }}" class="text-sm font-semibold text-red-600 hover:text-red-700">Logout</a>

@@ -1,6 +1,6 @@
 {% extends "admin/base.html" %}
 
-{% block header_title %}Overview Dashboard{% endblock %}
+{% block header_title %}STUDIO OVERVIEW{% endblock %}
 
 {% block content %}
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -66,56 +66,56 @@
 </div>
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-    <div class="lg:col-span-2 bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-        <h3 class="text-lg font-bold mb-6">Donation Trends</h3>
+    <div class="lg:col-span-2 stat-card p-8 rounded-2xl shadow-sm">
+        <h3 class="text-lg font-black tracking-tight text-white mb-6 uppercase">Donation Trends</h3>
         <div class="h-64">
             <canvas id="donationChart"></canvas>
         </div>
     </div>
 
-    <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-        <h3 class="text-lg font-bold mb-6">Impact Summary</h3>
+    <div class="stat-card p-8 rounded-2xl shadow-sm">
+        <h3 class="text-lg font-black tracking-tight text-white mb-6 uppercase">Impact Summary</h3>
         <div class="space-y-6">
             <div>
                 <div class="flex justify-between text-sm mb-2">
-                    <span class="text-gray-500">Education Support</span>
-                    <span class="font-bold">75%</span>
+                    <span class="text-zinc-400">Education Support</span>
+                    <span class="font-bold text-red-500">75%</span>
                 </div>
-                <div class="w-full bg-gray-100 rounded-full h-2">
-                    <div class="bg-primary-600 h-2 rounded-full" style="width: 75%"></div>
-                </div>
-            </div>
-            <div>
-                <div class="flex justify-between text-sm mb-2">
-                    <span class="text-gray-500">Food Drives</span>
-                    <span class="font-bold">60%</span>
-                </div>
-                <div class="w-full bg-gray-100 rounded-full h-2">
-                    <div class="bg-primary-600 h-2 rounded-full" style="width: 60%"></div>
+                <div class="w-full bg-zinc-900 rounded-full h-2">
+                    <div class="bg-red-600 h-2 rounded-full shadow-[0_0_10px_rgba(220,38,38,0.5)]" style="width: 75%"></div>
                 </div>
             </div>
             <div>
                 <div class="flex justify-between text-sm mb-2">
-                    <span class="text-gray-500">Tree Plantation</span>
-                    <span class="font-bold">45%</span>
+                    <span class="text-zinc-400">Food Drives</span>
+                    <span class="font-bold text-red-400">60%</span>
                 </div>
-                <div class="w-full bg-gray-100 rounded-full h-2">
-                    <div class="bg-blue-600 h-2 rounded-full" style="width: 45%"></div>
+                <div class="w-full bg-zinc-900 rounded-full h-2">
+                    <div class="bg-red-500 h-2 rounded-full shadow-[0_0_10px_rgba(239,68,68,0.5)]" style="width: 60%"></div>
+                </div>
+            </div>
+            <div>
+                <div class="flex justify-between text-sm mb-2">
+                    <span class="text-zinc-400">Tree Plantation</span>
+                    <span class="font-bold text-purple-400">45%</span>
+                </div>
+                <div class="w-full bg-zinc-900 rounded-full h-2">
+                    <div class="bg-purple-600 h-2 rounded-full shadow-[0_0_10px_rgba(147,51,234,0.5)]" style="width: 45%"></div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-    <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center">
-        <h3 class="text-lg font-bold">Recent Donations</h3>
-        <a href="{{ url_for('admin.donations') }}" class="text-sm font-semibold text-blue-600 hover:text-blue-700 underline decoration-blue-100">View All</a>
+<div class="stat-card rounded-2xl shadow-sm overflow-hidden">
+    <div class="px-8 py-6 border-b border-zinc-800 flex justify-between items-center">
+        <h3 class="text-lg font-black tracking-tight text-white uppercase">Recent Donations</h3>
+        <a href="{{ url_for('admin.donations') }}" class="text-sm font-semibold text-red-500 hover:text-red-400 underline decoration-red-900">View All</a>
     </div>
     <div class="overflow-x-auto">
         <table class="w-full text-left">
             <thead>
-                <tr class="bg-gray-50 text-xs font-bold text-gray-400 uppercase tracking-widest">
+                <tr class="bg-zinc-900/50 border-b border-zinc-800 text-xs font-bold text-zinc-400 uppercase tracking-widest">
                     <th class="px-8 py-4">Donor Name</th>
                     <th class="px-8 py-4">Amount</th>
                     <th class="px-8 py-4">Cause</th>
@@ -123,21 +123,21 @@
                     <th class="px-8 py-4 text-right">Date</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-gray-100">
+            <tbody class="divide-y divide-zinc-800/60">
                 {% for d in recent_donations %}
-                <tr class="hover:bg-gray-50 transition-colors group">
+                <tr class="hover:bg-zinc-900/40 transition-colors group">
                     <td class="px-8 py-4">
-                        <p class="font-bold text-gray-900">{{ d.donor_name }}</p>
-                        <p class="text-xs text-gray-400">{{ d.email }}</p>
+                        <p class="font-bold text-white">{{ d.donor_name }}</p>
+                        <p class="text-xs text-zinc-500">{{ d.email }}</p>
                     </td>
-                    <td class="px-8 py-4 font-bold text-gray-900">₹{{ d.amount }}</td>
-                    <td class="px-8 py-4 text-sm font-medium text-gray-500">{{ d.cause }}</td>
+                    <td class="px-8 py-4 font-bold text-white">₹{{ d.amount }}</td>
+                    <td class="px-8 py-4 text-sm font-medium text-zinc-400">{{ d.cause }}</td>
                     <td class="px-8 py-4">
-                        <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest {% if d.status == 'VERIFIED' %}bg-green-100 text-green-700{% else %}bg-primary-100 text-primary-700{% endif %}">
+                        <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest {% if d.status == 'VERIFIED' %}bg-green-500/10 text-green-400 border border-green-500/20{% else %}bg-red-500/10 text-red-400 border border-red-500/20{% endif %}">
                             {{ d.status }}
                         </span>
                     </td>
-                    <td class="px-8 py-4 text-right text-xs font-bold text-gray-400 uppercase tracking-tighter">
+                    <td class="px-8 py-4 text-right text-xs font-bold text-zinc-500 uppercase tracking-tighter">
                         {{ d.created_at.strftime('%d %b %Y') }}
                     </td>
                 </tr>
