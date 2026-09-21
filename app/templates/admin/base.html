@@ -30,26 +30,87 @@
         }
     </script>
     <style>
-        :root { --navy: #12233f; --navy-deep: #0b172b; --gold: #bd8f2f; --ivory: #f8f6f0; --ink: #1c2533; }
-        .admin-theme { background: var(--ivory); color: var(--ink); }
-        .admin-theme .bg-white { background-color: #fffdf9; }
-        .admin-theme .bg-gray-50 { background-color: var(--ivory); }
-        .admin-theme .bg-gray-100 { background-color: #eeeae1; }
-        .admin-theme .bg-gray-900 { background-color: var(--navy); }
-        .admin-theme .bg-gray-800 { background-color: #1c3154; }
-        .admin-theme .text-gray-900 { color: var(--ink); }
-        .admin-theme .text-gray-700 { color: #4a5362; }
-        .admin-theme .text-gray-600 { color: #687181; }
-        .admin-theme .border-gray-100 { border-color: #e8e2d5; }
-        .admin-theme .border-gray-200 { border-color: #ddd7ca; }
-        .admin-theme .border-gray-800 { border-color: #263754; }
-        .admin-theme .shadow-sm { box-shadow: 0 8px 24px rgba(18, 35, 63, .06); }
+        :root {
+            --dark-bg: #09090b;
+            --card-bg: #121214;
+            --border-color: #27272a;
+            --text-main: #fafafa;
+            --text-muted: #a1a1aa;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-main);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Beautiful Dynamic Red Motion/Pulse Background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: -20%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            background: radial-gradient(circle at 10% 20%, rgba(239, 68, 68, 0.07) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(220, 38, 38, 0.06) 0%, transparent 45%),
+                        radial-gradient(circle at 50% 50%, rgba(185, 28, 28, 0.04) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+            animation: redMotion 25s ease-in-out infinite alternate;
+        }
+
+        @keyframes redMotion {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(2%, 4%) scale(1.05); }
+            100% { transform: translate(-1%, -3%) scale(0.98); }
+        }
+
+        /* Theme Overrides for Total Dark Mode and White Text */
+        .admin-theme { background: var(--dark-bg); color: var(--text-main); }
+        .admin-theme .bg-white { background-color: var(--card-bg) !important; color: var(--text-main) !important; }
+        .admin-theme .bg-gray-50 { background-color: var(--dark-bg) !important; }
+        .admin-theme .bg-gray-100 { background-color: #1f1f23 !important; }
+        .admin-theme .bg-gray-900 { background-color: #040405 !important; }
+        .admin-theme .bg-gray-800 { background-color: #1e1e24 !important; }
+
+        .admin-theme .text-gray-900 { color: var(--text-main) !important; }
+        .admin-theme .text-gray-800 { color: #f4f4f5 !important; }
+        .admin-theme .text-gray-700 { color: #e4e4e7 !important; }
+        .admin-theme .text-gray-600 { color: var(--text-muted) !important; }
+        .admin-theme .text-gray-500 { color: #8a8a93 !important; }
+        .admin-theme .text-gray-400 { color: #71717a !important; }
+
+        .admin-theme border,
+        .admin-theme .border,
+        .admin-theme .border-gray-100,
+        .admin-theme .border-gray-200,
+        .admin-theme .border-gray-300 {
+            border-color: var(--border-color) !important;
+        }
+
+        .admin-theme .border-gray-800 { border-color: #27272a !important; }
+        .admin-theme .shadow-sm { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); }
+
+        /* Input & Form Styling adjustments for dark mode */
+        .admin-theme input, .admin-theme select, .admin-theme textarea {
+            background-color: #18181b !important;
+            color: var(--text-main) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        /* Sidebar styling override */
+        aside {
+            background-color: #0c0c0e !important;
+            border-right: 1px solid var(--border-color);
+        }
     </style>
 </head>
-<body class="admin-theme bg-gray-50 font-sans antialiased text-gray-900">
+<body class="admin-theme bg-zinc-950 font-sans antialiased text-zinc-100">
     <div class="min-h-screen flex">
         <!-- Sidebar -->
-        <aside class="w-64 bg-gray-900 text-white flex-shrink-0 hidden md:block">
+        <aside class="w-64 bg-zinc-950 text-white flex-shrink-0 hidden md:block">
             <div class="p-6">
                 <a href="{{ url_for('main.home') }}" class="flex items-center space-x-3">
                     <img class="h-10 w-auto object-contain" src="{{ url_for('static', filename='images/logo2.png') }}" alt="Logo">
