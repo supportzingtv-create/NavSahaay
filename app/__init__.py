@@ -87,6 +87,21 @@ def create_app():
     except Exception as e:
         app.logger.error(f"Database initialization failed: {e}")
 
+    @app.before_request
+    def handle_admin_domain():
+        if request.path.startswith('/static') or request.path.startswith('/api'):
+            return
+
+        host = request.host.lower().split(':')[0]
+        # If the domain starts with 'admin' (like adminnavsahaay.vercel.app), force it to only show the admin panel
+        if host.startswith('admin'):
+            if not request.path.startswith('/admin'):
+                from flask_login import current_user
+                if current_user.is_authenticated:
+                    return redirect(url_for('admin.dashboard'))
+                else:
+                    return redirect(url_for('auth.login'))
+
     return app
 
 @login_manager.user_loader
