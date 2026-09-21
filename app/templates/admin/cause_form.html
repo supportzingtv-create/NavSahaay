@@ -91,15 +91,9 @@
                     <input type="file" accept="image/*" class="hidden" onchange="uploadCauseImage(this)">
                 </label>
             </div>
-            {% if cause and cause.image_url %}
-            <div class="mt-2" id="image_preview_container">
-                <img src="{{ cause.image_url }}" id="image_preview" class="max-h-40 rounded-xl border border-gray-200">
+            <div class="mt-2 {% if not (cause and cause.image_url) %}hidden{% endif %}" id="image_preview_container">
+                <img src="{{ cause.image_url if cause and cause.image_url else '' }}" id="image_preview" alt="Cause banner preview" class="max-h-40 rounded-xl border border-gray-200">
             </div>
-            {% else %}
-            <div class="mt-2 hidden" id="image_preview_container">
-                <img src="" id="image_preview" class="max-h-40 rounded-xl border border-gray-200">
-            </div>
-            {% endif %}
         </div>
 
 <script>
