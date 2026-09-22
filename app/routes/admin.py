@@ -214,9 +214,11 @@ def settings():
 
         return redirect(url_for("admin.settings"))
 
+    from app.firebase import db as settings_db
     slider_items = Setting.get("hero_slider", []) or []
     return render_template("admin/settings.html",
         slider_items=slider_items,
+        settings_db_connected=settings_db is not None,
         stats=Setting.get("impact_stats", {}),
         packages=Setting.get("donation_packages", []),
         general=Setting.get("general_info", {}),

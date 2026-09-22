@@ -29,6 +29,11 @@
                     {{ slider_items|length }} slide{% if slider_items|length != 1 %}s{% endif %} active
                 </span>
             </div>
+            {% if not settings_db_connected %}
+            <div class="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                Settings database is disconnected. Uploads can reach Cloudflare, but slider changes cannot reach the public website until Firebase is configured for this deployment.
+            </div>
+            {% endif %}
             <form method="post" action="{{ url_for('admin.settings') }}">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="action" value="update_slider">
