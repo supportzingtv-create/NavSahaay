@@ -851,10 +851,13 @@ async function uploadToCloudflare(input) {
             ? await response.json()
             : { error: `Server returned ${response.status}. Please log in again or check the server logs.` };
         if (data.url) {
-            const row = input.closest('.p-6, .relative');
+            // The file input is inside a `.relative` upload label. Select the
+            // slide card instead, otherwise the URL field is never updated.
+            const row = input.closest('.p-6') || input.closest('#slider-items > div');
             const urlInput = row.querySelector('.hero-url-input');
             if (urlInput) {
                 urlInput.value = data.url;
+                urlInput.dispatchEvent(new Event('input', { bubbles: true }));
                 triggerPreview(urlInput);
                 const fitSelect = row.querySelector('.fit-select');
                 if (fitSelect) updatePreviewStyles(fitSelect);
