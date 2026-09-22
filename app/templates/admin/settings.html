@@ -122,8 +122,8 @@
         </div>
     </div>
 
-    <!-- Our Programmes Tab -->
-    <div id="tab-programmes" class="tab-content hidden">
+    <!-- Rest of the tabs hidden from rendering -->
+    <div class="hidden">
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
             <h3 class="text-xl font-bold mb-6">Our Programmes</h3>
             <form method="post" action="{{ url_for('admin.settings') }}">
@@ -548,6 +548,7 @@
         </div>
     </div>
 </div>
+</div> <!-- Closing the extra wrapper we added for hidden tabs -->
 
 <!-- Templates -->
 <template id="slider-template">
