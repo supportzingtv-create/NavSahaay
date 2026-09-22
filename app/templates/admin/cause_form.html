@@ -116,7 +116,10 @@ async function uploadCauseImage(input) {
                 'X-CSRFToken': document.querySelector('input[name="csrf_token"]').value
             }
         });
-        const data = await response.json();
+        const contentType = response.headers.get('content-type') || '';
+        const data = contentType.includes('application/json')
+            ? await response.json()
+            : { error: `Server returned ${response.status}. Please log in again or check the server logs.` };
         if (data.url) {
             document.getElementById('image_url').value = data.url;
 
@@ -135,7 +138,7 @@ async function uploadCauseImage(input) {
         }
     } catch (e) {
         console.error(e);
-        alert('Upload failed.');
+        alert('Upload failed: ' + (e.message || 'Please check your connection.'));
         textSpan.innerText = originalText;
     }
 }

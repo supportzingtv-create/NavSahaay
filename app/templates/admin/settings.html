@@ -843,7 +843,10 @@ async function uploadToCloudflare(input) {
                 'X-CSRFToken': document.querySelector('input[name="csrf_token"]').value
             }
         });
-        const data = await response.json();
+        const contentType = response.headers.get('content-type') || '';
+        const data = contentType.includes('application/json')
+            ? await response.json()
+            : { error: `Server returned ${response.status}. Please log in again or check the server logs.` };
         if (data.url) {
             const row = input.closest('.p-6, .relative');
             const urlInput = row.querySelector('.hero-url-input');
@@ -856,11 +859,11 @@ async function uploadToCloudflare(input) {
             if (textSpan) textSpan.innerText = 'Success!';
             setTimeout(() => { if (textSpan) textSpan.innerText = oldText; }, 2000);
         } else {
-            alert('Upload failed: ' + (data.error || 'Unknown error'));
+            alert('Upload failed: ' + (data.error || `Server returned ${response.status}`));
             if (textSpan) textSpan.innerText = oldText;
         }
     } catch (e) {
-        alert('Upload failed.');
+        alert('Upload failed: ' + (e.message || 'Please check your connection.'));
         if (textSpan) textSpan.innerText = oldText;
     }
 }

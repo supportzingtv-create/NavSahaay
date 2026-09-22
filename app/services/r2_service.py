@@ -12,7 +12,7 @@ class R2Service:
         self.bucket_name = os.getenv("R2_BUCKET_NAME")
         self.public_url = os.getenv("R2_PUBLIC_URL", "").rstrip("/")
 
-        if all([self.account_id, self.access_key, self.secret_key]):
+        if all([self.account_id, self.access_key, self.secret_key, self.bucket_name]):
             self.s3_client = boto3.client(
                 service_name='s3',
                 endpoint_url=f"https://{self.account_id}.r2.cloudflarestorage.com",
@@ -29,9 +29,14 @@ class R2Service:
         Uploads a file to R2 and returns the public URL.
         """
         if not self.s3_client:
-            raise Exception("R2 credentials not configured properly.")
+            raise RuntimeError(
+                "Cloudflare R2 is not configured. Set R2_ACCOUNT_ID, "
+                "R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY and R2_BUCKET_NAME."
+            )
 
         filename = secure_filename(file_obj.filename)
+        if not filename:
+            raise ValueError("Please select a valid image or video file.")
         # Add timestamp to prevent name collisions
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         key = f"{folder}/{timestamp}_{filename}"
