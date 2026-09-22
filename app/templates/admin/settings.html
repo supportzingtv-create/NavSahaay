@@ -827,13 +827,16 @@ async function uploadToCloudflare(input) {
     const file = input.files[0];
     if (!file) return;
 
+    const uploadFile = await prepareUploadFile(file);
+    if (!uploadFile) return;
+
     const label = input.parentElement;
     const textSpan = label.querySelector('.upload-text');
     const oldText = textSpan ? textSpan.innerText : 'Upload File';
     if (textSpan) textSpan.innerText = 'Uploading...';
 
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('file', uploadFile, uploadFile.name || file.name);
 
     try {
         const response = await fetch('/admin/upload-media', {
@@ -865,6 +868,43 @@ async function uploadToCloudflare(input) {
     } catch (e) {
         alert('Upload failed: ' + (e.message || 'Please check your connection.'));
         if (textSpan) textSpan.innerText = oldText;
+    }
+}
+
+// Vercel rejects multipart requests above its serverless body limit. Resize
+// large photos in the browser before sending them to the media endpoint.
+async function prepareUploadFile(file) {
+    const maxBytes = 4 * 1024 * 1024;
+    if (file.size <= maxBytes) return file;
+    if (!file.type.startsWith('image/')) {
+        alert('This video/file is too large. Please upload a file smaller than 4 MB.');
+        return null;
+    }
+
+    try {
+        const bitmap = await createImageBitmap(file);
+        const maxDimension = 2200;
+        const scale = Math.min(1, maxDimension / Math.max(bitmap.width, bitmap.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+        canvas.height = Math.max(1, Math.round(bitmap.height * scale));
+        canvas.getContext('2d').drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+        bitmap.close();
+
+        let quality = 0.84;
+        let blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', quality));
+        while (blob && blob.size > maxBytes && quality > 0.55) {
+            quality -= 0.08;
+            blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', quality));
+        }
+        if (!blob || blob.size > maxBytes) {
+            alert('Photo is still too large after compression. Please choose a smaller image.');
+            return null;
+        }
+        return new File([blob], (file.name.replace(/\.[^.]+$/, '') || 'hero-image') + '.jpg', { type: 'image/jpeg' });
+    } catch (error) {
+        alert('Photo could not be prepared. Please choose an image smaller than 4 MB.');
+        return null;
     }
 }
 
