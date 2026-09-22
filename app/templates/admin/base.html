@@ -239,9 +239,8 @@
                 </div>
 
                 <div class="mt-auto pt-8 border-t border-zinc-800">
-                    <p class="px-4 text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-4">Management</p>
-                    <a href="{{ url_for('admin.users') }}" class="block px-4 py-3.5 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.users' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">User Management</a>
-                    <a href="{{ url_for('admin.settings') }}" class="block px-4 py-3.5 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.settings' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Site Management</a>
+                    <p class="px-4 text-[10px] font-black text-zinc-600 uppercase tracking-widest mb-4">Management Area</p>
+                    <a href="{{ url_for('admin.users') }}" class="block px-4 py-3.5 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.users' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Access Control</a>
                 </div>
             </nav>
         </aside>
