@@ -10,11 +10,11 @@
                     {% for item in slider_items %}
                     <div class="swiper-slide bg-black relative p-0 m-0">
                         {% if item.type == 'video' %}
-                        <video autoplay muted loop class="w-full h-full object-cover" style="opacity: {{ (item.opacity | default(100) | int) / 100 }};">
+                        <video autoplay muted loop class="w-full h-full object-{{ item.fit | default('cover') }} object-{{ item.img_position | default('center') }}" style="opacity: {{ (item.opacity | default(100) | int) / 100 }};">
                             <source src="{{ item.url }}" type="video/mp4">
                         </video>
                         {% else %}
-                        <img src="{{ item.url }}" alt="Impact Work" class="w-full h-full object-cover" style="opacity: {{ (item.opacity | default(100) | int) / 100 }};">
+                        <img src="{{ item.url }}" alt="Impact Work" class="w-full h-full object-{{ item.fit | default('cover') }} object-{{ item.img_position | default('center') }}" style="opacity: {{ (item.opacity | default(100) | int) / 100 }};">
                         {% endif %}
 
                         <!-- Overlay positioning template -->

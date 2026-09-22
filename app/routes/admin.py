@@ -60,6 +60,8 @@ def settings():
             subtitles = request.form.getlist("subtitle[]")
             positions = request.form.getlist("position[]")
             opacities = request.form.getlist("opacity[]")
+            fits = request.form.getlist("fit[]")
+            img_positions = request.form.getlist("img_position[]")
             for i in range(len(urls)):
                 if urls[i]:
                     items.append({
@@ -68,7 +70,9 @@ def settings():
                         "title": titles[i] if i < len(titles) else "",
                         "subtitle": subtitles[i] if i < len(subtitles) else "",
                         "position": positions[i] if i < len(positions) else "center",
-                        "opacity": opacities[i] if i < len(opacities) else "100"
+                        "opacity": opacities[i] if i < len(opacities) else "100",
+                        "fit": fits[i] if i < len(fits) else "cover",
+                        "img_position": img_positions[i] if i < len(img_positions) else "center"
                     })
             Setting.set("hero_slider", items)
             flash("Slider updated.", "success")
