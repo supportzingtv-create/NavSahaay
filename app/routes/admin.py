@@ -74,8 +74,14 @@ def settings():
                         "fit": fits[i] if i < len(fits) else "cover",
                         "img_position": img_positions[i] if i < len(img_positions) else "center"
                     })
-            Setting.set("hero_slider", items)
-            flash("Slider updated.", "success")
+            if Setting.set("hero_slider", items):
+                flash(f"Slider updated. {len(items)} slide(s) active.", "success")
+            else:
+                flash(
+                    "Slider was not saved because the settings database is not connected. "
+                    "Configure FIREBASE_SERVICE_ACCOUNT_JSON in deployment settings.",
+                    "error"
+                )
 
         elif action == "update_stats":
             stats = {
@@ -208,8 +214,9 @@ def settings():
 
         return redirect(url_for("admin.settings"))
 
+    slider_items = Setting.get("hero_slider", []) or []
     return render_template("admin/settings.html",
-        slider_items=Setting.get("hero_slider", []),
+        slider_items=slider_items,
         stats=Setting.get("impact_stats", {}),
         packages=Setting.get("donation_packages", []),
         general=Setting.get("general_info", {}),
@@ -465,4 +472,3 @@ def delete_report(id):
     if r: r.delete()
     flash("Report deleted.", "success")
     return redirect(url_for("admin.reports"))
-
