@@ -47,13 +47,13 @@ def home():
         if all_events:
             events = all_events[:3]
 
-        slider_db = Setting.get("hero_slider", [])
-        if slider_db:
+        slider_db = Setting.get("hero_slider")
+        if slider_db and len(slider_db) > 0:
             slider_items = slider_db
         else:
             slider_items = [
-                {"type": "image", "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070"},
-                {"type": "image", "url": "https://images.unsplash.com/photo-1509059852496-f3822ae057bf?q=80&w=2080"}
+                {"type": "image", "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070", "fit": "cover", "img_position": "center"},
+                {"type": "image", "url": "https://images.unsplash.com/photo-1509059852496-f3822ae057bf?q=80&w=2080", "fit": "cover", "img_position": "center"}
             ]
 
         from app.models import Cause
