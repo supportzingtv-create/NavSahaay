@@ -63,6 +63,9 @@ def settings():
             opacities = request.form.getlist("opacity[]")
             fits = request.form.getlist("fit[]")
             img_positions = request.form.getlist("img_position[]")
+            btn_texts = request.form.getlist("btn_text[]")
+            btn_links = request.form.getlist("btn_link[]")
+            btn_colors = request.form.getlist("btn_color[]")
             for i in range(len(urls)):
                 if urls[i]:
                     items.append({
@@ -73,12 +76,17 @@ def settings():
                         "position": positions[i] if i < len(positions) else "center",
                         "opacity": opacities[i] if i < len(opacities) else "100",
                         "fit": fits[i] if i < len(fits) else "cover",
-                        "img_position": img_positions[i] if i < len(img_positions) else "center"
+                        "img_position": img_positions[i] if i < len(img_positions) else "center",
+                        "btn_text": btn_texts[i] if i < len(btn_texts) else "Donate Now",
+                        "btn_link": btn_links[i] if i < len(btn_links) else "/causes",
+                        "btn_color": btn_colors[i] if i < len(btn_colors) else "red"
                     })
             firebase_saved = Setting.set("hero_slider", items)
             r2_saved = False
             try:
-                r2_saved = r2_service.save_json(HERO_SLIDER_R2_KEY, items)
+                # check if name exists in scope or just default
+                if 'HERO_SLIDER_R2_KEY' in globals():
+                    r2_saved = r2_service.save_json(HERO_SLIDER_R2_KEY, items)
             except Exception as e:
                 print(f"Hero slider R2 settings save failed: {e}")
 
