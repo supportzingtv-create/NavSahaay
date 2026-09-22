@@ -7,62 +7,84 @@ main_bp = Blueprint("main", __name__)
 
 @main_bp.route("/")
 def home():
+    # 1. Initialize all variables with empty/default values first (Safety Net)
     events = []
     slider_items = []
     packages = []
-    stats = {}
-    general = {}
+    stats = {
+        "lives_impacted": "50,000+",
+        "volunteers_count": "1,200+",
+        "total_donations": "₹10 Cr+"
+    }
+    general = {
+        "whatsapp": "+91 00000 00000",
+        "instagram": "@navsahaay"
+    }
+    testimonials = []
+    partners = []
+    faqs = []
+    seo = {
+        "title": "NavSahaay Foundation | Leading NGO for Charity & Social Welfare",
+        "description": "NavSahaay provides 100% transparency with photo/video proof for every donation.",
+        "keywords": "NGO, Charity, India, Welfare, Donation"
+    }
+    social = general
+    ground_reports = []
+    leaderboard = []
+    impact_pins = []
+    programmes = [
+        {"title": "Education", "description": "Quality education and nutrition for underprivileged children.", "icon_color": "#2563eb", "bg_color": "#eff6ff", "svg": '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>'},
+        {"title": "Healthcare", "description": "Mobile clinics and healthcare services for remote communities.", "icon_color": "#2563eb", "bg_color": "#eff6ff", "svg": '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>'},
+        {"title": "Environment", "description": "Reforestation and waste management for a greener planet.", "icon_color": "#2563eb", "bg_color": "#eff6ff", "svg": '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>'},
+        {"title": "Women Empowerment", "description": "Skill development and financial independence for women.", "icon_color": "#2563eb", "bg_color": "#eff6ff", "svg": '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>'},
+        {"title": "Hunger Relief", "description": "Providing nutritious meals to homeless and daily wagers.", "icon_color": "#2563eb", "bg_color": "#eff6ff", "svg": '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>'},
+        {"title": "Disaster Relief", "description": "Immediate support and rehabilitation during natural calamities.", "icon_color": "#2563eb", "bg_color": "#eff6ff", "svg": '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>'}
+    ]
 
     try:
+        # 2. Try fetching dynamic data from DB
         all_events = Event.get_all(active_only=True)
         if all_events:
             events = all_events[:3]
 
-        slider_items = Setting.get("hero_slider", [])
-        if not slider_items:
+        slider_db = Setting.get("hero_slider", [])
+        if slider_db:
+            slider_items = slider_db
+        else:
             slider_items = [
                 {"type": "image", "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070"},
                 {"type": "image", "url": "https://images.unsplash.com/photo-1509059852496-f3822ae057bf?q=80&w=2080"}
             ]
 
-        # Fetch causes from DB instead of static setting
         from app.models import Cause
-        packages = Cause.get_all(active_only=True)
-
-        # Fallback if no causes in DB
-        if not packages:
+        causes_db = Cause.get_all(active_only=True)
+        if causes_db:
+            packages = causes_db
+        else:
             packages = [
                 {"title": "Feed a Homeless", "amount": "60", "short_description": "Provide one nutritious meal to a homeless person.", "tag": "Hot Meals", "image_url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=400&q=80", "slug": "feed-a-homeless"},
                 {"title": "Plant a Tree", "amount": "70", "short_description": "Help restore nature by planting a native tree.", "tag": "Eco Action", "image_url": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=400&q=80", "slug": "plant-a-tree"}
             ]
 
-        stats = Setting.get("impact_stats", {
-            "lives_impacted": "50,000+",
-            "volunteers_count": "1,200+",
-            "total_donations": "₹10 Cr+"
-        })
+        stats_db = Setting.get("impact_stats")
+        if stats_db: stats = stats_db
 
-        general = Setting.get("general_info", {
-            "whatsapp": "+91 00000 00000",
-            "instagram": "@navsahaay"
-        })
+        general_db = Setting.get("general_info")
+        if general_db: general = general_db
 
-        # Fetch V2 Settings
         testimonials = Setting.get("testimonials", [])
         partners = Setting.get("partners", [])
         faqs = Setting.get("faqs", [])
-        seo = Setting.get("seo_meta", {
-            "title": "NavSahaay Foundation | Leading NGO for Charity & Social Welfare",
-            "description": "NavSahaay provides 100% transparency with photo/video proof for every donation.",
-            "keywords": "NGO, Charity, India, Welfare, Donation"
-        })
+
+        seo_db = Setting.get("seo_meta")
+        if seo_db: seo = seo_db
+
         social = Setting.get("social_links", general)
 
-        # Fetch Ground Reports (Live Feed)
         from app.models import Report
         ground_reports = Report.get_all(active_only=True)[:10]
 
-        # Calculate Kindness Leaderboard (Monthly)
+        # Monthly Leaderboard
         from datetime import datetime
         now = datetime.now()
         start_of_month = datetime(now.year, now.month, 1)
@@ -73,40 +95,24 @@ def home():
             if d.status == "VERIFIED" and d.created_at >= start_of_month:
                 name = d.donor_name if not d.anonymous else "Anonymous Hero"
                 monthly_donors[name] = monthly_donors.get(name, 0) + d.amount
-
         leaderboard = sorted(monthly_donors.items(), key=lambda x: x[1], reverse=True)[:5]
 
-        # Fetch Impact Pins
         from app.models import ImpactPin
         impact_pins = ImpactPin.get_all(active_only=True)
 
-        programmes = Setting.get("programmes", [
-            {"title": "Education", "description": "Quality education and nutrition for underprivileged children.", "icon_color": "#2563eb", "bg_color": "#eff6ff", "svg": '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>'},
-            {"title": "Healthcare", "description": "Mobile clinics and healthcare services for remote communities.", "icon_color": "#2563eb", "bg_color": "#eff6ff", "svg": '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>'},
-            {"title": "Environment", "description": "Reforestation and waste management for a greener planet.", "icon_color": "#2563eb", "bg_color": "#eff6ff", "svg": '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>'},
-            {"title": "Women Empowerment", "description": "Skill development and financial independence for women.", "icon_color": "#2563eb", "bg_color": "#eff6ff", "svg": '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>'},
-            {"title": "Hunger Relief", "description": "Providing nutritious meals to homeless and daily wagers.", "icon_color": "#2563eb", "bg_color": "#eff6ff", "svg": '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>'},
-            {"title": "Disaster Relief", "description": "Immediate support and rehabilitation during natural calamities.", "icon_color": "#2563eb", "bg_color": "#eff6ff", "svg": '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>'}
-        ])
+        prog_db = Setting.get("programmes")
+        if prog_db: programmes = prog_db
 
     except Exception as e:
-        print(f"Error fetching home data: {e}")
+        print(f"CRITICAL: Error fetching home data from Firebase: {e}")
+        # The variables already have default values, so the page will still render.
 
     return render_template("home.html",
-        events=events,
-        slider_items=slider_items,
-        packages=packages,
-        stats=stats,
-        general=general,
-        programmes=programmes,
-        testimonials=testimonials,
-        partners=partners,
-        faqs=faqs,
-        seo=seo,
-        social=social,
-        ground_reports=ground_reports,
-        leaderboard=leaderboard,
-        impact_pins=impact_pins)
+        events=events, slider_items=slider_items, packages=packages,
+        stats=stats, general=general, programmes=programmes,
+        testimonials=testimonials, partners=partners, faqs=faqs,
+        seo=seo, social=social, ground_reports=ground_reports,
+        leaderboard=leaderboard, impact_pins=impact_pins)
 
 @main_bp.route("/donate", methods=["POST"])
 def donate():
