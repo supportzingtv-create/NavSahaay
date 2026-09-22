@@ -37,7 +37,7 @@
                                     <input name="url[]" value="{{ item.url }}" oninput="triggerPreview(this)" placeholder="https://..." class="flex-1 bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none hero-url-input">
                                     <label class="cursor-pointer bg-slate-800 text-white px-4 py-3 rounded-xl hover:bg-black transition-all flex items-center justify-center font-bold text-xs uppercase tracking-widest min-w-[120px] relative">
                                         <span class="upload-text">Upload File</span>
-                                        <input type="file" class="hidden" onchange="uploadToCloudflare(this)">
+                                        <input type="file" accept="image/*,video/*" class="hidden" onchange="uploadToCloudflare(this)">
                                     </label>
                                 </div>
                                 <div class="mt-3">
@@ -114,6 +114,12 @@
                     </div>
                     {% endfor %}
                 </div>
+                {% if not slider_items %}
+                <div id="slider-empty-state" class="rounded-2xl border border-dashed border-gray-300 bg-gray-50 px-6 py-8 text-center">
+                    <p class="text-sm font-bold text-gray-700">No hero banners added yet.</p>
+                    <p class="mt-1 text-xs text-gray-500">Upload your real campaign photo using “Add Another Slide”.</p>
+                </div>
+                {% endif %}
                 <div class="mt-8 flex items-center justify-between">
                     <button type="button" onclick="addItem('slider-items', 'slider-template')" class="text-xs font-black uppercase tracking-widest text-primary-600">Add Another Slide</button>
                     <button type="submit" class="bg-gray-900 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-black transition-all shadow-xl">Update Slider</button>
@@ -560,7 +566,7 @@
                     <input name="url[]" oninput="triggerPreview(this)" placeholder="https://..." class="flex-1 bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none hero-url-input">
                     <label class="cursor-pointer bg-slate-800 text-white px-4 py-3 rounded-xl hover:bg-black transition-all flex items-center justify-center font-bold text-xs uppercase tracking-widest min-w-[120px] relative">
                         <span class="upload-text">Upload File</span>
-                        <input type="file" class="hidden" onchange="uploadToCloudflare(this)">
+                        <input type="file" accept="image/*,video/*" class="hidden" onchange="uploadToCloudflare(this)">
                     </label>
                 </div>
                 <div class="mt-3">
@@ -778,6 +784,8 @@ function addItem(containerId, templateId) {
     const template = document.getElementById(templateId);
     const clone = template.content.cloneNode(true);
     document.getElementById(containerId).appendChild(clone);
+    const emptyState = document.getElementById('slider-empty-state');
+    if (emptyState && containerId === 'slider-items') emptyState.remove();
 }
 
 function triggerPreview(input) {
