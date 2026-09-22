@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify, make_response
 from datetime import datetime
 from app.models import Donation, Volunteer, Event, Contact, Setting
 import secrets
@@ -106,12 +106,17 @@ def home():
         print(f"CRITICAL: Error fetching home data from Firebase: {e}")
         # The variables already have default values, so the page will still render.
 
-    return render_template("home.html",
+    response = make_response(render_template("home.html",
         events=events, slider_items=slider_items, packages=packages,
         stats=stats, general=general, programmes=programmes,
         testimonials=testimonials, partners=partners, faqs=faqs,
         seo=seo, social=social, ground_reports=ground_reports,
-        leaderboard=leaderboard, impact_pins=impact_pins)
+        leaderboard=leaderboard, impact_pins=impact_pins))
+    # The hero is admin-managed; never let a cached homepage hide a newly
+    # saved banner from the public site.
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    return response
 
 @main_bp.route("/donate", methods=["POST"])
 def donate():
