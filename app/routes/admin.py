@@ -8,6 +8,7 @@ import os
 from collections import defaultdict
 
 admin_bp=Blueprint("admin",__name__)
+HERO_SLIDER_R2_KEY = "settings/hero_slider.json"
 
 @admin_bp.route("/dashboard")
 @login_required
@@ -74,12 +75,18 @@ def settings():
                         "fit": fits[i] if i < len(fits) else "cover",
                         "img_position": img_positions[i] if i < len(img_positions) else "center"
                     })
-            if Setting.set("hero_slider", items):
+            firebase_saved = Setting.set("hero_slider", items)
+            r2_saved = False
+            try:
+                r2_saved = r2_service.save_json(HERO_SLIDER_R2_KEY, items)
+            except Exception as e:
+                print(f"Hero slider R2 settings save failed: {e}")
+
+            if firebase_saved or r2_saved:
                 flash(f"Slider updated. {len(items)} slide(s) active.", "success")
             else:
                 flash(
-                    "Slider was not saved because the settings database is not connected. "
-                    "Configure FIREBASE_SERVICE_ACCOUNT_JSON in deployment settings.",
+                    "Slider was not saved. Connect Firebase or Cloudflare R2 in deployment settings.",
                     "error"
                 )
 
@@ -216,6 +223,8 @@ def settings():
 
     from app.firebase import db as settings_db
     slider_items = Setting.get("hero_slider", []) or []
+    if not slider_items:
+        slider_items = r2_service.get_json(HERO_SLIDER_R2_KEY, []) or []
     return render_template("admin/settings.html",
         slider_items=slider_items,
         settings_db_connected=settings_db is not None,

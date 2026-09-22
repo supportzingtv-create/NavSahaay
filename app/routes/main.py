@@ -1,9 +1,11 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify, make_response
 from datetime import datetime
 from app.models import Donation, Volunteer, Event, Contact, Setting
+from app.services.r2_service import r2_service
 import secrets
 
 main_bp = Blueprint("main", __name__)
+HERO_SLIDER_R2_KEY = "settings/hero_slider.json"
 
 @main_bp.route("/")
 def home():
@@ -50,6 +52,8 @@ def home():
         # Hero media is admin-managed. Keep the public site free of stock/demo
         # images until the organisation uploads its real campaign photos.
         slider_db = Setting.get("hero_slider", [])
+        if not slider_db:
+            slider_db = r2_service.get_json(HERO_SLIDER_R2_KEY, [])
         slider_items = [
             item for item in (slider_db or [])
             if isinstance(item, dict) and item.get("url")

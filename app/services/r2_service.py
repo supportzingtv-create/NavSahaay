@@ -1,4 +1,5 @@
 import os
+import json
 import boto3
 from botocore.config import Config
 from werkzeug.utils import secure_filename
@@ -56,5 +57,30 @@ class R2Service:
         except Exception as e:
             print(f"R2 Upload Error: {e}")
             raise e
+
+    def save_json(self, key, value):
+        """Store small application settings alongside uploaded media."""
+        if not self.s3_client:
+            return False
+        self.s3_client.put_object(
+            Bucket=self.bucket_name,
+            Key=key,
+            Body=json.dumps(value, ensure_ascii=False).encode("utf-8"),
+            ContentType="application/json",
+            CacheControl="no-cache"
+        )
+        return True
+
+    def get_json(self, key, default=None):
+        """Read small application settings from R2, returning default on miss."""
+        if not self.s3_client:
+            return default
+        try:
+            response = self.s3_client.get_object(Bucket=self.bucket_name, Key=key)
+            return json.loads(response["Body"].read().decode("utf-8"))
+        except Exception as e:
+            # A missing fallback file is normal before the first save.
+            print(f"R2 settings read skipped: {e}")
+            return default
 
 r2_service = R2Service()
