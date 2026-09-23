@@ -228,7 +228,8 @@
             <nav class="flex-1 overflow-y-auto px-4 flex flex-col pb-10 scrollbar-thin">
                 <div class="space-y-1.5 flex-1">
                     <a href="{{ url_for('admin.dashboard') }}" class="block px-4 py-3.5 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.dashboard' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Overview Dashboard</a>
-                    <a href="{{ url_for('admin.settings') }}" class="block px-4 py-3.5 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.settings' %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Hero Banner Settings</a>
+                    <a href="{{ url_for('admin.settings') }}" class="block px-4 py-3.5 rounded-xl hover:bg-zinc-900 transition-all {% if request.endpoint == 'admin.settings' and not request.path.endswith('#gallery') %}bg-zinc-900 text-white font-bold border-l-4 border-red-600 pl-3{% else %}text-zinc-400{% endif %}">Hero Banner Settings</a>
+                    <a href="{{ url_for('admin.settings') }}#gallery" onclick="if(typeof showTab === 'function'){showTab('gallery');}" class="block px-4 py-3.5 rounded-xl hover:bg-zinc-900 transition-all text-zinc-400">Photo Gallery Settings</a>
                 </div>
             </nav>
         </aside>

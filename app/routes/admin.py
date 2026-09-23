@@ -269,6 +269,29 @@ def settings():
             Setting.set("transparency_ratios", ratios)
             flash("Transparency ratios updated.", "success")
 
+        elif action == "update_gallery":
+            gallery = []
+            urls = request.form.getlist("url[]")
+            captions = request.form.getlist("caption[]")
+            categories = request.form.getlist("category[]")
+            fits = request.form.getlist("fit[]")
+            img_positions = request.form.getlist("img_position[]")
+            for i in range(len(urls)):
+                if urls[i]:
+                    gallery.append({
+                        "url": urls[i],
+                        "caption": captions[i] if i < len(captions) else "",
+                        "category": categories[i] if i < len(categories) else "General",
+                        "fit": fits[i] if i < len(fits) else "cover",
+                        "img_position": img_positions[i] if i < len(img_positions) else "center"
+                    })
+            Setting.set("gallery_items", gallery)
+            try:
+                r2_service.save_json("settings/gallery_items.json", gallery)
+            except Exception as e:
+                print(f"R2 gallery save error: {e}")
+            flash(f"Gallery updated successfully. {len(gallery)} photo(s) active.", "success")
+
         return redirect(url_for("admin.settings"))
 
     from app.firebase import db as settings_db
@@ -284,12 +307,17 @@ def settings():
     if not general:
         general = r2_service.get_json("settings/general_info.json", {}) or {}
 
+    gallery_items = Setting.get("gallery_items", []) or []
+    if not gallery_items:
+        gallery_items = r2_service.get_json("settings/gallery_items.json", []) or []
+
     return render_template("admin/settings.html",
         slider_items=slider_items,
         settings_db_connected=settings_db is not None,
         stats=Setting.get("impact_stats", {}),
         packages=packages,
         general=general,
+        gallery_items=gallery_items,
         programmes=Setting.get("programmes", []),
         testimonials=Setting.get("testimonials", []),
         partners=Setting.get("partners", []),

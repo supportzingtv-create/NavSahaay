@@ -304,3 +304,57 @@ def cause_detail(slug):
         return render_template("404.html"), 404
 
     return render_template("cause_detail.html", cause=cause)
+
+@main_bp.route("/gallery")
+def gallery():
+    gallery_items = Setting.get("gallery_items")
+    if not gallery_items:
+        gallery_items = r2_service.get_json("settings/gallery_items.json", []) or []
+
+    if not gallery_items:
+        gallery_items = [
+            {
+                "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=1200",
+                "caption": "Ration & Warm Meal Distribution Drive for Underprivileged Families",
+                "category": "Food Drives"
+            },
+            {
+                "url": "https://images.unsplash.com/photo-1509059852496-f3822ae057bf?q=80&w=1200",
+                "caption": "Providing Free Books, Stationeries & Digital Learning Tools to Children",
+                "category": "Education"
+            },
+            {
+                "url": "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=1200",
+                "caption": "Free Health Checkup & Medical Aid Camp in Rural Villages",
+                "category": "Healthcare"
+            },
+            {
+                "url": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1200",
+                "caption": "Community Tree Plantation Drive for a Greener Tomorrow",
+                "category": "Environment"
+            },
+            {
+                "url": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1200",
+                "caption": "Vocational Skill Development & Tailoring Workshop for Women",
+                "category": "Events"
+            },
+            {
+                "url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?q=80&w=1200",
+                "caption": "Nutrition & Mid-Day Meal Distribution at Community Center",
+                "category": "Food Drives"
+            }
+        ]
+
+    categories = sorted(list(set(item.get("category", "General") for item in gallery_items if item.get("category"))))
+
+    general = Setting.get("general_info") or r2_service.get_json("settings/general_info.json", {}) or {}
+    social = Setting.get("social_links", general)
+
+    response = make_response(render_template("gallery.html",
+        gallery_items=gallery_items,
+        categories=categories,
+        general=general,
+        social=social))
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    return response
+
