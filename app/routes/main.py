@@ -201,16 +201,38 @@ def home():
         prog_db = Setting.get("programmes")
         if prog_db: programmes = prog_db
 
+        recent_wishes = Donation.get_recent_wishes(12)
+        if not recent_wishes:
+            recent_wishes = [
+                {"wish": "May every child get nutritious meals and quality education!", "donor_name": "Rakesh & Family", "anonymous": False},
+                {"wish": "In loving memory of my late grandmother. Keep up the noble work!", "donor_name": "Ananya Gupta", "anonymous": False},
+                {"wish": "Wishing health, peace and prosperity for all underprivileged families.", "donor_name": "Vikramaditya Sharma", "anonymous": False},
+                {"wish": "May our tree plantation drive bloom into a green forest for future generations.", "donor_name": "Priya Verma", "anonymous": False},
+                {"wish": "Happy to contribute towards a hunger-free and educated India.", "donor_name": "Kindness Hero", "anonymous": True},
+                {"wish": "May all children smile and achieve their dreams!", "donor_name": "Siddharth Malhotra", "anonymous": False}
+            ]
+
     except Exception as e:
         print(f"CRITICAL: Error fetching home data from Firebase: {e}")
         # The variables already have default values, so the page will still render.
+
+    if not recent_wishes:
+        recent_wishes = [
+            {"wish": "May every child get nutritious meals and quality education!", "donor_name": "Rakesh & Family", "anonymous": False},
+            {"wish": "In loving memory of my late grandmother. Keep up the noble work!", "donor_name": "Ananya Gupta", "anonymous": False},
+            {"wish": "Wishing health, peace and prosperity for all underprivileged families.", "donor_name": "Vikramaditya Sharma", "anonymous": False},
+            {"wish": "May our tree plantation drive bloom into a green forest for future generations.", "donor_name": "Priya Verma", "anonymous": False},
+            {"wish": "Happy to contribute towards a hunger-free and educated India.", "donor_name": "Kindness Hero", "anonymous": True},
+            {"wish": "May all children smile and achieve their dreams!", "donor_name": "Siddharth Malhotra", "anonymous": False}
+        ]
 
     response = make_response(render_template("home.html",
         events=events, slider_items=slider_items, packages=packages,
         stats=stats, general=general, programmes=programmes,
         testimonials=testimonials, partners=partners, faqs=faqs,
         seo=seo, social=social, ground_reports=ground_reports,
-        leaderboard=leaderboard, impact_pins=impact_pins))
+        leaderboard=leaderboard, impact_pins=impact_pins,
+        recent_wishes=recent_wishes))
     # The hero is admin-managed; never let a cached homepage hide a newly
     # saved banner from the public site.
     response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
