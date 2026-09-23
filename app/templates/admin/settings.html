@@ -6,25 +6,16 @@
 <div class="max-w-6xl">
     <!-- Tabs Navigation -->
     <div class="flex space-x-8 mb-10 border-b border-gray-200 overflow-x-auto pb-2">
-        <button onclick="showTab('slider')" id="tab-btn-slider" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-primary-600 text-primary-600">Hero Slider</button>
-        <button onclick="showTab('programmes')" id="tab-btn-programmes" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">Our Programmes</button>
-        <button onclick="showTab('stats')" id="tab-btn-stats" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">Impact Stats</button>
-        <button onclick="showTab('packages')" id="tab-btn-packages" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">Packages</button>
-        <button onclick="showTab('testimonials')" id="tab-btn-testimonials" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">Testimonials</button>
-        <button onclick="showTab('partners')" id="tab-btn-partners" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">Partners</button>
-        <button onclick="showTab('faqs')" id="tab-btn-faqs" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">FAQ</button>
-        <button onclick="showTab('urgent')" id="tab-btn-urgent" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">Urgent Alert</button>
-        <button onclick="showTab('transparency')" id="tab-btn-transparency" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">Transparency</button>
-        <button onclick="showTab('matching')" id="tab-btn-matching" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">2X Matching</button>
-        <button onclick="showTab('seo')" id="tab-btn-seo" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">SEO & Social</button>
-        <button onclick="showTab('general')" id="tab-btn-general" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">Info</button>
+        <button onclick="showTab('slider')" id="tab-btn-slider" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-primary-600 text-primary-600">1. Hero Banner Settings</button>
+        <button onclick="showTab('phone')" id="tab-btn-phone" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">2. Phone Number Settings</button>
+        <button onclick="showTab('packages')" id="tab-btn-packages" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">3. Causes Cards</button>
     </div>
 
-    <!-- Hero Slider Tab -->
+    <!-- 1. HERO BANNER TAB (UNTOUCHED) -->
     <div id="tab-slider" class="tab-content block">
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
             <div class="flex items-center justify-between mb-6">
-                <h3 class="text-xl font-bold">Hero Slider Settings</h3>
+                <h3 class="text-xl font-bold">Hero Banner Settings</h3>
                 <span class="rounded-full bg-gray-100 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-gray-500">
                     {{ slider_items|length }} slide{% if slider_items|length != 1 %}s{% endif %} active
                 </span>
@@ -115,7 +106,7 @@
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Content Position Template (Fine-tune with clicks)</label>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Content Position Template</label>
                                 <input type="hidden" name="position[]" value="{{ item.position | default('center') }}" class="position-input">
                                 <div class="grid grid-cols-3 gap-1 w-36 bg-gray-200 p-1 rounded-xl">
                                     <button type="button" onclick="selectPosition(this, 'top-left')" class="p-1.5 rounded text-center text-xs font-bold {% if item.position == 'top-left' %}bg-blue-600 text-white{% else %}bg-white text-gray-700 hover:bg-gray-100{% endif %}">↖</button>
@@ -143,176 +134,55 @@
                 </div>
                 {% endif %}
                 <div class="mt-8 flex items-center justify-between">
-                    <button type="button" onclick="addItem('slider-items', 'slider-template')" class="text-xs font-black uppercase tracking-widest text-primary-600">Add Another Slide</button>
-                    <button type="submit" class="bg-gray-900 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-black transition-all shadow-xl">Update Slider</button>
+                    <button type="button" onclick="addItem('slider-items', 'slider-template')" class="text-xs font-black uppercase tracking-widest text-primary-600">+ Add Another Slide</button>
+                    <button type="submit" class="bg-gray-900 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-black transition-all shadow-xl">Save Hero Banner Settings</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Rest of the tabs enabled for rendering -->
-    <div>
+    <!-- 2. PHONE NUMBER TAB (FEATURE 1) -->
+    <div id="tab-phone" class="tab-content hidden">
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-            <h3 class="text-xl font-bold mb-6">Our Programmes</h3>
+            <h3 class="text-xl font-bold mb-2">Phone Number & Contact Settings</h3>
+            <p class="text-xs text-gray-400 mb-6">Set your official contact phone number to display across website header and footer.</p>
             <form method="post" action="{{ url_for('admin.settings') }}">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="action" value="update_programmes">
-                <div id="programme-items" class="space-y-6">
-                    {% for prog in programmes %}
-                    <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Title</label>
-                                <input name="title[]" value="{{ prog.title }}" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold outline-none">
-                            </div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Icon Color (Hex)</label>
-                                    <input name="icon_color[]" value="{{ prog.icon_color }}" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Bg Color (Hex)</label>
-                                    <input name="bg_color[]" value="{{ prog.bg_color }}" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none">
-                                </div>
-                            </div>
-                            <div class="md:col-span-2">
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Description</label>
-                                <input name="description[]" value="{{ prog.description }}" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none">
-                            </div>
-                            <div class="md:col-span-2">
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Icon SVG Path (Heroicons style)</label>
-                                <textarea name="svg[]" rows="2" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-[10px] font-mono outline-none">{{ prog.svg }}</textarea>
-                            </div>
-                        </div>
-                        <button type="button" onclick="this.parentElement.remove()" class="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 shadow-lg">
-                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                        </button>
+                <input type="hidden" name="action" value="update_general">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Official Contact Phone Number</label>
+                        <input name="phone_number" value="{{ general.phone_number or general.phone or '+91 98765 43210' }}" placeholder="+91 98765 43210" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
                     </div>
-                    {% endfor %}
-                </div>
-                <div class="mt-8 flex items-center justify-between">
-                    <button type="button" onclick="addItem('programme-items', 'programme-template')" class="text-xs font-black uppercase tracking-widest text-primary-600">Add Another Programme</button>
-                    <button type="submit" class="bg-gray-900 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-black shadow-xl">Update Programmes</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Impact Stats Tab -->
-    <div id="tab-stats" class="tab-content hidden">
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-            <h3 class="text-xl font-bold mb-2">Impact Stats & Live Synchronization</h3>
-            <p class="text-xs text-gray-400 mb-8">Choose whether each metric should be calculated completely manually or synced automatically in real-time based on database form actions (Form submissions, Volunteer signups, Verified donations, etc.).</p>
-
-            <form method="post" action="{{ url_for('admin.settings') }}">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="action" value="update_stats">
-
-                <div class="space-y-8">
-                    <!-- Lives Impacted Section -->
-                    <div class="p-6 bg-zinc-900 rounded-2xl border border-zinc-800">
-                        <h4 class="text-xs font-black uppercase tracking-widest text-primary-500 mb-4 border-b border-zinc-800 pb-2">1. Lives Impacted Tracker</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
-                            <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Calculation Mode</label>
-                                <select name="lives_impacted_mode" onchange="toggleStatFields('lives_impacted', this.value)" class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-                                    <option value="manual" {% if stats.lives_impacted_mode == 'manual' or not stats.lives_impacted_mode %}selected{% endif %}>Manual Display Text</option>
-                                    <option value="auto" {% if stats.lives_impacted_mode == 'auto' %}selected{% endif %}>Automatic Sync (Base Offset + Multiplier)</option>
-                                </select>
-                            </div>
-                            <div id="lives_impacted_manual_container" class="{% if stats.lives_impacted_mode == 'auto' %}hidden{% endif %}">
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Manual Display Text</label>
-                                <input name="lives_impacted" value="{{ stats.lives_impacted or '50,000+' }}" placeholder="e.g. 50,000+" class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
-                            </div>
-                            <div id="lives_impacted_auto_container" class="{% if stats.lives_impacted_mode != 'auto' %}hidden{% endif %}">
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Base Offset Count</label>
-                                <input name="lives_impacted_base" type="number" value="{{ stats.lives_impacted_base or '50000' }}" placeholder="50000" class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
-                            </div>
-                            <div class="text-xs text-gray-400 pb-2">
-                                <span class="font-semibold block text-zinc-300">Sync Behavior:</span>
-                                <span class="text-[11px]">Auto mode adds <code>(Verified Donations Count × 5)</code> directly to your Base Offset Count.</span>
-                            </div>
-                        </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">WhatsApp Helpline Number</label>
+                        <input name="whatsapp" value="{{ general.whatsapp or '+91 98765 43210' }}" placeholder="+91 98765 43210" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
                     </div>
-
-                    <!-- Volunteers Section -->
-                    <div class="p-6 bg-zinc-900 rounded-2xl border border-zinc-800">
-                        <h4 class="text-xs font-black uppercase tracking-widest text-primary-500 mb-4 border-b border-zinc-800 pb-2">2. Volunteers Count Tracker</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
-                            <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Calculation Mode</label>
-                                <select name="volunteers_mode" onchange="toggleStatFields('volunteers', this.value)" class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-                                    <option value="manual" {% if stats.volunteers_mode == 'manual' or not stats.volunteers_mode %}selected{% endif %}>Manual Display Text</option>
-                                    <option value="auto" {% if stats.volunteers_mode == 'auto' %}selected{% endif %}>Automatic Live Count (Base Offset + Web Forms)</option>
-                                </select>
-                            </div>
-                            <div id="volunteers_manual_container" class="{% if stats.volunteers_mode == 'auto' %}hidden{% endif %}">
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Manual Display Text</label>
-                                <input name="volunteers_count" value="{{ stats.volunteers_count or '1,200+' }}" placeholder="e.g. 1,200+" class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
-                            </div>
-                            <div id="volunteers_auto_container" class="{% if stats.volunteers_mode != 'auto' %}hidden{% endif %}">
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Base Offset Count</label>
-                                <input name="volunteers_base" type="number" value="{{ stats.volunteers_base or '1200' }}" placeholder="1200" class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
-                            </div>
-                            <div class="text-xs text-gray-400 pb-2">
-                                <span class="font-semibold block text-zinc-300">Sync Behavior:</span>
-                                <span class="text-[11px]">Auto mode adds total database volunteer application rows to your Base Offset Count dynamically.</span>
-                            </div>
-                        </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Official Contact Email</label>
+                        <input name="email" value="{{ general.email or 'contact@navsahaay.org' }}" placeholder="contact@navsahaay.org" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
                     </div>
-
-                    <!-- Total Donations Section -->
-                    <div class="p-6 bg-zinc-900 rounded-2xl border border-zinc-800">
-                        <h4 class="text-xs font-black uppercase tracking-widest text-primary-500 mb-4 border-b border-zinc-800 pb-2">3. Total Donations Tracker</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
-                            <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Calculation Mode</label>
-                                <select name="donations_mode" onchange="toggleStatFields('donations', this.value)" class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-                                    <option value="manual" {% if stats.donations_mode == 'manual' or not stats.donations_mode %}selected{% endif %}>Manual Display Text</option>
-                                    <option value="auto" {% if stats.donations_mode == 'auto' %}selected{% endif %}>Automatic Financial Sum (Base Offset + Live Payments)</option>
-                                </select>
-                            </div>
-                            <div id="donations_manual_container" class="{% if stats.donations_mode == 'auto' %}hidden{% endif %}">
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Manual Display Text</label>
-                                <input name="total_donations" value="{{ stats.total_donations or '₹10 Cr+' }}" placeholder="e.g. ₹10 Cr+" class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
-                            </div>
-                            <div id="donations_auto_container" class="{% if stats.donations_mode != 'auto' %}hidden{% endif %}">
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Base Amount Offset (₹)</label>
-                                <input name="donations_base" type="number" value="{{ stats.donations_base or '10000000' }}" placeholder="10000000" class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
-                            </div>
-                            <div class="text-xs text-gray-400 pb-2">
-                                <span class="font-semibold block text-zinc-300">Sync Behavior:</span>
-                                <span class="text-[11px]">Auto mode aggregates all VERIFIED donation rows and appends them to your Base Amount Offset.</span>
-                            </div>
-                        </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Instagram Handle</label>
+                        <input name="instagram" value="{{ general.instagram or '@navsahaay' }}" placeholder="@navsahaay" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
                     </div>
                 </div>
-
                 <div class="mt-8 text-right">
-                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-xl transition-all">Save Impact Stats Configuration</button>
+                    <button type="submit" class="bg-primary-600 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-primary-700 shadow-xl transition-all">Save Phone Number Settings</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <script>
-    function toggleStatFields(prefix, mode) {
-        const manualContainer = document.getElementById(prefix + '_manual_container');
-        const autoContainer = document.getElementById(prefix + '_auto_container');
-        if (mode === 'auto') {
-            if (manualContainer) manualContainer.classList.add('hidden');
-            if (autoContainer) autoContainer.classList.remove('hidden');
-        } else {
-            if (manualContainer) manualContainer.classList.remove('hidden');
-            if (autoContainer) autoContainer.classList.add('hidden');
-        }
-    }
-    </script>
-
-    <!-- Donation Packages Tab -->
+    <!-- 3. CAUSES CARDS TAB (FEATURE 2) -->
     <div id="tab-packages" class="tab-content hidden">
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-            <h3 class="text-xl font-bold mb-6">Donation Packages</h3>
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h3 class="text-xl font-bold">Causes Cards Management</h3>
+                    <p class="text-xs text-gray-400 mt-1">Create and manage Cause Cards shown on the home page.</p>
+                </div>
+            </div>
             <form method="post" action="{{ url_for('admin.settings') }}">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="action" value="update_packages">
@@ -321,24 +191,32 @@
                     <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div class="md:col-span-2">
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Package Title</label>
-                                <input name="title[]" value="{{ pkg.title }}" placeholder="Feed a Child" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Cause Title</label>
+                                <input name="title[]" value="{{ pkg.title }}" placeholder="e.g. Feed a Homeless Person" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
                             </div>
                             <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Amount (₹)</label>
-                                <input name="amount[]" value="{{ pkg.amount }}" placeholder="4000" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Unit Donation Amount (₹)</label>
+                                <input name="amount[]" value="{{ pkg.amount or '60' }}" placeholder="60" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Target Goal Amount (₹)</label>
+                                <input name="target_amount[]" value="{{ pkg.target_amount or '100000' }}" placeholder="100000" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Raised Amount (₹)</label>
+                                <input name="raised_amount[]" value="{{ pkg.raised_amount or '25000' }}" placeholder="25000" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Tag / Badge</label>
+                                <input name="tag[]" value="{{ pkg.tag or 'Hot Meals' }}" placeholder="e.g. Hot Meals" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
                             </div>
                             <div class="md:col-span-3">
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Description</label>
-                                <textarea name="description[]" rows="2" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary-600 outline-none">{{ pkg.description }}</textarea>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Short Description</label>
+                                <textarea name="description[]" rows="2" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary-600 outline-none">{{ pkg.description or pkg.short_description or '' }}</textarea>
                             </div>
-                            <div class="md:col-span-2">
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Image URL</label>
-                                <input name="img[]" value="{{ pkg.img }}" placeholder="https://..." class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Tag</label>
-                                <input name="tag[]" value="{{ pkg.tag }}" placeholder="Hot Meals" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                            <div class="md:col-span-3">
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Card Image URL</label>
+                                <input name="img[]" value="{{ pkg.img or pkg.image_url }}" placeholder="https://..." class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
                             </div>
                         </div>
                         <button type="button" onclick="this.parentElement.remove()" class="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 shadow-lg">
@@ -348,318 +226,13 @@
                     {% endfor %}
                 </div>
                 <div class="mt-8 flex items-center justify-between">
-                    <button type="button" onclick="addItem('package-items', 'package-template')" class="text-xs font-black uppercase tracking-widest text-primary-600">Add Another Package</button>
-                    <button type="submit" class="bg-gray-900 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-black shadow-xl">Update Packages</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- General Tab -->
-    <div id="tab-general" class="tab-content hidden">
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-            <h3 class="text-xl font-bold mb-6">General Information</h3>
-            <form method="post" action="{{ url_for('admin.settings') }}">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="action" value="update_general">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">WhatsApp Support Number</label>
-                        <input name="whatsapp" value="{{ general.whatsapp }}" placeholder="+91 00000 00000" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Instagram Handle</label>
-                        <input name="instagram" value="{{ general.instagram }}" placeholder="@navsahaay" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
-                    </div>
-                </div>
-                <div class="mt-8 text-right">
-                    <button type="submit" class="bg-gray-900 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-black shadow-xl">Update Info</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Testimonials Tab -->
-    <div id="tab-testimonials" class="tab-content hidden">
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-            <h3 class="text-xl font-bold mb-6">Testimonials Settings</h3>
-            <form method="post" action="{{ url_for('admin.settings') }}">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="action" value="update_testimonials">
-                <div id="testimonial-items" class="space-y-8">
-                    {% for item in testimonials %}
-                    <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Person Name</label>
-                                <input name="name[]" value="{{ item.name }}" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Role/Location</label>
-                                <input name="role[]" value="{{ item.role }}" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-                            </div>
-                            <div class="md:col-span-2">
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Quote</label>
-                                <textarea name="quote[]" rows="2" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">{{ item.quote }}</textarea>
-                            </div>
-                            <div class="md:col-span-2">
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Avatar URL</label>
-                                <input name="img[]" value="{{ item.img }}" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-                            </div>
-                        </div>
-                        <button type="button" onclick="this.parentElement.remove()" class="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 shadow-lg">
-                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                        </button>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="mt-8 flex items-center justify-between">
-                    <button type="button" onclick="addItem('testimonial-items', 'testimonial-template')" class="text-xs font-black uppercase tracking-widest text-primary-600">Add Testimonial</button>
-                    <button type="submit" class="bg-gray-900 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-black shadow-xl">Update Testimonials</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Partners Tab -->
-    <div id="tab-partners" class="tab-content hidden">
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-            <h3 class="text-xl font-bold mb-6">Partners & Supporters</h3>
-            <form method="post" action="{{ url_for('admin.settings') }}">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="action" value="update_partners">
-                <div id="partner-items" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {% for item in partners %}
-                    <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative">
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Partner Name</label>
-                                <input name="partner_name[]" value="{{ item.name }}" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Logo URL (Grayscale png preferred)</label>
-                                <input name="logo[]" value="{{ item.logo }}" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-                            </div>
-                        </div>
-                        <button type="button" onclick="this.parentElement.remove()" class="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 shadow-lg">
-                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                        </button>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="mt-8 flex items-center justify-between">
-                    <button type="button" onclick="addItem('partner-items', 'partner-template')" class="text-xs font-black uppercase tracking-widest text-primary-600">Add Partner</button>
-                    <button type="submit" class="bg-gray-900 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-black shadow-xl">Update Partners</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- FAQ Tab -->
-    <div id="tab-faqs" class="tab-content hidden">
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-            <h3 class="text-xl font-bold mb-6">Frequently Asked Questions</h3>
-            <form method="post" action="{{ url_for('admin.settings') }}">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="action" value="update_faqs">
-                <div id="faq-items" class="space-y-6">
-                    {% for item in faqs %}
-                    <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative">
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Question</label>
-                                <input name="question[]" value="{{ item.question }}" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Answer</label>
-                                <textarea name="answer[]" rows="2" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">{{ item.answer }}</textarea>
-                            </div>
-                        </div>
-                        <button type="button" onclick="this.parentElement.remove()" class="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 shadow-lg">
-                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                        </button>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="mt-8 flex items-center justify-between">
-                    <button type="button" onclick="addItem('faq-items', 'faq-template')" class="text-xs font-black uppercase tracking-widest text-primary-600">Add FAQ</button>
-                    <button type="submit" class="bg-gray-900 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-black shadow-xl">Update FAQs</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Urgent Appeal Tab -->
-    <div id="tab-urgent" class="tab-content hidden">
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-            <h3 class="text-xl font-bold mb-6">Urgent Appeal Banner</h3>
-            <form method="post" action="{{ url_for('admin.settings') }}">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="action" value="update_urgent_appeal">
-
-                <div class="space-y-6">
-                    <div class="flex items-center space-x-4 mb-6">
-                        <label class="flex items-center cursor-pointer">
-                            <input type="checkbox" name="urgent_active" value="y" {% if urgent.active %}checked{% endif %} class="w-5 h-5 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500">
-                            <span class="ml-2 text-xs font-bold text-gray-700 uppercase tracking-widest">Show Urgent Banner on Website</span>
-                        </label>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div>
-                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Banner Text</label>
-                            <input name="urgent_text" value="{{ urgent.text }}" placeholder="e.g. Help families affected by Delhi floods" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-red-600 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Button Text</label>
-                            <input name="urgent_btn_text" value="{{ urgent.btn_text }}" placeholder="Donate Now" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-red-600 outline-none">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Redirect Link (URL or #id)</label>
-                        <input name="urgent_link" value="{{ urgent.link }}" placeholder="e.g. /cause/flood-relief" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-red-600 outline-none">
-                    </div>
-                </div>
-
-                <div class="mt-8 text-right">
-                    <button type="submit" class="bg-red-600 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-red-700 shadow-xl transition-all">Save Appeal Settings</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <!-- Transparency Tab -->
-    <div id="tab-transparency" class="tab-content hidden">
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-            <h3 class="text-xl font-bold mb-6">Transparency Dashboard Ratios (%)</h3>
-            <form method="post" action="{{ url_for('admin.settings') }}">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="action" value="update_transparency">
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div>
-                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Programmes (%)</label>
-                        <input name="ratio_programmes" value="{{ transparency.programmes }}" placeholder="92" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Admin/Operations (%)</label>
-                        <input name="ratio_admin" value="{{ transparency.admin }}" placeholder="5" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Fundraising (%)</label>
-                        <input name="ratio_fundraising" value="{{ transparency.fundraising }}" placeholder="3" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
-                    </div>
-                </div>
-
-                <div class="mt-8 text-right">
-                    <button type="submit" class="bg-primary-600 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-primary-700 shadow-xl transition-all">Update Ratios</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div id="tab-matching" class="tab-content hidden">
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-            <h3 class="text-xl font-bold mb-6">Donation Matching (Multiplier)</h3>
-            <form method="post" action="{{ url_for('admin.settings') }}">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="action" value="update_matching">
-
-                <div class="space-y-6">
-                    <div class="flex items-center space-x-4 mb-6">
-                        <label class="flex items-center cursor-pointer">
-                            <input type="checkbox" name="matching_active" value="y" {% if matching.active %}checked{% endif %} class="w-5 h-5 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500">
-                            <span class="ml-2 text-xs font-bold text-gray-700 uppercase tracking-widest">Enable 2X/3X Matching Badge</span>
-                        </label>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div>
-                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Multiplier (e.g. 2, 3)</label>
-                            <input name="matching_multiplier" value="{{ matching.multiplier or '2' }}" placeholder="2" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Display Text</label>
-                            <input name="matching_text" value="{{ matching.text }}" placeholder="A generous donor is matching every rupee!" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-8 text-right">
-                    <button type="submit" class="bg-primary-600 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-primary-700 shadow-xl transition-all">Save Matching Settings</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div id="tab-seo" class="tab-content hidden">
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-            <h3 class="text-xl font-bold mb-6">SEO & Social Settings</h3>
-            <form method="post" action="{{ url_for('admin.settings') }}">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="action" value="update_seo">
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-10">
-                    <div class="space-y-6">
-                        <h4 class="text-xs font-black uppercase tracking-widest text-primary-600 border-b pb-2">Search Engine Optimization</h4>
-                        <div>
-                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Site Title</label>
-                            <input name="seo_title" value="{{ seo.title }}" placeholder="NavSahaay Foundation | Leading NGO..." class="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Meta Description</label>
-                            <textarea name="seo_description" rows="3" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">{{ seo.description }}</textarea>
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Keywords (comma separated)</label>
-                            <input name="seo_keywords" value="{{ seo.keywords }}" placeholder="NGO, Charity, India, Welfare..." class="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">OG Sharing Image URL</label>
-                            <input name="og_image" value="{{ seo.og_image }}" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-                        </div>
-                    </div>
-
-                    <div class="space-y-6">
-                        <h4 class="text-xs font-black uppercase tracking-widest text-primary-600 border-b pb-2">Social & Links</h4>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">WhatsApp</label>
-                                <input name="whatsapp" value="{{ social.whatsapp }}" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Instagram</label>
-                                <input name="instagram" value="{{ social.instagram }}" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Facebook</label>
-                                <input name="facebook" value="{{ social.facebook }}" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Twitter/X</label>
-                                <input name="twitter" value="{{ social.twitter }}" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">YouTube Channel</label>
-                            <input name="youtube" value="{{ social.youtube }}" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Public Contact Email</label>
-                            <input name="contact_email" value="{{ social.email }}" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-8 pt-8 border-t border-gray-100 text-right">
-                    <button type="submit" class="bg-gray-900 text-white px-12 py-5 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-black shadow-xl transform transition-transform active:scale-95">Save SEO & Social Settings</button>
+                    <button type="button" onclick="addItem('package-items', 'package-template')" class="text-xs font-black uppercase tracking-widest text-primary-600">+ Add New Cause Card</button>
+                    <button type="submit" class="bg-gray-900 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-black shadow-xl">Save Causes Cards</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<!-- Closed the extra wrapper for tabs -->
 
 <!-- Templates -->
 <template id="slider-template">
@@ -677,7 +250,7 @@
                 <div class="mt-3">
                     <span class="text-[10px] font-bold text-gray-400 block mb-1">Live Adjustment Preview:</span>
                     <div class="w-full h-32 bg-slate-200 rounded-xl overflow-hidden border border-gray-200 flex items-center justify-center relative">
-                        <img src="" alt="" class="w-full h-full object-cover object-center preview-img hidden">
+                        <img src="" class="w-full h-full object-cover object-center preview-img hidden">
                         <span class="text-xs text-gray-400 preview-placeholder">No image selected</span>
                     </div>
                 </div>
@@ -739,7 +312,7 @@
                 </div>
             </div>
             <div>
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Content Position Template (Fine-tune with clicks)</label>
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Content Position Template</label>
                 <input type="hidden" name="position[]" value="center" class="position-input">
                 <div class="grid grid-cols-3 gap-1 w-36 bg-gray-200 p-1 rounded-xl">
                     <button type="button" onclick="selectPosition(this, 'top-left')" class="p-1.5 rounded text-center text-xs font-bold bg-white text-gray-700 hover:bg-gray-100">↖</button>
@@ -764,118 +337,32 @@
     <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="md:col-span-2">
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Package Title</label>
-                <input name="title[]" placeholder="Feed a Child" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Cause Title</label>
+                <input name="title[]" placeholder="e.g. Feed a Homeless Person" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
             </div>
             <div>
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Amount (₹)</label>
-                <input name="amount[]" placeholder="4000" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Unit Donation Amount (₹)</label>
+                <input name="amount[]" placeholder="60" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Target Goal Amount (₹)</label>
+                <input name="target_amount[]" placeholder="100000" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Raised Amount (₹)</label>
+                <input name="raised_amount[]" placeholder="25000" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Tag / Badge</label>
+                <input name="tag[]" placeholder="e.g. Hot Meals" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
             </div>
             <div class="md:col-span-3">
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Description</label>
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Short Description</label>
                 <textarea name="description[]" rows="2" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary-600 outline-none"></textarea>
             </div>
-            <div class="md:col-span-2">
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Image URL</label>
+            <div class="md:col-span-3">
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Card Image URL</label>
                 <input name="img[]" placeholder="https://..." class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-            </div>
-            <div>
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Tag</label>
-                <input name="tag[]" placeholder="Hot Meals" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
-            </div>
-        </div>
-        <button type="button" onclick="this.parentElement.remove()" class="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 shadow-lg">
-            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-        </button>
-    </div>
-</template>
-
-<template id="programme-template">
-    <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Title</label>
-                <input name="title[]" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold outline-none">
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Icon Color (Hex)</label>
-                    <input name="icon_color[]" value="#2563eb" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none">
-                </div>
-                <div>
-                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Bg Color (Hex)</label>
-                    <input name="bg_color[]" value="#eff6ff" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none">
-                </div>
-            </div>
-            <div class="md:col-span-2">
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Description</label>
-                <input name="description[]" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none">
-            </div>
-            <div class="md:col-span-2">
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Icon SVG Path</label>
-                <textarea name="svg[]" rows="2" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-[10px] font-mono outline-none"></textarea>
-            </div>
-        </div>
-        <button type="button" onclick="this.parentElement.remove()" class="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 shadow-lg">
-            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-        </button>
-    </div>
-</template>
-
-<template id="testimonial-template">
-    <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Person Name</label>
-                <input name="name[]" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-            </div>
-            <div>
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Role/Location</label>
-                <input name="role[]" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-            </div>
-            <div class="md:col-span-2">
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Quote</label>
-                <textarea name="quote[]" rows="2" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none"></textarea>
-            </div>
-            <div class="md:col-span-2">
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Avatar URL</label>
-                <input name="img[]" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-            </div>
-        </div>
-        <button type="button" onclick="this.parentElement.remove()" class="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 shadow-lg">
-            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-        </button>
-    </div>
-</template>
-
-<template id="partner-template">
-    <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative">
-        <div class="space-y-4">
-            <div>
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Partner Name</label>
-                <input name="partner_name[]" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-            </div>
-            <div>
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Logo URL</label>
-                <input name="logo[]" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
-            </div>
-        </div>
-        <button type="button" onclick="this.parentElement.remove()" class="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 shadow-lg">
-            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-        </button>
-    </div>
-</template>
-
-<template id="faq-template">
-    <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative">
-        <div class="space-y-4">
-            <div>
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Question</label>
-                <input name="question[]" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
-            </div>
-            <div>
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Answer</label>
-                <textarea name="answer[]" rows="2" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none"></textarea>
             </div>
         </div>
         <button type="button" onclick="this.parentElement.remove()" class="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 shadow-lg">
@@ -933,7 +420,6 @@ function updatePreviewStyles(select) {
     const fitVal = fitSelect ? fitSelect.value : 'cover';
     const posVal = posSelect ? posSelect.value : 'center';
 
-    // Clear existing tailwind object- classes
     previewImg.className = previewImg.className.replace(/\bobject-\S+/g, '');
     previewImg.classList.add('w-full', 'h-full', 'preview-img');
     previewImg.classList.add('object-' + fitVal);
@@ -968,7 +454,6 @@ async function uploadToCloudflare(input) {
             ? await response.json()
             : { error: `Server returned ${response.status}. Please log in again or check the server logs.` };
         if (data.url) {
-            // Find the closest slide container to update the correct URL field
             const row = input.closest('.p-6') || input.closest('.relative') || input.parentElement.parentElement.parentElement;
             const urlInput = row.querySelector('.hero-url-input');
             if (urlInput) {
@@ -990,8 +475,6 @@ async function uploadToCloudflare(input) {
     }
 }
 
-// Vercel rejects multipart requests above its serverless body limit. Resize
-// large photos in the browser before sending them to the media endpoint.
 async function prepareUploadFile(file) {
     const maxBytes = 4 * 1024 * 1024;
     if (file.size <= maxBytes) return file;

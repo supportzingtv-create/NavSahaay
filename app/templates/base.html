@@ -209,6 +209,11 @@
                     <a href="#" class="text-[10px] font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">Gallery</a>
                     <a href="#contact" class="text-[10px] font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">Contact</a>
 
+                    <a href="tel:{{ general.phone_number or general.phone or '+919876543210' }}" class="text-[10px] font-extrabold text-primary-600 hover:text-primary-700 transition-colors uppercase tracking-widest flex items-center space-x-1">
+                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+                        <span>Call: {{ general.phone_number or general.phone or '+91 98765 43210' }}</span>
+                    </a>
+
                     <div class="h-8 w-px bg-gray-100 mx-2"></div>
 
                     <a href="#donate" class="inline-flex items-center justify-center px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-full shadow-lg text-[10px] font-black uppercase tracking-widest transform transition-all hover:scale-105 active:scale-95">Donate Now</a>
@@ -260,6 +265,11 @@
                         </div>
                     </div>
                     <p class="text-gray-400 leading-relaxed max-w-sm text-sm font-medium">Leading NGO for Donations, Charity & Social Welfare. We provide 100% transparency with photo and video documentation for every contribution.</p>
+
+                    <p class="text-xs font-bold text-slate-300 mt-4 flex items-center space-x-2">
+                        <svg class="w-4 h-4 text-primary-500" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+                        <span>Phone: <a href="tel:{{ general.phone_number or general.phone or '+919876543210' }}" class="text-white hover:text-primary-400 font-black">{{ general.phone_number or general.phone or '+91 98765 43210' }}</a></span>
+                    </p>
 
                     <div class="mt-8 flex space-x-4">
                         <div class="bg-gray-800 px-4 py-3 rounded-xl border border-gray-700 flex items-center">

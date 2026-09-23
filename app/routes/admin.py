@@ -118,25 +118,46 @@ def settings():
             pkgs = []
             titles = request.form.getlist("title[]")
             amounts = request.form.getlist("amount[]")
+            target_amounts = request.form.getlist("target_amount[]")
+            raised_amounts = request.form.getlist("raised_amount[]")
             descs = request.form.getlist("description[]")
             imgs = request.form.getlist("img[]")
             tags = request.form.getlist("tag[]")
             for i in range(len(titles)):
                 if titles[i]:
+                    try:
+                        target_val = float(target_amounts[i]) if i < len(target_amounts) and target_amounts[i] else 100000
+                    except (ValueError, TypeError):
+                        target_val = 100000
+                    try:
+                        raised_val = float(raised_amounts[i]) if i < len(raised_amounts) and raised_amounts[i] else 0
+                    except (ValueError, TypeError):
+                        raised_val = 0
                     pkgs.append({
-                        "title": titles[i], "amount": amounts[i],
-                        "description": descs[i], "img": imgs[i], "tag": tags[i]
+                        "title": titles[i],
+                        "amount": amounts[i] if i < len(amounts) else "60",
+                        "target_amount": target_val,
+                        "raised_amount": raised_val,
+                        "description": descs[i] if i < len(descs) else "",
+                        "short_description": descs[i] if i < len(descs) else "",
+                        "img": imgs[i] if i < len(imgs) else "",
+                        "image_url": imgs[i] if i < len(imgs) else "",
+                        "tag": tags[i] if i < len(tags) else "Cause",
+                        "slug": titles[i].lower().replace(" ", "-")
                     })
             Setting.set("donation_packages", pkgs)
-            flash("Packages updated.", "success")
+            flash("Causes cards updated successfully.", "success")
 
         elif action == "update_general":
             general = {
+                "phone_number": request.form.get("phone_number"),
+                "phone": request.form.get("phone_number"),
                 "whatsapp": request.form.get("whatsapp"),
+                "email": request.form.get("email"),
                 "instagram": request.form.get("instagram")
             }
             Setting.set("general_info", general)
-            flash("General info updated.", "success")
+            flash("Phone number and contact info updated successfully.", "success")
 
         elif action == "update_programmes":
             progs = []

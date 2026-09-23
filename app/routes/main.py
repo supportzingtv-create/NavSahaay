@@ -69,12 +69,30 @@ def home():
 
         from app.models import Cause
         causes_db = Cause.get_all(active_only=True)
+        packages_setting = Setting.get("donation_packages")
+
+        packages = []
+        if packages_setting and isinstance(packages_setting, list):
+            for pkg in packages_setting:
+                if isinstance(pkg, dict) and pkg.get("title"):
+                    packages.append({
+                        "title": pkg.get("title"),
+                        "amount": pkg.get("amount", "60"),
+                        "target_amount": pkg.get("target_amount") or 100000,
+                        "raised_amount": pkg.get("raised_amount") or 0,
+                        "short_description": pkg.get("description") or pkg.get("short_description") or "",
+                        "tag": pkg.get("tag") or "Cause",
+                        "image_url": pkg.get("img") or pkg.get("image_url") or "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=400&q=80",
+                        "slug": pkg.get("slug") or pkg.get("title", "").lower().replace(" ", "-")
+                    })
+
         if causes_db:
-            packages = causes_db
-        else:
+            packages = causes_db + packages
+
+        if not packages:
             packages = [
-                {"title": "Feed a Homeless", "amount": "60", "short_description": "Provide one nutritious meal to a homeless person.", "tag": "Hot Meals", "image_url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=400&q=80", "slug": "feed-a-homeless"},
-                {"title": "Plant a Tree", "amount": "70", "short_description": "Help restore nature by planting a native tree.", "tag": "Eco Action", "image_url": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=400&q=80", "slug": "plant-a-tree"}
+                {"title": "Feed a Homeless", "amount": "60", "target_amount": 100000, "raised_amount": 35000, "short_description": "Provide one nutritious meal to a homeless person.", "tag": "Hot Meals", "image_url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=400&q=80", "slug": "feed-a-homeless"},
+                {"title": "Plant a Tree", "amount": "70", "target_amount": 50000, "raised_amount": 18000, "short_description": "Help restore nature by planting a native tree.", "tag": "Eco Action", "image_url": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=400&q=80", "slug": "plant-a-tree"}
             ]
 
         stats_db = Setting.get("impact_stats")
