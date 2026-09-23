@@ -270,24 +270,54 @@ def settings():
             flash("Transparency ratios updated.", "success")
 
         elif action == "update_gallery":
+            import json
             gallery = []
-            urls = request.form.getlist("url[]")
+            titles = request.form.getlist("title[]")
             captions = request.form.getlist("caption[]")
             categories = request.form.getlist("category[]")
+            images_jsons = request.form.getlist("images_json[]")
+            urls_fallback = request.form.getlist("url[]")
             fits = request.form.getlist("fit[]")
             img_positions = request.form.getlist("img_position[]")
-            for i in range(len(urls)):
-                if urls[i]:
+
+            max_items = max(len(titles), len(captions), len(images_jsons), len(urls_fallback))
+            for i in range(max_items):
+                title = titles[i] if i < len(titles) else ""
+                caption = captions[i] if i < len(captions) else ""
+                category = categories[i] if i < len(categories) else "General"
+                fit = fits[i] if i < len(fits) else "cover"
+                img_pos = img_positions[i] if i < len(img_positions) else "center"
+
+                imgs = []
+                if i < len(images_jsons) and images_jsons[i]:
+                    try:
+                        parsed = json.loads(images_jsons[i])
+                        if isinstance(parsed, list):
+                            imgs = [u.strip() for u in parsed if u and u.strip()]
+                    except Exception:
+                        pass
+
+                if not imgs and i < len(urls_fallback) and urls_fallback[i]:
+                    imgs = [urls_fallback[i].strip()]
+
+                if imgs or title or caption:
+                    cover = imgs[0] if imgs else ""
                     gallery.append({
-                        "url": urls[i],
-                        "caption": captions[i] if i < len(captions) else "",
-                        "category": categories[i] if i < len(categories) else "General",
-                        "fit": fits[i] if i < len(fits) else "cover",
-                        "img_position": img_positions[i] if i < len(img_positions) else "center"
+                        "title": title or "NavSahaay Initiative",
+                        "caption": caption,
+                        "category": category,
+                        "images": imgs,
+                        "url": cover,
+                        "fit": fit,
+                        "img_position": img_pos
                     })
+
             Setting.set("gallery_items", gallery)
             try:
                 r2_service.save_json("settings/gallery_items.json", gallery)
+            except Exception as e:
+                print(f"R2 gallery save error: {e}")
+            flash(f"Gallery updated successfully. {len(gallery)} album group(s) active.", "success")
             except Exception as e:
                 print(f"R2 gallery save error: {e}")
             flash(f"Gallery updated successfully. {len(gallery)} photo(s) active.", "success")

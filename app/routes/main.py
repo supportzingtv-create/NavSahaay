@@ -314,36 +314,61 @@ def gallery():
     if not gallery_items:
         gallery_items = [
             {
-                "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=1200",
-                "caption": "Ration & Warm Meal Distribution Drive for Underprivileged Families",
-                "category": "Food Drives"
+                "title": "Tree Plantation Drive 2026",
+                "caption": "Planted 500+ saplings in Jaipur rural region with 50 local volunteers.",
+                "category": "Environment",
+                "images": [
+                    "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1200",
+                    "https://images.unsplash.com/photo-1576085898323-218337e3e43c?q=80&w=1200",
+                    "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?q=80&w=1200"
+                ],
+                "url": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1200"
             },
             {
-                "url": "https://images.unsplash.com/photo-1509059852496-f3822ae057bf?q=80&w=1200",
-                "caption": "Providing Free Books, Stationeries & Digital Learning Tools to Children",
-                "category": "Education"
+                "title": "Warm Meal & Grocery Ration Drive",
+                "caption": "Distributed hot nutritious meals and monthly ration kits to 200+ homeless families.",
+                "category": "Food Drives",
+                "images": [
+                    "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=1200",
+                    "https://images.unsplash.com/photo-1593113598332-cd288d649433?q=80&w=1200"
+                ],
+                "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=1200"
             },
             {
-                "url": "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=1200",
-                "caption": "Free Health Checkup & Medical Aid Camp in Rural Villages",
-                "category": "Healthcare"
+                "title": "Digital Learning & School Kit Distribution",
+                "caption": "Provided free textbooks, bags, uniforms and digital learning tools to children.",
+                "category": "Education",
+                "images": [
+                    "https://images.unsplash.com/photo-1509059852496-f3822ae057bf?q=80&w=1200"
+                ],
+                "url": "https://images.unsplash.com/photo-1509059852496-f3822ae057bf?q=80&w=1200"
             },
             {
-                "url": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1200",
-                "caption": "Community Tree Plantation Drive for a Greener Tomorrow",
-                "category": "Environment"
+                "title": "Free Rural Health & Eye Camp",
+                "caption": "Conducted free medical health checkups, eye tests, and medicine distribution.",
+                "category": "Healthcare",
+                "images": [
+                    "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=1200"
+                ],
+                "url": "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=1200"
             },
             {
-                "url": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1200",
-                "caption": "Vocational Skill Development & Tailoring Workshop for Women",
-                "category": "Events"
-            },
-            {
-                "url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?q=80&w=1200",
-                "caption": "Nutrition & Mid-Day Meal Distribution at Community Center",
-                "category": "Food Drives"
+                "title": "Women Skill Development Workshop",
+                "caption": "Organized self-reliance tailoring and handicraft training for underprivileged women.",
+                "category": "Events",
+                "images": [
+                    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1200"
+                ],
+                "url": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1200"
             }
         ]
+
+    # Normalize gallery items so each item has a list of 'images' and a 'url'
+    for item in gallery_items:
+        if "images" not in item or not isinstance(item["images"], list):
+            item["images"] = [item.get("url")] if item.get("url") else []
+        elif item["images"] and not item.get("url"):
+            item["url"] = item["images"][0]
 
     categories = sorted(list(set(item.get("category", "General") for item in gallery_items if item.get("category"))))
 

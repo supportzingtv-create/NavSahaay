@@ -279,11 +279,11 @@
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
             <div class="flex justify-between items-center mb-6">
                 <div>
-                    <h3 class="text-xl font-bold">Photo Gallery Management</h3>
-                    <p class="text-xs text-gray-400 mt-1">Upload photos and write text/captions. Hovering on photos in website gallery will display this text.</p>
+                    <h3 class="text-xl font-bold">Photo Gallery & Album Management</h3>
+                    <p class="text-xs text-gray-400 mt-1">Create photo albums/groups (like Plantation Drive). Add multiple photos in 1 album with text/captions.</p>
                 </div>
                 <span class="rounded-full bg-gray-100 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-gray-500">
-                    {{ gallery_items|length }} photo{% if gallery_items|length != 1 %}s{% endif %}
+                    {{ gallery_items|length }} album group{% if gallery_items|length != 1 %}s{% endif %}
                 </span>
             </div>
             <form method="post" action="{{ url_for('admin.settings') }}">
@@ -291,60 +291,60 @@
                 <input type="hidden" name="action" value="update_gallery">
                 <div id="gallery-items" class="space-y-6">
                     {% for item in gallery_items %}
-                    <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative album-card">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                             <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Photo Upload or URL</label>
-                                <div class="flex space-x-2">
-                                    <input name="url[]" value="{{ item.url }}" oninput="triggerPreview(this)" placeholder="https://..." class="flex-1 bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none cause-url-input">
-                                    <label class="cursor-pointer bg-slate-800 text-white px-4 py-3 rounded-xl hover:bg-black transition-all flex items-center justify-center font-bold text-xs uppercase tracking-widest min-w-[120px] relative">
-                                        <span class="upload-text">Upload File</span>
-                                        <input type="file" accept="image/*" class="hidden" onchange="uploadToCloudflare(this)">
-                                    </label>
-                                </div>
-                                <div class="mt-3">
-                                    <span class="text-[10px] font-bold text-gray-400 block mb-1">Live Image Preview:</span>
-                                    <div class="w-full h-40 bg-slate-200 rounded-xl overflow-hidden border border-gray-200 flex items-center justify-center relative shadow-sm">
-                                        <img src="{{ item.url if item.url else '' }}" class="w-full h-full object-{{ item.fit | default('cover') }} object-{{ item.img_position | default('center') }} preview-img {% if not item.url %}hidden{% endif %}">
-                                        <span class="text-xs text-gray-400 preview-placeholder {% if item.url %}hidden{% endif %}">No photo selected</span>
-                                    </div>
-                                </div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Album / Group Title</label>
+                                <input name="title[]" value="{{ item.title or '' }}" placeholder="e.g. Tree Plantation Drive 2026" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
                             </div>
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Hover Text / Caption (Cursor lane par dikhega)</label>
-                                    <textarea name="caption[]" rows="3" placeholder="e.g. Food Distribution drive at Jaipur shelter house" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary-600 outline-none">{{ item.caption or '' }}</textarea>
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Category / Tag</label>
-                                    <select name="category[]" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
-                                        <option value="Food Drives" {% if item.category == 'Food Drives' %}selected{% endif %}>Food Drives</option>
-                                        <option value="Education" {% if item.category == 'Education' %}selected{% endif %}>Education</option>
-                                        <option value="Healthcare" {% if item.category == 'Healthcare' %}selected{% endif %}>Healthcare</option>
-                                        <option value="Environment" {% if item.category == 'Environment' %}selected{% endif %}>Environment</option>
-                                        <option value="Events" {% if item.category == 'Events' %}selected{% endif %}>Events</option>
-                                        <option value="General" {% if item.category == 'General' or not item.category %}selected{% endif %}>General</option>
-                                    </select>
-                                </div>
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Fit</label>
-                                        <select name="fit[]" onchange="updatePreviewStyles(this)" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-primary-600 outline-none fit-select">
-                                            <option value="cover" {% if item.fit == 'cover' or not item.fit %}selected{% endif %}>Cover</option>
-                                            <option value="contain" {% if item.fit == 'contain' %}selected{% endif %}>Contain</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Alignment Focus</label>
-                                        <select name="img_position[]" onchange="updatePreviewStyles(this)" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-primary-600 outline-none img-position-select">
-                                            <option value="center" {% if item.img_position == 'center' or not item.img_position %}selected{% endif %}>Center</option>
-                                            <option value="top" {% if item.img_position == 'top' %}selected{% endif %}>Top</option>
-                                            <option value="bottom" {% if item.img_position == 'bottom' %}selected{% endif %}>Bottom</option>
-                                        </select>
-                                    </div>
-                                </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Category / Tag</label>
+                                <select name="category[]" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                                    <option value="Environment" {% if item.category == 'Environment' %}selected{% endif %}>Environment</option>
+                                    <option value="Food Drives" {% if item.category == 'Food Drives' %}selected{% endif %}>Food Drives</option>
+                                    <option value="Education" {% if item.category == 'Education' %}selected{% endif %}>Education</option>
+                                    <option value="Healthcare" {% if item.category == 'Healthcare' %}selected{% endif %}>Healthcare</option>
+                                    <option value="Events" {% if item.category == 'Events' %}selected{% endif %}>Events</option>
+                                    <option value="General" {% if item.category == 'General' or not item.category %}selected{% endif %}>General</option>
+                                </select>
                             </div>
                         </div>
+
+                        <div class="mb-4">
+                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Hover Text / Caption (Cursor lane par dikhega)</label>
+                            <textarea name="caption[]" rows="2" placeholder="e.g. Planted 500+ saplings with 50 volunteers in Jaipur rural area." class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary-600 outline-none">{{ item.caption or '' }}</textarea>
+                        </div>
+
+                        <!-- Album Photos Container -->
+                        <div class="bg-white p-4 rounded-xl border border-gray-200">
+                            <div class="flex justify-between items-center mb-3">
+                                <label class="block text-[10px] font-black text-gray-500 uppercase tracking-widest">Album Photos (Upload Multiple Photos for this Group)</label>
+                                <label class="cursor-pointer bg-primary-600 text-white px-4 py-2 rounded-xl hover:bg-primary-700 transition-all font-bold text-xs uppercase tracking-widest inline-flex items-center space-x-1 shadow-md">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"></path></svg>
+                                    <span class="upload-text">Upload Photos</span>
+                                    <input type="file" accept="image/*" multiple class="hidden" onchange="uploadAlbumPhotos(this)">
+                                </label>
+                            </div>
+
+                            {% set img_list = item.images if item.images else ([item.url] if item.url else []) %}
+                            <input type="hidden" name="images_json[]" value='{{ img_list | tojson }}' class="images-json-input">
+                            <input type="hidden" name="url[]" value="{{ item.url or '' }}">
+
+                            <div class="flex flex-wrap gap-3 album-thumbs-grid min-h-[100px] bg-gray-50 p-3 rounded-xl border border-dashed border-gray-200 items-center">
+                                {% for img_url in img_list %}
+                                <div class="relative w-24 h-24 rounded-xl overflow-hidden border border-gray-300 group shadow-sm bg-slate-100 flex-shrink-0" data-url="{{ img_url }}">
+                                    <img src="{{ img_url }}" class="w-full h-full object-cover">
+                                    <button type="button" onclick="this.parentElement.remove(); syncAlbumJSON(this.closest('.album-card'))" class="absolute top-1 right-1 bg-red-600 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
+                                    </button>
+                                </div>
+                                {% endfor %}
+                                {% if not img_list %}
+                                <p class="text-xs text-gray-400 album-placeholder font-medium">No photos added yet. Click "Upload Photos" above.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+
                         <button type="button" onclick="this.parentElement.remove()" class="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 shadow-lg">
                             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                         </button>
@@ -352,7 +352,7 @@
                     {% endfor %}
                 </div>
                 <div class="mt-8 flex items-center justify-between">
-                    <button type="button" onclick="addItem('gallery-items', 'gallery-template')" class="text-xs font-black uppercase tracking-widest text-primary-600">+ Add New Gallery Photo</button>
+                    <button type="button" onclick="addItem('gallery-items', 'gallery-template')" class="text-xs font-black uppercase tracking-widest text-primary-600">+ Add New Album Group</button>
                     <button type="submit" class="bg-gray-900 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-black shadow-xl">Save Photo Gallery</button>
                 </div>
             </form>
@@ -538,60 +538,49 @@
 </template>
 
 <template id="gallery-template">
-    <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="p-6 bg-gray-50 rounded-2xl border border-gray-200 relative album-card">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
             <div>
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Photo Upload or URL</label>
-                <div class="flex space-x-2">
-                    <input name="url[]" oninput="triggerPreview(this)" placeholder="https://..." class="flex-1 bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none cause-url-input">
-                    <label class="cursor-pointer bg-slate-800 text-white px-4 py-3 rounded-xl hover:bg-black transition-all flex items-center justify-center font-bold text-xs uppercase tracking-widest min-w-[120px] relative">
-                        <span class="upload-text">Upload File</span>
-                        <input type="file" accept="image/*" class="hidden" onchange="uploadToCloudflare(this)">
-                    </label>
-                </div>
-                <div class="mt-3">
-                    <span class="text-[10px] font-bold text-gray-400 block mb-1">Live Image Preview:</span>
-                    <div class="w-full h-40 bg-slate-200 rounded-xl overflow-hidden border border-gray-200 flex items-center justify-center relative shadow-sm">
-                        <img src="" class="w-full h-full object-cover object-center preview-img hidden">
-                        <span class="text-xs text-gray-400 preview-placeholder">No photo uploaded</span>
-                    </div>
-                </div>
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Album / Group Title</label>
+                <input name="title[]" placeholder="e.g. Tree Plantation Drive 2026" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
             </div>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Hover Text / Caption (Cursor lane par dikhega)</label>
-                    <textarea name="caption[]" rows="3" placeholder="e.g. Distribution drive at Jaipur shelter house" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary-600 outline-none"></textarea>
-                </div>
-                <div>
-                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Category / Tag</label>
-                    <select name="category[]" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
-                        <option value="Food Drives">Food Drives</option>
-                        <option value="Education">Education</option>
-                        <option value="Healthcare">Healthcare</option>
-                        <option value="Environment">Environment</option>
-                        <option value="Events">Events</option>
-                        <option value="General" selected>General</option>
-                    </select>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Fit</label>
-                        <select name="fit[]" onchange="updatePreviewStyles(this)" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-primary-600 outline-none fit-select">
-                            <option value="cover" selected>Cover</option>
-                            <option value="contain">Contain</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Alignment Focus</label>
-                        <select name="img_position[]" onchange="updatePreviewStyles(this)" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-primary-600 outline-none img-position-select">
-                            <option value="center" selected>Center</option>
-                            <option value="top">Top</option>
-                            <option value="bottom">Bottom</option>
-                        </select>
-                    </div>
-                </div>
+            <div>
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Category / Tag</label>
+                <select name="category[]" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                    <option value="Environment" selected>Environment</option>
+                    <option value="Food Drives">Food Drives</option>
+                    <option value="Education">Education</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Events">Events</option>
+                    <option value="General">General</option>
+                </select>
             </div>
         </div>
+
+        <div class="mb-4">
+            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Hover Text / Caption (Cursor lane par dikhega)</label>
+            <textarea name="caption[]" rows="2" placeholder="e.g. Planted 500+ saplings with 50 volunteers in Jaipur rural area." class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-primary-600 outline-none"></textarea>
+        </div>
+
+        <!-- Album Photos Container -->
+        <div class="bg-white p-4 rounded-xl border border-gray-200">
+            <div class="flex justify-between items-center mb-3">
+                <label class="block text-[10px] font-black text-gray-500 uppercase tracking-widest">Album Photos (Upload Multiple Photos for this Group)</label>
+                <label class="cursor-pointer bg-primary-600 text-white px-4 py-2 rounded-xl hover:bg-primary-700 transition-all font-bold text-xs uppercase tracking-widest inline-flex items-center space-x-1 shadow-md">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"></path></svg>
+                    <span class="upload-text">Upload Photos</span>
+                    <input type="file" accept="image/*" multiple class="hidden" onchange="uploadAlbumPhotos(this)">
+                </label>
+            </div>
+
+            <input type="hidden" name="images_json[]" value="[]" class="images-json-input">
+            <input type="hidden" name="url[]" value="">
+
+            <div class="flex flex-wrap gap-3 album-thumbs-grid min-h-[100px] bg-gray-50 p-3 rounded-xl border border-dashed border-gray-200 items-center">
+                <p class="text-xs text-gray-400 album-placeholder font-medium">No photos added yet. Click "Upload Photos" above.</p>
+            </div>
+        </div>
+
         <button type="button" onclick="this.parentElement.remove()" class="absolute -top-3 -right-3 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 shadow-lg">
             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
@@ -604,6 +593,76 @@ document.addEventListener('DOMContentLoaded', function() {
         showTab('gallery');
     }
 });
+
+async function uploadAlbumPhotos(input) {
+    const card = input.closest('.album-card');
+    if (!card) return;
+    const files = Array.from(input.files);
+    if (!files.length) return;
+
+    const label = input.parentElement;
+    const textSpan = label.querySelector('.upload-text');
+    const oldText = textSpan ? textSpan.innerText : 'Upload Photos';
+    if (textSpan) textSpan.innerText = 'Uploading...';
+
+    for (let file of files) {
+        const uploadFile = await prepareUploadFile(file);
+        if (!uploadFile) continue;
+
+        const formData = new FormData();
+        formData.append('file', uploadFile, uploadFile.name || file.name);
+
+        try {
+            const response = await fetch('/admin/upload-media', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': document.querySelector('input[name="csrf_token"]').value
+                }
+            });
+            const data = await response.json();
+            if (data.url) {
+                addPhotoToAlbumUI(card, data.url);
+            }
+        } catch(e) {
+            console.error('Album photo upload failed:', e);
+        }
+    }
+    if (textSpan) textSpan.innerText = 'Success!';
+    setTimeout(() => { if (textSpan) textSpan.innerText = oldText; }, 2000);
+}
+
+function addPhotoToAlbumUI(card, url) {
+    const grid = card.querySelector('.album-thumbs-grid');
+    const placeholder = card.querySelector('.album-placeholder');
+    if (placeholder) placeholder.remove();
+
+    const div = document.createElement('div');
+    div.className = 'relative w-24 h-24 rounded-xl overflow-hidden border border-gray-300 group shadow-sm bg-slate-100 flex-shrink-0';
+    div.dataset.url = url;
+    div.innerHTML = `
+        <img src="${url}" class="w-full h-full object-cover">
+        <button type="button" onclick="this.parentElement.remove(); syncAlbumJSON(this.closest('.album-card'))" class="absolute top-1 right-1 bg-red-600 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-md">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+    `;
+    grid.appendChild(div);
+    syncAlbumJSON(card);
+}
+
+function syncAlbumJSON(card) {
+    if (!card) return;
+    const thumbs = card.querySelectorAll('.album-thumbs-grid > div');
+    const urls = [];
+    thumbs.forEach(t => {
+        if (t.dataset.url) urls.push(t.dataset.url);
+    });
+    const jsonInput = card.querySelector('.images-json-input');
+    if (jsonInput) jsonInput.value = JSON.stringify(urls);
+    const coverInput = card.querySelector('input[name="url[]"]');
+    if (coverInput && urls.length > 0) coverInput.value = urls[0];
+}
+
 function showTab(tabId) {
     document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
     document.getElementById('tab-' + tabId).classList.remove('hidden');
