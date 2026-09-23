@@ -67,9 +67,9 @@ def home():
                 {"type": "image", "url": "https://images.unsplash.com/photo-1509059852496-f3822ae057bf?q=80&w=2080", "fit": "cover", "img_position": "center"}
             ]
 
-        from app.models import Cause
-        causes_db = Cause.get_all(active_only=True)
         packages_setting = Setting.get("donation_packages")
+        if not packages_setting:
+            packages_setting = r2_service.get_json("settings/donation_packages.json", [])
 
         packages = []
         if packages_setting and isinstance(packages_setting, list):
@@ -88,8 +88,11 @@ def home():
                         "slug": pkg.get("slug") or pkg.get("title", "").lower().replace(" ", "-")
                     })
 
-        if causes_db:
-            packages = causes_db + packages
+        if not packages:
+            from app.models import Cause
+            causes_db = Cause.get_all(active_only=True)
+            if causes_db:
+                packages = causes_db
 
         if not packages:
             packages = [
@@ -162,6 +165,8 @@ def home():
             }
 
         general_db = Setting.get("general_info")
+        if not general_db:
+            general_db = r2_service.get_json("settings/general_info.json", {})
         if general_db: general = general_db
 
         testimonials = Setting.get("testimonials", [])

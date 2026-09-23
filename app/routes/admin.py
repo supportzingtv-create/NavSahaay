@@ -150,6 +150,10 @@ def settings():
                         "slug": titles[i].lower().replace(" ", "-")
                     })
             Setting.set("donation_packages", pkgs)
+            try:
+                r2_service.save_json("settings/donation_packages.json", pkgs)
+            except Exception as e:
+                print(f"R2 donation packages save error: {e}")
             flash("Causes cards updated successfully.", "success")
 
         elif action == "update_general":
@@ -161,6 +165,10 @@ def settings():
                 "instagram": request.form.get("instagram")
             }
             Setting.set("general_info", general)
+            try:
+                r2_service.save_json("settings/general_info.json", general)
+            except Exception as e:
+                print(f"R2 general info save error: {e}")
             flash("Phone number and contact info updated successfully.", "success")
 
         elif action == "update_programmes":
@@ -265,12 +273,21 @@ def settings():
     slider_items = Setting.get("hero_slider", []) or []
     if not slider_items:
         slider_items = r2_service.get_json(HERO_SLIDER_R2_KEY, []) or []
+
+    packages = Setting.get("donation_packages", []) or []
+    if not packages:
+        packages = r2_service.get_json("settings/donation_packages.json", []) or []
+
+    general = Setting.get("general_info", {}) or {}
+    if not general:
+        general = r2_service.get_json("settings/general_info.json", {}) or {}
+
     return render_template("admin/settings.html",
         slider_items=slider_items,
         settings_db_connected=settings_db is not None,
         stats=Setting.get("impact_stats", {}),
-        packages=Setting.get("donation_packages", []),
-        general=Setting.get("general_info", {}),
+        packages=packages,
+        general=general,
         programmes=Setting.get("programmes", []),
         testimonials=Setting.get("testimonials", []),
         partners=Setting.get("partners", []),
