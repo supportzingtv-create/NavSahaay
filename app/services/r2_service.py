@@ -43,10 +43,19 @@ class R2Service:
         key = f"{folder}/{timestamp}_{filename}"
 
         try:
+            content_type = getattr(file_obj, 'content_type', None) or 'application/octet-stream'
+            file_bytes = file_obj.read()
+            self.s3_client.put_object(
+                Bucket=self.bucket_name,
+                Key=key,
+                Body=file_bytes,
+                ContentType=content_type,
+                CacheControl="public, max-age=31536000"
+            )
+
             if self.public_url:
                 url = f"{self.public_url}/{key}"
             else:
-                # Default to the S3-style endpoint which might be public if bucket is configured
                 url = f"https://{self.account_id}.r2.cloudflarestorage.com/{self.bucket_name}/{key}"
 
             print(f"R2 Upload Success: {url}")

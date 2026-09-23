@@ -183,7 +183,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         {% for pkg in packages %}
         <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover-lift group flex flex-col h-full">
-            <div class="relative h-48 overflow-hidden bg-black">
+            <div class="relative h-72 sm:h-80 overflow-hidden bg-slate-900">
                 <img class="w-full h-full object-cover opacity-90 transition-transform duration-[2s] group-hover:scale-105" src="{{ pkg.image_url }}" alt="{{ pkg.title }}">
                 {% if pkg.tag %}
                 <div class="absolute top-4 left-4 bg-primary-500 text-white px-3 py-1 text-[9px] font-bold uppercase tracking-widest shadow-sm">{{ pkg.tag }}</div>
