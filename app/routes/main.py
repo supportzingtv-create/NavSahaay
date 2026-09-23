@@ -307,9 +307,17 @@ def cause_detail(slug):
 
 @main_bp.route("/gallery")
 def gallery():
-    gallery_items = Setting.get("gallery_items")
+    gallery_items = []
+    try:
+        gallery_items = Setting.get("gallery_items")
+    except Exception as e:
+        print(f"Firebase gallery error: {e}")
+
     if not gallery_items:
-        gallery_items = r2_service.get_json("settings/gallery_items.json", []) or []
+        try:
+            gallery_items = r2_service.get_json("settings/gallery_items.json", []) or []
+        except Exception as e:
+            print(f"R2 gallery error: {e}")
 
     if not gallery_items:
         gallery_items = [
@@ -365,15 +373,28 @@ def gallery():
 
     # Normalize gallery items so each item has a list of 'images' and a 'url'
     for item in gallery_items:
-        if "images" not in item or not isinstance(item["images"], list):
-            item["images"] = [item.get("url")] if item.get("url") else []
-        elif item["images"] and not item.get("url"):
-            item["url"] = item["images"][0]
+        if isinstance(item, dict):
+            if "images" not in item or not isinstance(item["images"], list):
+                item["images"] = [item.get("url")] if item.get("url") else []
+            elif item["images"] and not item.get("url"):
+                item["url"] = item["images"][0]
 
-    categories = sorted(list(set(item.get("category", "General") for item in gallery_items if item.get("category"))))
+    try:
+        categories = sorted(list(set(item.get("category", "General") for item in gallery_items if isinstance(item, dict) and item.get("category"))))
+    except Exception:
+        categories = ["Environment", "Food Drives", "Education", "Healthcare", "Events", "General"]
 
-    general = Setting.get("general_info") or r2_service.get_json("settings/general_info.json", {}) or {}
-    social = Setting.get("social_links", general)
+    general = {}
+    try:
+        general = Setting.get("general_info") or r2_service.get_json("settings/general_info.json", {}) or {}
+    except Exception:
+        general = {}
+
+    social = general
+    try:
+        social = Setting.get("social_links", general)
+    except Exception:
+        social = general
 
     response = make_response(render_template("gallery.html",
         gallery_items=gallery_items,

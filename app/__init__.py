@@ -102,6 +102,17 @@ def create_app():
                 else:
                     return redirect(url_for('auth.login'))
 
+    @app.errorhandler(404)
+    def page_not_found(e):
+        from flask import render_template
+        return render_template("404.html"), 404
+
+    @app.errorhandler(500)
+    def internal_server_error(e):
+        from flask import render_template
+        app.logger.error(f"500 Internal Server Error: {e}")
+        return render_template("404.html"), 500
+
     return app
 
 @login_manager.user_loader

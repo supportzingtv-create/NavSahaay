@@ -45,7 +45,7 @@
                  data-category="{{ item.category or 'General' }}"
                  data-title="{{ item.title | escape | default('NavSahaay Initiative') }}"
                  data-caption="{{ item.caption | escape | default('') }}"
-                 data-images='{{ img_array | tojson }}'
+                 data-images="{{ img_array | join('||') }}"
                  onclick="openAlbumLightbox(this)">
 
                 <!-- Card Cover Image Container -->
@@ -196,13 +196,9 @@ function openAlbumLightbox(card) {
     const title = card.getAttribute('data-title') || 'NavSahaay Initiative';
     const caption = card.getAttribute('data-caption') || '';
     const category = card.getAttribute('data-category') || 'General';
-    const imagesJson = card.getAttribute('data-images') || '[]';
+    const imagesStr = card.getAttribute('data-images') || '';
 
-    try {
-        currentAlbumImages = JSON.parse(imagesJson);
-    } catch(e) {
-        currentAlbumImages = [];
-    }
+    currentAlbumImages = imagesStr.split('||').map(s => s.trim()).filter(Boolean);
 
     if (!currentAlbumImages.length) {
         const coverImg = card.querySelector('img');
