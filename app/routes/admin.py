@@ -318,9 +318,6 @@ def settings():
             except Exception as e:
                 print(f"R2 gallery save error: {e}")
             flash(f"Gallery updated successfully. {len(gallery)} album group(s) active.", "success")
-            except Exception as e:
-                print(f"R2 gallery save error: {e}")
-            flash(f"Gallery updated successfully. {len(gallery)} photo(s) active.", "success")
 
         return redirect(url_for("admin.settings"))
 

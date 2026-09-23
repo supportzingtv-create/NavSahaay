@@ -21,7 +21,14 @@ def create_app():
     app.secret_key = secret
 
     app.config["UPLOAD_FOLDER"] = os.path.join(app.root_path, "..", "uploads")
-    os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+    try:
+        os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+    except Exception as e:
+        app.config["UPLOAD_FOLDER"] = "/tmp/uploads"
+        try:
+            os.makedirs("/tmp/uploads", exist_ok=True)
+        except Exception:
+            pass
 
     login_manager.init_app(app)
     csrf.init_app(app)
