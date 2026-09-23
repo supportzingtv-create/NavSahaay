@@ -73,7 +73,7 @@ def settings():
                         "type": types[i] if i < len(types) else "image",
                         "title": titles[i] if i < len(titles) else "",
                         "subtitle": subtitles[i] if i < len(subtitles) else "",
-                        "position": positions[i] if i < len(positions) else "center",
+                        "position": positions[i] if i < len(positions) else "bottom-left",
                         "opacity": opacities[i] if i < len(opacities) else "100",
                         "fit": fits[i] if i < len(fits) else "cover",
                         "img_position": img_positions[i] if i < len(img_positions) else "center",
@@ -125,6 +125,7 @@ def settings():
             tags = request.form.getlist("tag[]")
             fits = request.form.getlist("fit[]")
             img_positions = request.form.getlist("img_position[]")
+            show_goals = request.form.getlist("show_goal[]")
             for i in range(len(titles)):
                 if titles[i]:
                     try:
@@ -147,6 +148,7 @@ def settings():
                         "tag": tags[i] if i < len(tags) else "Cause",
                         "fit": fits[i] if i < len(fits) else "cover",
                         "img_position": img_positions[i] if i < len(img_positions) else "center",
+                        "show_goal": show_goals[i] if i < len(show_goals) else "no",
                         "slug": titles[i].lower().replace(" ", "-")
                     })
             Setting.set("donation_packages", pkgs)

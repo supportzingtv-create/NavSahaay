@@ -85,6 +85,7 @@ def home():
                         "image_url": pkg.get("img") or pkg.get("image_url") or "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=400&q=80",
                         "fit": pkg.get("fit") or "cover",
                         "img_position": pkg.get("img_position") or "center",
+                        "show_goal": pkg.get("show_goal", "no"),
                         "slug": pkg.get("slug") or pkg.get("title", "").lower().replace(" ", "-")
                     })
 

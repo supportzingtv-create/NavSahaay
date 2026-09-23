@@ -18,12 +18,12 @@
                         {% endif %}
 
                         <!-- Overlay positioning template -->
-                        {% set pos_class = "items-center justify-center text-center" %}
+                        {% set pos_class = "items-end justify-start text-left" %}
                         {% if item.position == "top-left" %}{% set pos_class = "items-start justify-start text-left" %}
                         {% elif item.position == "top-center" %}{% set pos_class = "items-start justify-center text-center" %}
                         {% elif item.position == "top-right" %}{% set pos_class = "items-start justify-end text-right" %}
                         {% elif item.position == "center-left" %}{% set pos_class = "items-center justify-start text-left" %}
-                        {% elif item.position == "center" %}{% set pos_class = "items-center justify-center text-center" %}
+                        {% elif item.position == "center" %}{% set pos_class = "items-end justify-start text-left" %}
                         {% elif item.position == "center-right" %}{% set pos_class = "items-center justify-end text-right" %}
                         {% elif item.position == "bottom-left" %}{% set pos_class = "items-end justify-start text-left" %}
                         {% elif item.position == "bottom-center" %}{% set pos_class = "items-end justify-center text-center" %}
@@ -32,7 +32,7 @@
                         <div class="absolute inset-0 flex {{ pos_class }} p-8 md:p-16 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10">
                             <div class="max-w-2xl text-white">
                                 {% if item.subtitle %}
-                                <p class="text-xs md:text-sm font-black uppercase tracking-widest text-blue-400 mb-2 drop-shadow-md">
+                                <p class="text-xs md:text-sm font-black uppercase tracking-widest text-white mb-2 drop-shadow-md">
                                     {{ item.subtitle }}
                                 </p>
                                 {% endif %}
@@ -193,7 +193,7 @@
                 <div>
                     <h3 class="text-base font-bold text-black mb-3 leading-tight">{{ pkg.title }}</h3>
 
-                    {% if pkg.target_amount and pkg.target_amount > 0 %}
+                    {% if pkg.show_goal == 'yes' and pkg.target_amount and pkg.target_amount > 0 %}
                     <div class="mb-6">
                         <div class="flex justify-between text-[9px] font-bold uppercase tracking-widest mb-2">
                             <span class="text-primary-500">₹{{ pkg.raised_amount|int }} Raised</span>
