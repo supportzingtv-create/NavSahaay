@@ -5,7 +5,7 @@
 <section class="w-full p-0 m-0 bg-black">
     <div class="w-full p-0 m-0">
         <div class="relative overflow-hidden bg-black p-0 m-0">
-            <div class="swiper hero-swiper h-[350px] md:h-[550px] w-full p-0 m-0">
+            <div class="swiper hero-swiper h-[300px] md:h-[450px] w-full p-0 m-0">
                 <div class="swiper-wrapper p-0 m-0">
                     {% for item in slider_items %}
                     <div class="swiper-slide bg-black relative p-0 m-0">
@@ -182,37 +182,45 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         {% for pkg in packages %}
-        <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover-lift group">
+        <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover-lift group flex flex-col h-full">
             <div class="relative h-48 overflow-hidden bg-black">
                 <img class="w-full h-full object-cover opacity-90 transition-transform duration-[2s] group-hover:scale-105" src="{{ pkg.image_url }}" alt="{{ pkg.title }}">
+                {% if pkg.tag %}
                 <div class="absolute top-4 left-4 bg-primary-500 text-white px-3 py-1 text-[9px] font-bold uppercase tracking-widest shadow-sm">{{ pkg.tag }}</div>
-            </div>
-            <div class="p-6">
-                <h3 class="text-base font-bold text-black mb-3 leading-tight">{{ pkg.title }}</h3>
-
-                {% if pkg.target_amount and pkg.target_amount > 0 %}
-                <div class="mb-6">
-                    <div class="flex justify-between text-[9px] font-bold uppercase tracking-widest mb-2">
-                        <span class="text-primary-500">₹{{ pkg.raised_amount|int }} Raised</span>
-                        <span class="text-gray-400">Goal: ₹{{ pkg.target_amount|int }}</span>
-                    </div>
-                    <div class="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                        <div class="h-full bg-primary-500 rounded-full transition-all duration-1000"
-                             style="width: {{ (pkg.raised_amount / pkg.target_amount * 100)|round|int if pkg.raised_amount < pkg.target_amount else 100 }}%"></div>
-                    </div>
-                </div>
                 {% endif %}
+            </div>
+            <div class="p-6 flex flex-col flex-1 justify-between">
+                <div>
+                    <h3 class="text-base font-bold text-black mb-3 leading-tight">{{ pkg.title }}</h3>
 
-                <div class="flex items-center justify-between mb-6">
-                    <div class="flex flex-col">
-                        <span class="text-xl font-bold text-primary-500">₹{{ pkg.amount|int }}</span>
-                        {% if pkg.slug %}
-                        <a href="{{ url_for('main.cause_detail', slug=pkg.slug) }}" class="text-[9px] font-bold text-gray-400 uppercase tracking-widest hover:text-primary-500 mt-1 transition-colors">Details &rarr;</a>
-                        {% endif %}
+                    {% if pkg.target_amount and pkg.target_amount > 0 %}
+                    <div class="mb-6">
+                        <div class="flex justify-between text-[9px] font-bold uppercase tracking-widest mb-2">
+                            <span class="text-primary-500">₹{{ pkg.raised_amount|int }} Raised</span>
+                            <span class="text-gray-400">Goal: ₹{{ pkg.target_amount|int }}</span>
+                        </div>
+                        <div class="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-primary-500 rounded-full transition-all duration-1000"
+                                 style="width: {{ (pkg.raised_amount / pkg.target_amount * 100)|round|int if pkg.raised_amount < pkg.target_amount else 100 }}%"></div>
+                        </div>
                     </div>
-                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Impact Unit</span>
+                    {% endif %}
                 </div>
-                <button onclick="quickDonate('{{ pkg.title }}', {{ pkg.amount }})" class="btn-brand w-full py-5 rounded-2xl font-black uppercase text-xs tracking-widest shadow-xl">Donate Now</button>
+
+                <div>
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex flex-col">
+                            <span class="text-xl font-bold text-primary-500">₹{{ pkg.amount|int }}</span>
+                            {% if pkg.slug %}
+                            <a href="{{ url_for('main.cause_detail', slug=pkg.slug) }}" class="text-[10px] font-black text-blue-600 hover:text-blue-700 uppercase tracking-widest mt-2 transition-colors flex items-center">
+                                View Details &rarr;
+                            </a>
+                            {% endif %}
+                        </div>
+                        <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Impact Unit</span>
+                    </div>
+                    <button onclick="quickDonate('{{ pkg.title }}', {{ pkg.amount }})" class="btn-brand w-full py-5 rounded-2xl font-black uppercase text-xs tracking-widest shadow-xl">Donate Now</button>
+                </div>
             </div>
         </div>
         {% endfor %}

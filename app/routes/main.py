@@ -49,15 +49,23 @@ def home():
         if all_events:
             events = all_events[:3]
 
-        # Hero media is admin-managed. Keep the public site free of stock/demo
-        # images until the organisation uploads its real campaign photos.
-        slider_db = Setting.get("hero_slider", [])
+        # Fetch hero media from database (Firebase primary, R2 fallback)
+        slider_db = Setting.get("hero_slider")
         if not slider_db:
             slider_db = r2_service.get_json(HERO_SLIDER_R2_KEY, [])
-        slider_items = [
-            item for item in (slider_db or [])
-            if isinstance(item, dict) and item.get("url")
-        ]
+
+        if slider_db and isinstance(slider_db, list):
+            slider_items = [
+                item for item in slider_db
+                if isinstance(item, dict) and item.get("url")
+            ]
+
+        if not slider_items:
+            # Only show demo images if both databases are empty or unreachable
+            slider_items = [
+                {"type": "image", "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070", "fit": "cover", "img_position": "center"},
+                {"type": "image", "url": "https://images.unsplash.com/photo-1509059852496-f3822ae057bf?q=80&w=2080", "fit": "cover", "img_position": "center"}
+            ]
 
         from app.models import Cause
         causes_db = Cause.get_all(active_only=True)
@@ -70,7 +78,68 @@ def home():
             ]
 
         stats_db = Setting.get("impact_stats")
-        if stats_db: stats = stats_db
+        if stats_db:
+            # 1. Lives Impacted calculation
+            if stats_db.get("lives_impacted_mode") == "auto":
+                try:
+                    base_li = int(stats_db.get("lives_impacted_base") or 0)
+                except (ValueError, TypeError):
+                    base_li = 50000
+                try:
+                    all_dons_temp = Donation.get_all()
+                    verified_dons_count = len([d for d in all_dons_temp if d.status == "VERIFIED"])
+                except Exception:
+                    verified_dons_count = 0
+                lives_impacted_val = f"{base_li + (verified_dons_count * 5):,}+"
+            else:
+                lives_impacted_val = stats_db.get("lives_impacted") or "50,000+"
+
+            # 2. Volunteers Count calculation
+            if stats_db.get("volunteers_mode") == "auto":
+                try:
+                    base_v = int(stats_db.get("volunteers_base") or 0)
+                except (ValueError, TypeError):
+                    base_v = 1200
+                try:
+                    v_count = Volunteer.count()
+                except Exception:
+                    v_count = 0
+                volunteers_val = f"{base_v + v_count:,}+"
+            else:
+                volunteers_val = stats_db.get("volunteers_count") or "1,200+"
+
+            # 3. Total Donations calculation
+            if stats_db.get("donations_mode") == "auto":
+                try:
+                    base_d = float(stats_db.get("donations_base") or 0)
+                except (ValueError, TypeError):
+                    base_d = 10000000
+                try:
+                    all_dons_temp = Donation.get_all()
+                    db_total = sum(d.amount for d in all_dons_temp if d.status == "VERIFIED")
+                except Exception:
+                    db_total = 0
+                total_amt = base_d + db_total
+                if total_amt >= 10000000:
+                    donations_val = f"₹{total_amt/10000000:.2f} Cr+"
+                elif total_amt >= 100000:
+                    donations_val = f"₹{total_amt/100000:.2f} Lakh+"
+                else:
+                    donations_val = f"₹{total_amt:,}+"
+            else:
+                donations_val = stats_db.get("total_donations") or "₹10 Cr+"
+
+            stats = {
+                "lives_impacted": lives_impacted_val,
+                "volunteers_count": volunteers_val,
+                "total_donations": donations_val,
+                "lives_impacted_mode": stats_db.get("lives_impacted_mode", "manual"),
+                "volunteers_mode": stats_db.get("volunteers_mode", "manual"),
+                "donations_mode": stats_db.get("donations_mode", "manual"),
+                "lives_impacted_base": stats_db.get("lives_impacted_base", "50000"),
+                "volunteers_base": stats_db.get("volunteers_base", "1200"),
+                "donations_base": stats_db.get("donations_base", "10000000")
+            }
 
         general_db = Setting.get("general_info")
         if general_db: general = general_db

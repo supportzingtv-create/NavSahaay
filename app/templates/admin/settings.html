@@ -5,7 +5,7 @@
 {% block content %}
 <div class="max-w-6xl">
     <!-- Tabs Navigation -->
-    <div class="flex space-x-8 mb-10 border-b border-gray-200 hidden">
+    <div class="flex space-x-8 mb-10 border-b border-gray-200 overflow-x-auto pb-2">
         <button onclick="showTab('slider')" id="tab-btn-slider" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-primary-600 text-primary-600">Hero Slider</button>
         <button onclick="showTab('programmes')" id="tab-btn-programmes" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">Our Programmes</button>
         <button onclick="showTab('stats')" id="tab-btn-stats" class="pb-4 text-sm font-bold uppercase tracking-widest tab-btn border-b-2 border-transparent text-gray-400 hover:text-gray-600">Impact Stats</button>
@@ -150,8 +150,8 @@
         </div>
     </div>
 
-    <!-- Rest of the tabs hidden from rendering -->
-    <div class="hidden">
+    <!-- Rest of the tabs enabled for rendering -->
+    <div>
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
             <h3 class="text-xl font-bold mb-6">Our Programmes</h3>
             <form method="post" action="{{ url_for('admin.settings') }}">
@@ -201,30 +201,113 @@
     <!-- Impact Stats Tab -->
     <div id="tab-stats" class="tab-content hidden">
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-            <h3 class="text-xl font-bold mb-6">Impact Stats</h3>
+            <h3 class="text-xl font-bold mb-2">Impact Stats & Live Synchronization</h3>
+            <p class="text-xs text-gray-400 mb-8">Choose whether each metric should be calculated completely manually or synced automatically in real-time based on database form actions (Form submissions, Volunteer signups, Verified donations, etc.).</p>
+
             <form method="post" action="{{ url_for('admin.settings') }}">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="action" value="update_stats">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div>
-                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Lives Impacted</label>
-                        <input name="lives_impacted" value="{{ stats.lives_impacted }}" placeholder="50,000+" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+
+                <div class="space-y-8">
+                    <!-- Lives Impacted Section -->
+                    <div class="p-6 bg-zinc-900 rounded-2xl border border-zinc-800">
+                        <h4 class="text-xs font-black uppercase tracking-widest text-primary-500 mb-4 border-b border-zinc-800 pb-2">1. Lives Impacted Tracker</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Calculation Mode</label>
+                                <select name="lives_impacted_mode" onchange="toggleStatFields('lives_impacted', this.value)" class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+                                    <option value="manual" {% if stats.lives_impacted_mode == 'manual' or not stats.lives_impacted_mode %}selected{% endif %}>Manual Display Text</option>
+                                    <option value="auto" {% if stats.lives_impacted_mode == 'auto' %}selected{% endif %}>Automatic Sync (Base Offset + Multiplier)</option>
+                                </select>
+                            </div>
+                            <div id="lives_impacted_manual_container" class="{% if stats.lives_impacted_mode == 'auto' %}hidden{% endif %}">
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Manual Display Text</label>
+                                <input name="lives_impacted" value="{{ stats.lives_impacted or '50,000+' }}" placeholder="e.g. 50,000+" class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                            </div>
+                            <div id="lives_impacted_auto_container" class="{% if stats.lives_impacted_mode != 'auto' %}hidden{% endif %}">
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Base Offset Count</label>
+                                <input name="lives_impacted_base" type="number" value="{{ stats.lives_impacted_base or '50000' }}" placeholder="50000" class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                            </div>
+                            <div class="text-xs text-gray-400 pb-2">
+                                <span class="font-semibold block text-zinc-300">Sync Behavior:</span>
+                                <span class="text-[11px]">Auto mode adds <code>(Verified Donations Count × 5)</code> directly to your Base Offset Count.</span>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Volunteers</label>
-                        <input name="volunteers_count" value="{{ stats.volunteers_count }}" placeholder="1,200+" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+
+                    <!-- Volunteers Section -->
+                    <div class="p-6 bg-zinc-900 rounded-2xl border border-zinc-800">
+                        <h4 class="text-xs font-black uppercase tracking-widest text-primary-500 mb-4 border-b border-zinc-800 pb-2">2. Volunteers Count Tracker</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Calculation Mode</label>
+                                <select name="volunteers_mode" onchange="toggleStatFields('volunteers', this.value)" class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+                                    <option value="manual" {% if stats.volunteers_mode == 'manual' or not stats.volunteers_mode %}selected{% endif %}>Manual Display Text</option>
+                                    <option value="auto" {% if stats.volunteers_mode == 'auto' %}selected{% endif %}>Automatic Live Count (Base Offset + Web Forms)</option>
+                                </select>
+                            </div>
+                            <div id="volunteers_manual_container" class="{% if stats.volunteers_mode == 'auto' %}hidden{% endif %}">
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Manual Display Text</label>
+                                <input name="volunteers_count" value="{{ stats.volunteers_count or '1,200+' }}" placeholder="e.g. 1,200+" class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                            </div>
+                            <div id="volunteers_auto_container" class="{% if stats.volunteers_mode != 'auto' %}hidden{% endif %}">
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Base Offset Count</label>
+                                <input name="volunteers_base" type="number" value="{{ stats.volunteers_base or '1200' }}" placeholder="1200" class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                            </div>
+                            <div class="text-xs text-gray-400 pb-2">
+                                <span class="font-semibold block text-zinc-300">Sync Behavior:</span>
+                                <span class="text-[11px]">Auto mode adds total database volunteer application rows to your Base Offset Count dynamically.</span>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Total Donations</label>
-                        <input name="total_donations" value="{{ stats.total_donations }}" placeholder="₹10 Cr+" class="w-full bg-gray-50 border border-gray-100 rounded-xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+
+                    <!-- Total Donations Section -->
+                    <div class="p-6 bg-zinc-900 rounded-2xl border border-zinc-800">
+                        <h4 class="text-xs font-black uppercase tracking-widest text-primary-500 mb-4 border-b border-zinc-800 pb-2">3. Total Donations Tracker</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Calculation Mode</label>
+                                <select name="donations_mode" onchange="toggleStatFields('donations', this.value)" class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none">
+                                    <option value="manual" {% if stats.donations_mode == 'manual' or not stats.donations_mode %}selected{% endif %}>Manual Display Text</option>
+                                    <option value="auto" {% if stats.donations_mode == 'auto' %}selected{% endif %}>Automatic Financial Sum (Base Offset + Live Payments)</option>
+                                </select>
+                            </div>
+                            <div id="donations_manual_container" class="{% if stats.donations_mode == 'auto' %}hidden{% endif %}">
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Manual Display Text</label>
+                                <input name="total_donations" value="{{ stats.total_donations or '₹10 Cr+' }}" placeholder="e.g. ₹10 Cr+" class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                            </div>
+                            <div id="donations_auto_container" class="{% if stats.donations_mode != 'auto' %}hidden{% endif %}">
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Base Amount Offset (₹)</label>
+                                <input name="donations_base" type="number" value="{{ stats.donations_base or '10000000' }}" placeholder="10000000" class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm font-bold focus:ring-2 focus:ring-primary-600 outline-none">
+                            </div>
+                            <div class="text-xs text-gray-400 pb-2">
+                                <span class="font-semibold block text-zinc-300">Sync Behavior:</span>
+                                <span class="text-[11px]">Auto mode aggregates all VERIFIED donation rows and appends them to your Base Amount Offset.</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
                 <div class="mt-8 text-right">
-                    <button type="submit" class="bg-gray-900 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-black shadow-xl">Update Stats</button>
+                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-xl transition-all">Save Impact Stats Configuration</button>
                 </div>
             </form>
         </div>
     </div>
+
+    <script>
+    function toggleStatFields(prefix, mode) {
+        const manualContainer = document.getElementById(prefix + '_manual_container');
+        const autoContainer = document.getElementById(prefix + '_auto_container');
+        if (mode === 'auto') {
+            if (manualContainer) manualContainer.classList.add('hidden');
+            if (autoContainer) autoContainer.classList.remove('hidden');
+        } else {
+            if (manualContainer) manualContainer.classList.remove('hidden');
+            if (autoContainer) autoContainer.classList.add('hidden');
+        }
+    }
+    </script>
 
     <!-- Donation Packages Tab -->
     <div id="tab-packages" class="tab-content hidden">
@@ -576,7 +659,7 @@
         </div>
     </div>
 </div>
-</div> <!-- Closing the extra wrapper we added for hidden tabs -->
+<!-- Closed the extra wrapper for tabs -->
 
 <!-- Templates -->
 <template id="slider-template">
@@ -885,9 +968,8 @@ async function uploadToCloudflare(input) {
             ? await response.json()
             : { error: `Server returned ${response.status}. Please log in again or check the server logs.` };
         if (data.url) {
-            // The file input is inside a `.relative` upload label. Select the
-            // slide card instead, otherwise the URL field is never updated.
-            const row = input.closest('.p-6') || input.closest('#slider-items > div');
+            // Find the closest slide container to update the correct URL field
+            const row = input.closest('.p-6') || input.closest('.relative') || input.parentElement.parentElement.parentElement;
             const urlInput = row.querySelector('.hero-url-input');
             if (urlInput) {
                 urlInput.value = data.url;

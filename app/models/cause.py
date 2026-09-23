@@ -5,7 +5,7 @@ class Cause:
     def __init__(self, id=None, slug=None, title=None, description=None, short_description=None,
                  amount=0, target_amount=0, raised_amount=0, image_url=None, tag=None,
                  category="Others", impact_unit_name=None, impact_unit_cost=0,
-                 content=None, active=True, created_at=None):
+                 content=None, gallery_images=None, active=True, created_at=None):
         self.id = id
         self.slug = slug or self.generate_slug(title)
         self.title = title
@@ -20,6 +20,7 @@ class Cause:
         self.impact_unit_name = impact_unit_name
         self.impact_unit_cost = impact_unit_cost
         self.content = content
+        self.gallery_images = gallery_images or []
         self.active = active
         self.created_at = created_at or datetime.now()
 
@@ -43,6 +44,7 @@ class Cause:
             "impact_unit_name": self.impact_unit_name,
             "impact_unit_cost": self.impact_unit_cost,
             "content": self.content,
+            "gallery_images": self.gallery_images,
             "active": self.active,
             "created_at": self.created_at
         }

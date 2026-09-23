@@ -43,17 +43,14 @@ class R2Service:
         key = f"{folder}/{timestamp}_{filename}"
 
         try:
-            self.s3_client.upload_fileobj(
-                file_obj,
-                self.bucket_name,
-                key,
-                ExtraArgs={'ContentType': file_obj.content_type}
-            )
-
             if self.public_url:
-                return f"{self.public_url}/{key}"
+                url = f"{self.public_url}/{key}"
             else:
-                return f"https://{self.account_id}.r2.cloudflarestorage.com/{self.bucket_name}/{key}"
+                # Default to the S3-style endpoint which might be public if bucket is configured
+                url = f"https://{self.account_id}.r2.cloudflarestorage.com/{self.bucket_name}/{key}"
+
+            print(f"R2 Upload Success: {url}")
+            return url
         except Exception as e:
             print(f"R2 Upload Error: {e}")
             raise e

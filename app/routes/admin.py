@@ -84,9 +84,8 @@ def settings():
             firebase_saved = Setting.set("hero_slider", items)
             r2_saved = False
             try:
-                # check if name exists in scope or just default
-                if 'HERO_SLIDER_R2_KEY' in globals():
-                    r2_saved = r2_service.save_json(HERO_SLIDER_R2_KEY, items)
+                # Use the module-level HERO_SLIDER_R2_KEY directly
+                r2_saved = r2_service.save_json(HERO_SLIDER_R2_KEY, items)
             except Exception as e:
                 print(f"Hero slider R2 settings save failed: {e}")
 
@@ -100,12 +99,20 @@ def settings():
 
         elif action == "update_stats":
             stats = {
+                "lives_impacted_mode": request.form.get("lives_impacted_mode", "manual"),
                 "lives_impacted": request.form.get("lives_impacted"),
+                "lives_impacted_base": request.form.get("lives_impacted_base", "0"),
+
+                "volunteers_mode": request.form.get("volunteers_mode", "manual"),
                 "volunteers_count": request.form.get("volunteers_count"),
-                "total_donations": request.form.get("total_donations")
+                "volunteers_base": request.form.get("volunteers_base", "0"),
+
+                "donations_mode": request.form.get("donations_mode", "manual"),
+                "total_donations": request.form.get("total_donations"),
+                "donations_base": request.form.get("donations_base", "0")
             }
             Setting.set("impact_stats", stats)
-            flash("Impact stats updated.", "success")
+            flash("Impact stats configuration updated successfully.", "success")
 
         elif action == "update_packages":
             pkgs = []
@@ -385,6 +392,7 @@ def new_cause():
             description=request.form["description"],
             content=request.form["content"],
             image_url=request.form["image_url"],
+            gallery_images=request.form.getlist("gallery_images[]"),
             impact_unit_name=request.form.get("impact_unit_name"),
             impact_unit_cost=float(request.form.get("impact_unit_cost", 0)),
             active=bool(request.form.get("active"))
@@ -416,6 +424,7 @@ def edit_cause(id):
         c.description = request.form["description"]
         c.content = request.form["content"]
         c.image_url = request.form["image_url"]
+        c.gallery_images = request.form.getlist("gallery_images[]")
         c.impact_unit_name = request.form.get("impact_unit_name")
         c.impact_unit_cost = float(request.form.get("impact_unit_cost", 0))
         c.active = bool(request.form.get("active"))
