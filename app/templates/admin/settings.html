@@ -223,10 +223,30 @@
                                         <input type="file" accept="image/*" class="hidden" onchange="uploadToCloudflare(this)">
                                     </label>
                                 </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+                                    <div>
+                                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Image Fit (Adjustment)</label>
+                                        <select name="fit[]" onchange="updatePreviewStyles(this)" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none fit-select">
+                                            <option value="cover" {% if pkg.fit == 'cover' or not pkg.fit %}selected{% endif %}>Cover (Fill nicely)</option>
+                                            <option value="contain" {% if pkg.fit == 'contain' %}selected{% endif %}>Contain (Show full image)</option>
+                                            <option value="fill" {% if pkg.fit == 'fill' %}selected{% endif %}>Stretch to Fit</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Image Alignment Focus</label>
+                                        <select name="img_position[]" onchange="updatePreviewStyles(this)" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none img-position-select">
+                                            <option value="center" {% if pkg.img_position == 'center' or not pkg.img_position %}selected{% endif %}>Center</option>
+                                            <option value="top" {% if pkg.img_position == 'top' %}selected{% endif %}>Top</option>
+                                            <option value="bottom" {% if pkg.img_position == 'bottom' %}selected{% endif %}>Bottom</option>
+                                            <option value="left" {% if pkg.img_position == 'left' %}selected{% endif %}>Left</option>
+                                            <option value="right" {% if pkg.img_position == 'right' %}selected{% endif %}>Right</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="mt-3">
                                     <span class="text-[10px] font-bold text-gray-400 block mb-1">Live Image Preview (9:16 Shorts Ratio):</span>
                                     <div class="w-44 h-72 bg-slate-200 rounded-2xl overflow-hidden border border-gray-200 flex items-center justify-center relative shadow-sm">
-                                        <img src="{{ pkg.img or pkg.image_url or '' }}" class="w-full h-full object-cover object-center preview-img {% if not (pkg.img or pkg.image_url) %}hidden{% endif %}">
+                                        <img src="{{ pkg.img or pkg.image_url or '' }}" class="w-full h-full object-{{ pkg.fit | default('cover') }} object-{{ pkg.img_position | default('center') }} preview-img {% if not (pkg.img or pkg.image_url) %}hidden{% endif %}">
                                         <span class="text-xs text-gray-400 text-center px-2 preview-placeholder {% if pkg.img or pkg.image_url %}hidden{% endif %}">9:16 Preview Box</span>
                                     </div>
                                 </div>
@@ -381,6 +401,26 @@
                         <span class="upload-text">Upload File</span>
                         <input type="file" accept="image/*" class="hidden" onchange="uploadToCloudflare(this)">
                     </label>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+                    <div>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Image Fit (Adjustment)</label>
+                        <select name="fit[]" onchange="updatePreviewStyles(this)" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none fit-select">
+                            <option value="cover" selected>Cover (Fill nicely)</option>
+                            <option value="contain">Contain (Show full image)</option>
+                            <option value="fill">Stretch to Fit</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Image Alignment Focus</label>
+                        <select name="img_position[]" onchange="updatePreviewStyles(this)" class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600 outline-none img-position-select">
+                            <option value="center" selected>Center</option>
+                            <option value="top">Top</option>
+                            <option value="bottom">Bottom</option>
+                            <option value="left">Left</option>
+                            <option value="right">Right</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="mt-3">
                     <span class="text-[10px] font-bold text-gray-400 block mb-1">Live Image Preview (9:16 Shorts Ratio):</span>

@@ -53,10 +53,11 @@ class R2Service:
                 CacheControl="public, max-age=31536000"
             )
 
-            if self.public_url:
-                url = f"{self.public_url}/{key}"
-            else:
-                url = f"https://{self.account_id}.r2.cloudflarestorage.com/{self.bucket_name}/{key}"
+            public_domain = os.getenv("R2_PUBLIC_URL", "").rstrip("/")
+            if not public_domain or "pub-d11fbccf0cbf054d642c3b173db48e9c" in public_domain:
+                public_domain = "https://pub-5cebcd59fc7e4ba298aed51bedb9bb87.r2.dev"
+
+            url = f"{public_domain}/{key}"
 
             print(f"R2 Upload Success: {url}")
             return url

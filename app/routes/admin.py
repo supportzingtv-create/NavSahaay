@@ -123,6 +123,8 @@ def settings():
             descs = request.form.getlist("description[]")
             imgs = request.form.getlist("img[]")
             tags = request.form.getlist("tag[]")
+            fits = request.form.getlist("fit[]")
+            img_positions = request.form.getlist("img_position[]")
             for i in range(len(titles)):
                 if titles[i]:
                     try:
@@ -143,6 +145,8 @@ def settings():
                         "img": imgs[i] if i < len(imgs) else "",
                         "image_url": imgs[i] if i < len(imgs) else "",
                         "tag": tags[i] if i < len(tags) else "Cause",
+                        "fit": fits[i] if i < len(fits) else "cover",
+                        "img_position": img_positions[i] if i < len(img_positions) else "center",
                         "slug": titles[i].lower().replace(" ", "-")
                     })
             Setting.set("donation_packages", pkgs)
