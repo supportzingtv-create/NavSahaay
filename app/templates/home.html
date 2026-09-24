@@ -270,7 +270,7 @@
         {% endif %}
 
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="#donate" class="inline-flex items-center justify-center px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white rounded-full font-black text-xs uppercase tracking-widest shadow-xl transition-all hover:scale-105 active:scale-95 space-x-2">
+            <a href="{{ url_for('main.donate') }}" class="inline-flex items-center justify-center px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white rounded-full font-black text-xs uppercase tracking-widest shadow-xl transition-all hover:scale-105 active:scale-95 space-x-2">
                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
                 <span>Donate & Share Your Message</span>
             </a>
@@ -321,7 +321,7 @@
             <div class="bg-black p-8 rounded-xl text-white shadow-sm relative overflow-hidden group mb-8">
                 <h3 class="text-xl font-bold uppercase mb-2 tracking-wide">Adopt a Day</h3>
                 <p class="text-gray-400 text-sm font-medium leading-relaxed mb-6">Sponsor all foundation activities for one full day of your choice.</p>
-                <a href="#adopt-a-day" class="inline-flex items-center space-x-2 text-primary-500 font-bold uppercase text-[10px] tracking-wider transition-colors hover:text-blue-400">
+                <a href="{{ url_for('main.adopt_a_day') }}" class="inline-flex items-center space-x-2 text-primary-500 font-bold uppercase text-[10px] tracking-wider transition-colors hover:text-blue-400">
                     <span>Reserve a Date</span>
                     <span>&rarr;</span>
                 </a>

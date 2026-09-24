@@ -274,31 +274,99 @@ def home():
     response.headers["Pragma"] = "no-cache"
     return response
 
-@main_bp.route("/donate", methods=["POST"])
+@main_bp.route("/donate", methods=["GET", "POST"])
 def donate():
-    try:
-        amount = float(request.form["amount"])
-        if amount < 100: raise ValueError()
-    except (KeyError, ValueError):
-        flash("Please enter a valid donation amount of at least ₹100.", "error")
-        return redirect(url_for("main.home") + "#donate")
+    if request.method == "POST":
+        try:
+            amount = float(request.form.get("amount", 0))
+            if amount < 10: raise ValueError()
+        except (KeyError, ValueError):
+            flash("Please enter a valid donation amount.", "error")
+            return redirect(url_for("main.donate"))
 
-    donation = Donation(
-        donation_id="SHV-" + secrets.token_hex(5).upper(),
-        donor_name=request.form["donor_name"], email=request.form["email"],
-        phone=request.form["phone"], address=request.form["address"],
-        pan=request.form.get("pan"), amount=amount,
-        frequency=request.form["frequency"], cause=request.form["cause"],
-        honor_name=request.form.get("honor_name"),
-        honor_type=request.form.get("honor_type"),
-        wish=request.form.get("wish"),
-        sponsored_date=request.form.get("sponsored_date"),
-        recipient_name=request.form.get("recipient_name"),
-        recipient_email=request.form.get("recipient_email"),
-        anonymous=bool(request.form.get("anonymous")), status="PENDING"
-    )
-    donation.save()
-    return redirect(url_for("main.donation_success", id=donation.id))
+        donation = Donation(
+            donation_id="SHV-" + secrets.token_hex(5).upper(),
+            donor_name=request.form.get("donor_name", "Supporter"),
+            email=request.form.get("email", ""),
+            phone=request.form.get("phone", ""),
+            address=request.form.get("address", ""),
+            pan=request.form.get("pan"),
+            amount=amount,
+            frequency=request.form.get("frequency", "one-time"),
+            cause=request.form.get("cause", "General Welfare"),
+            honor_name=request.form.get("honor_name"),
+            honor_type=request.form.get("honor_type"),
+            wish=request.form.get("wish"),
+            sponsored_date=request.form.get("sponsored_date"),
+            recipient_name=request.form.get("recipient_name"),
+            recipient_email=request.form.get("recipient_email"),
+            anonymous=bool(request.form.get("anonymous")),
+            status="PENDING"
+        )
+        donation.save()
+        return redirect(url_for("main.donation_success", id=donation.id))
+
+    # GET method - Dedicated Donation Page
+    selected_cause = request.args.get("cause", "General Welfare")
+    selected_amount = request.args.get("amount", "1000")
+
+    causes_db = []
+    try:
+        from app.models import Cause
+        causes_db = Cause.get_all(active_only=True)
+    except Exception:
+        pass
+
+    general = Setting.get("general_info") or r2_service.get_json("settings/general_info.json", {}) or {}
+    social = Setting.get("social_links", general)
+
+    return render_template("donate.html",
+        selected_cause=selected_cause,
+        selected_amount=selected_amount,
+        causes=causes_db,
+        general=general,
+        social=social)
+
+@main_bp.route("/adopt-a-day", methods=["GET", "POST"])
+def adopt_a_day():
+    if request.method == "POST":
+        try:
+            amount = float(request.form.get("amount", 5000))
+        except (ValueError, TypeError):
+            amount = 5000.0
+
+        sponsored_date = request.form.get("sponsored_date")
+        occasion = request.form.get("occasion", "Special Occasion")
+        donor_name = request.form.get("donor_name", "Supporter")
+
+        donation = Donation(
+            donation_id="ADOPT-" + secrets.token_hex(4).upper(),
+            donor_name=donor_name,
+            email=request.form.get("email", ""),
+            phone=request.form.get("phone", ""),
+            address=request.form.get("address", ""),
+            pan=request.form.get("pan"),
+            amount=amount,
+            frequency="one-time",
+            cause="Adopt a Day Sponsorship",
+            honor_name=occasion,
+            honor_type="ADOPT_A_DAY",
+            wish=request.form.get("wish", f"Sponsoring all foundation activities on {sponsored_date}"),
+            sponsored_date=sponsored_date,
+            anonymous=bool(request.form.get("anonymous")),
+            status="PENDING"
+        )
+        donation.save()
+        return redirect(url_for("main.donation_success", id=donation.id))
+
+    general = Setting.get("general_info") or r2_service.get_json("settings/general_info.json", {}) or {}
+    social = Setting.get("social_links", general)
+    today = datetime.now().strftime("%Y-%m-%d")
+
+    return render_template("adopt_a_day.html",
+        general=general,
+        social=social,
+        today=today)
 
 @main_bp.route("/donation-success/<id>")
 def donation_success(id):

@@ -216,11 +216,11 @@
 
                     <div class="h-8 w-px bg-gray-100 mx-2"></div>
 
-                    <a href="#donate" class="inline-flex items-center justify-center px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-full shadow-lg text-[10px] font-black uppercase tracking-widest transform transition-all hover:scale-105 active:scale-95">Donate Now</a>
+                    <a href="{{ url_for('main.donate') }}" class="inline-flex items-center justify-center px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-full shadow-lg text-[10px] font-black uppercase tracking-widest transform transition-all hover:scale-105 active:scale-95">Donate Now</a>
                 </nav>
 
                 <div class="md:hidden flex items-center space-x-4">
-                    <a href="#donate" class="bg-primary-600 text-white px-4 py-2 rounded-full text-xs font-bold uppercase">Donate</a>
+                    <a href="{{ url_for('main.donate') }}" class="bg-primary-600 text-white px-4 py-2 rounded-full text-xs font-bold uppercase">Donate</a>
                     <button type="button" class="text-gray-500 hover:text-gray-900 focus:outline-none" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />

@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}Adopt a Day | NavSahaay Foundation{% endblock %}
+
+{% block content %}
+<!-- Adopt a Day Hero Section -->
+<section class="relative bg-slate-950 py-16 text-white overflow-hidden">
+    <div class="absolute inset-0 bg-cover bg-center opacity-15" style="background-image: url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070');"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-slate-950/90 via-slate-950/80 to-slate-950"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <span class="inline-block px-4 py-1.5 rounded-full bg-primary-500/20 text-primary-400 font-extrabold text-[10px] uppercase tracking-[0.3em] mb-3 border border-primary-500/30">
+            Special Occasion Sponsorship
+        </span>
+        <h1 class="text-3xl md:text-5xl font-black uppercase tracking-tight text-white mb-4 font-serif">
+            Adopt a <span class="text-primary-500">Day of Impact</span>
+        </h1>
+        <p class="max-w-2xl mx-auto text-gray-300 text-xs md:text-sm font-medium leading-relaxed">
+            Sponsor all foundation welfare activities for one full day of your choice. Celebrate birthdays, anniversaries, or honor the memory of loved ones by feeding 200+ people and spreading joy.
+        </p>
+    </div>
+</section>
+
+<!-- Main Section -->
+<section class="py-16 bg-slate-100 min-h-screen">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Feature Highlights Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="bg-white p-6 rounded-3xl border border-gray-200 shadow-lg text-center">
+                <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center text-2xl mx-auto mb-4">
+                    🍲
+                </div>
+                <h3 class="font-black text-sm uppercase tracking-wider text-gray-900 mb-2">200+ Hot Meals</h3>
+                <p class="text-xs text-gray-500 font-medium leading-relaxed">Full day breakfast, lunch & dinner distributed to homeless and daily wagers.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-3xl border border-gray-200 shadow-lg text-center">
+                <div class="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-600 flex items-center justify-center text-2xl mx-auto mb-4">
+                    📜
+                </div>
+                <h3 class="font-black text-sm uppercase tracking-wider text-gray-900 mb-2">Center Display Board</h3>
+                <p class="text-xs text-gray-500 font-medium leading-relaxed">Your name, photo & blessing displayed on our center board on your adopted date.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-3xl border border-gray-200 shadow-lg text-center">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-2xl mx-auto mb-4">
+                    📱
+                </div>
+                <h3 class="font-black text-sm uppercase tracking-wider text-gray-900 mb-2">Photo & Video Proof</h3>
+                <p class="text-xs text-gray-500 font-medium leading-relaxed">Live updates, photos & video documentation sent directly to your WhatsApp.</p>
+            </div>
+        </div>
+
+        <!-- Adoption Form Card -->
+        <div class="bg-white rounded-3xl shadow-2xl border border-gray-200 p-8 md:p-12">
+            <div class="border-b border-gray-100 pb-6 mb-8 text-center md:text-left">
+                <span class="text-primary-600 font-black text-xs uppercase tracking-widest block mb-1">Reserve Your Special Date</span>
+                <h2 class="text-2xl md:text-3xl font-serif font-black text-gray-900 uppercase">Adopt a Day Sponsorship Form</h2>
+            </div>
+
+            <form method="post" action="{{ url_for('main.adopt_a_day') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() if csrf_token is defined else '' }}">
+
+                <!-- 1. Select Date & Occasion -->
+                <div class="mb-8">
+                    <label class="block text-xs font-black uppercase tracking-widest text-gray-500 mb-3">1. Select Date & Special Occasion</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Select Adoption Date *</label>
+                            <input type="date" name="sponsored_date" min="{{ today }}" value="{{ today }}" required class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-5 py-4 text-sm font-bold text-gray-800 focus:ring-2 focus:ring-primary-600 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Occasion / Celebration *</label>
+                            <input type="text" name="occasion" required placeholder="e.g. Son's Birthday, 25th Anniversary, In Memory of Late Father" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-5 py-4 text-sm font-bold text-gray-800 focus:ring-2 focus:ring-primary-600 outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Choose Sponsorship Tier -->
+                <div class="mb-8">
+                    <label class="block text-xs font-black uppercase tracking-widest text-gray-500 mb-3">2. Choose Sponsorship Tier</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="amount" value="5000" checked class="hidden peer" onchange="setAdoptAmount(5000)">
+                            <div class="p-5 rounded-2xl border-2 border-gray-200 text-center peer-checked:border-primary-600 peer-checked:bg-blue-50/50 peer-checked:text-primary-600 transition-all">
+                                <span class="block text-lg font-black text-gray-900 peer-checked:text-primary-600">₹5,000</span>
+                                <span class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mt-1">Standard Day</span>
+                            </div>
+                        </label>
+
+                        <label class="cursor-pointer">
+                            <input type="radio" name="amount" value="11000" class="hidden peer" onchange="setAdoptAmount(11000)">
+                            <div class="p-5 rounded-2xl border-2 border-gray-200 text-center peer-checked:border-primary-600 peer-checked:bg-blue-50/50 peer-checked:text-primary-600 transition-all relative">
+                                <span class="block text-lg font-black text-gray-900 peer-checked:text-primary-600">₹11,000</span>
+                                <span class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mt-1">Grand Day + Kits</span>
+                                <span class="absolute -top-2.5 right-4 bg-primary-600 text-white text-[8px] font-black uppercase px-2 py-0.5 rounded-full">Recommended</span>
+                            </div>
+                        </label>
+
+                        <label class="cursor-pointer">
+                            <input type="radio" name="amount" value="21000" class="hidden peer" onchange="setAdoptAmount(21000)">
+                            <div class="p-5 rounded-2xl border-2 border-gray-200 text-center peer-checked:border-primary-600 peer-checked:bg-blue-50/50 peer-checked:text-primary-600 transition-all">
+                                <span class="block text-lg font-black text-gray-900 peer-checked:text-primary-600">₹21,000</span>
+                                <span class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mt-1">Mega Drive Day</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 3. Sponsor Details -->
+                <div class="mb-8">
+                    <label class="block text-xs font-black uppercase tracking-widest text-gray-500 mb-3">3. Sponsor Contact Details</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <input type="text" name="donor_name" required placeholder="Sponsor Full Name *" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-5 py-4 text-sm font-bold text-gray-800 focus:ring-2 focus:ring-primary-600 outline-none">
+                        </div>
+                        <div>
+                            <input type="email" name="email" required placeholder="Email Address *" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-5 py-4 text-sm font-bold text-gray-800 focus:ring-2 focus:ring-primary-600 outline-none">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <input type="tel" name="phone" required placeholder="WhatsApp Phone Number (For Photos/Proof) *" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-5 py-4 text-sm font-bold text-gray-800 focus:ring-2 focus:ring-primary-600 outline-none">
+                        </div>
+                        <div>
+                            <input type="text" name="pan" placeholder="PAN Number (Optional for 80G Tax Receipt)" class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-5 py-4 text-sm font-bold text-gray-800 uppercase focus:ring-2 focus:ring-primary-600 outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Prayer / Blessing to Display -->
+                <div class="mb-8">
+                    <label class="block text-xs font-black uppercase tracking-widest text-gray-500 mb-3">4. Special Blessing / Prayer to Display on Board</label>
+                    <textarea name="wish" rows="3" placeholder="Write a message or blessing to be printed on the Foundation board on your adopted day..." class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-5 py-4 text-sm font-medium text-gray-800 focus:ring-2 focus:ring-primary-600 outline-none"></textarea>
+                </div>
+
+                <!-- Anonymous Checkbox -->
+                <div class="mb-8">
+                    <label class="inline-flex items-center space-x-3 cursor-pointer">
+                        <input type="checkbox" name="anonymous" value="1" class="w-5 h-5 text-primary-600 rounded border-gray-300 focus:ring-primary-500">
+                        <span class="text-xs font-bold uppercase tracking-wider text-gray-700">Keep my sponsorship name private</span>
+                    </label>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="w-full py-5 bg-primary-600 hover:bg-primary-700 text-white rounded-2xl font-black uppercase tracking-widest text-sm shadow-xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center space-x-2">
+                    <span>Reserve & Adopt This Date</span>
+                    <span>&rarr;</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+function setAdoptAmount(amt) {
+    // Amount handled by radio inputs
+}
+</script>
+{% endblock %}
