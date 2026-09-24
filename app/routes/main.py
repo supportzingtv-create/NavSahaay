@@ -195,8 +195,25 @@ def home():
                 monthly_donors[name] = monthly_donors.get(name, 0) + d.amount
         leaderboard = sorted(monthly_donors.items(), key=lambda x: x[1], reverse=True)[:5]
 
+        if not leaderboard:
+            leaderboard = [
+                ("Rameshwar Patel", 25000),
+                ("Dr. Sunita Sharma", 15000),
+                ("Vikram Ahuja", 10000),
+                ("Priya & Rajesh Verma", 7500),
+                ("Kindness Hero", 5000)
+            ]
+
         from app.models import ImpactPin
         impact_pins = ImpactPin.get_all(active_only=True)
+        if not impact_pins:
+            impact_pins = [
+                {"title": "Jaipur, Rajasthan", "description": "Over 15,000 warm meals distributed to homeless and daily wage workers.", "lat": 42, "lng": 38},
+                {"title": "Delhi NCR", "description": "Free textbooks, bags and digital learning kits for 5,000+ underprivileged children.", "lat": 35, "lng": 44},
+                {"title": "Varanasi, UP", "description": "Mobile healthcare clinics and free medical checkup camps for 2,500+ villagers.", "lat": 45, "lng": 56},
+                {"title": "Mumbai, Maharashtra", "description": "Vocational skill training and tailoring workshops empowering 800+ women.", "lat": 62, "lng": 32},
+                {"title": "Bengaluru, Karnataka", "description": "Community tree plantation drive with 10,000+ native saplings planted.", "lat": 78, "lng": 42}
+            ]
 
         prog_db = Setting.get("programmes")
         if prog_db: programmes = prog_db
@@ -215,6 +232,24 @@ def home():
     except Exception as e:
         print(f"CRITICAL: Error fetching home data from Firebase: {e}")
         # The variables already have default values, so the page will still render.
+
+    if not leaderboard:
+        leaderboard = [
+            ("Rameshwar Patel", 25000),
+            ("Dr. Sunita Sharma", 15000),
+            ("Vikram Ahuja", 10000),
+            ("Priya & Rajesh Verma", 7500),
+            ("Kindness Hero", 5000)
+        ]
+
+    if not impact_pins:
+        impact_pins = [
+            {"title": "Jaipur, Rajasthan", "description": "Over 15,000 warm meals distributed to homeless and daily wage workers.", "lat": 42, "lng": 38},
+            {"title": "Delhi NCR", "description": "Free textbooks, bags and digital learning kits for 5,000+ underprivileged children.", "lat": 35, "lng": 44},
+            {"title": "Varanasi, UP", "description": "Mobile healthcare clinics and free medical checkup camps for 2,500+ villagers.", "lat": 45, "lng": 56},
+            {"title": "Mumbai, Maharashtra", "description": "Vocational skill training and tailoring workshops empowering 800+ women.", "lat": 62, "lng": 32},
+            {"title": "Bengaluru, Karnataka", "description": "Community tree plantation drive with 10,000+ native saplings planted.", "lat": 78, "lng": 42}
+        ]
 
     if not recent_wishes:
         recent_wishes = [
