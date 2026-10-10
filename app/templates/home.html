@@ -2,13 +2,13 @@
 
 {% block content %}
 <!-- Hero Section (Full Width & Cinematic) -->
-<section class="w-full p-0 m-0 bg-black">
+<section class="w-full p-0 m-0 bg-slate-950">
     <div class="w-full p-0 m-0">
-        <div class="relative overflow-hidden bg-black p-0 m-0">
-            <div class="swiper hero-swiper h-[300px] md:h-[450px] w-full p-0 m-0">
+        <div class="relative overflow-hidden bg-slate-950 p-0 m-0">
+            <div class="swiper hero-swiper h-[320px] md:h-[480px] w-full p-0 m-0">
                 <div class="swiper-wrapper p-0 m-0">
                     {% for item in slider_items %}
-                    <div class="swiper-slide bg-black relative p-0 m-0">
+                    <div class="swiper-slide bg-slate-950 relative p-0 m-0">
                         {% if item.type == 'video' %}
                         <video autoplay muted loop class="w-full h-full object-{{ item.fit | default('cover') }} object-{{ item.img_position | default('center') }}" style="opacity: {{ (item.opacity | default(100) | int) / 100 }};">
                             <source src="{{ item.url }}" type="video/mp4">
@@ -29,24 +29,21 @@
                         {% elif item.position == "bottom-center" %}{% set pos_class = "items-end justify-center text-center" %}
                         {% elif item.position == "bottom-right" %}{% set pos_class = "items-end justify-end text-right" %}{% endif %}
 
-                        <div class="absolute inset-0 flex {{ pos_class }} p-8 md:p-16 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10">
+                        <div class="absolute inset-0 flex {{ pos_class }} p-8 md:p-16 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent z-10">
                             <div class="max-w-2xl text-white">
                                 {% if item.subtitle %}
-                                <p class="text-xs md:text-sm font-black uppercase tracking-widest text-white mb-2 drop-shadow-md">
+                                <p class="text-xs md:text-sm font-black uppercase tracking-widest text-sky-400 mb-2 drop-shadow-md">
                                     {{ item.subtitle }}
                                 </p>
                                 {% endif %}
                                 {% if item.title %}
-                                <h1 class="text-xl md:text-3xl lg:text-4xl font-serif font-black uppercase tracking-tight leading-tight drop-shadow-lg text-white mb-6">
+                                <h1 class="text-2xl md:text-4xl lg:text-5xl font-serif font-black uppercase tracking-tight leading-tight drop-shadow-lg text-white mb-6">
                                     {{ item.title }}
                                 </h1>
                                 {% endif %}
 
                                 {% if item.btn_text %}
-                                <a href="{{ item.btn_link | default('/causes') }}" class="inline-block px-8 py-4 rounded-full font-black uppercase tracking-widest text-[10px] transition-all transform hover:scale-105 active:scale-95 shadow-xl
-                                    {% if item.btn_color == 'blue' %}bg-blue-600 text-white hover:bg-blue-700
-                                    {% elif item.btn_color == 'white' %}bg-white text-black hover:bg-gray-100
-                                    {% else %}bg-red-600 text-white hover:bg-red-700{% endif %}">
+                                <a href="{{ item.btn_link | default('/causes') }}" class="inline-block px-8 py-4 rounded-full font-black uppercase tracking-widest text-[10px] transition-all transform hover:scale-105 active:scale-95 shadow-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 text-white shadow-blue-500/30 hover:shadow-blue-500/50">
                                     {{ item.btn_text }}
                                 </a>
                                 {% endif %}
@@ -62,14 +59,62 @@
     </div>
 </section>
 
+<!-- Thaagam Style Live Donation Ticker -->
+<section class="bg-slate-950 text-white py-3 border-y border-white/10 overflow-hidden relative z-20">
+    <div class="ticker-wrap flex items-center">
+        <div class="ticker-animate space-x-12 text-xs font-bold uppercase tracking-wider text-slate-300">
+            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> ✨ Rajesh K. donated ₹600 for Homeless Meals</span>
+            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span> 🎓 Sunita P. donated ₹1,200 for Child Education</span>
+            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span> 🏥 Amit B. donated ₹2,500 for Medical Camp</span>
+            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> 🌳 Meera S. donated ₹500 for Tree Plantation</span>
+            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> ✨ Rajesh K. donated ₹600 for Homeless Meals</span>
+            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span> 🎓 Sunita P. donated ₹1,200 for Child Education</span>
+            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span> 🏥 Amit B. donated ₹2,500 for Medical Camp</span>
+            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> 🌳 Meera S. donated ₹500 for Tree Plantation</span>
+        </div>
+    </div>
+</section>
+
+<!-- Thaagam Style Category Quick Selection Pills Bar -->
+<section class="bg-warm-canvas py-8 border-b border-[#e8e2d8]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-center gap-3 overflow-x-auto pb-2 scrollbar-hide">
+            <a href="#causes" class="px-5 py-3 rounded-2xl bg-white border border-[#e8e2d8] shadow-sm hover:border-blue-600 hover:shadow-md transition-all flex items-center space-x-2 text-xs font-black uppercase text-slate-800 shrink-0">
+                <span class="text-base">🍲</span>
+                <span>Food & Meals</span>
+            </a>
+            <a href="#causes" class="px-5 py-3 rounded-2xl bg-white border border-[#e8e2d8] shadow-sm hover:border-blue-600 hover:shadow-md transition-all flex items-center space-x-2 text-xs font-black uppercase text-slate-800 shrink-0">
+                <span class="text-base">👧</span>
+                <span>Child Welfare</span>
+            </a>
+            <a href="#causes" class="px-5 py-3 rounded-2xl bg-white border border-[#e8e2d8] shadow-sm hover:border-blue-600 hover:shadow-md transition-all flex items-center space-x-2 text-xs font-black uppercase text-slate-800 shrink-0">
+                <span class="text-base">📚</span>
+                <span>Education</span>
+            </a>
+            <a href="#causes" class="px-5 py-3 rounded-2xl bg-white border border-[#e8e2d8] shadow-sm hover:border-blue-600 hover:shadow-md transition-all flex items-center space-x-2 text-xs font-black uppercase text-slate-800 shrink-0">
+                <span class="text-base">🏥</span>
+                <span>Healthcare</span>
+            </a>
+            <a href="#causes" class="px-5 py-3 rounded-2xl bg-white border border-[#e8e2d8] shadow-sm hover:border-blue-600 hover:shadow-md transition-all flex items-center space-x-2 text-xs font-black uppercase text-slate-800 shrink-0">
+                <span class="text-base">🌳</span>
+                <span>Environment</span>
+            </a>
+            <a href="#causes" class="px-5 py-3 rounded-2xl bg-white border border-[#e8e2d8] shadow-sm hover:border-blue-600 hover:shadow-md transition-all flex items-center space-x-2 text-xs font-black uppercase text-slate-800 shrink-0">
+                <span class="text-base">🎂</span>
+                <span>Birthday Cause</span>
+            </a>
+        </div>
+    </div>
+</section>
+
 <!-- Impact Counters -->
-<section class="reveal ambient-mesh-light py-16 border-b border-blue-100/60 relative overflow-hidden">
+<section class="reveal bg-warm-canvas py-16 border-b border-[#e8e2d8]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
             <!-- Box 1: Lives Impacted -->
-            <div class="card-glass p-8 text-center rounded-2xl">
-                <div class="w-12 h-12 bg-gradient-to-br from-red-500/10 to-pink-500/10 border border-red-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
-                    <svg class="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div class="card-foundation p-8 text-center">
+                <div class="w-12 h-12 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+                    <svg class="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                     </svg>
                 </div>
@@ -80,8 +125,8 @@
             </div>
 
             <!-- Box 2: Volunteers -->
-            <div class="card-glass p-8 text-center rounded-2xl">
-                <div class="w-12 h-12 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 border border-blue-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+            <div class="card-foundation p-8 text-center">
+                <div class="w-12 h-12 bg-blue-500/10 border border-blue-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
                     <svg class="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                     </svg>
@@ -93,8 +138,8 @@
             </div>
 
             <!-- Box 3: Donations -->
-            <div class="card-glass p-8 text-center rounded-2xl">
-                <div class="w-12 h-12 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+            <div class="card-foundation p-8 text-center">
+                <div class="w-12 h-12 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
                     <svg class="w-6 h-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -102,26 +147,55 @@
                 <p class="text-3xl font-black text-slate-900 tracking-tight font-serif mb-1">
                     {{ stats.total_donations if stats.total_donations not in [None, ''] else '0' }}
                 </p>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest font-sans">Donations</p>
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest font-sans">Donations Made</p>
             </div>
 
             <!-- Box 4: Transparency -->
-            <div class="card-glass p-8 text-center rounded-2xl">
-                <div class="w-12 h-12 bg-gradient-to-br from-purple-500/10 to-indigo-500/10 border border-purple-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+            <div class="card-foundation p-8 text-center">
+                <div class="w-12 h-12 bg-purple-500/10 border border-purple-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
                     <svg class="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
                 </div>
                 <p class="text-3xl font-black text-slate-900 tracking-tight font-serif mb-1">100%</p>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest font-sans">Transparency</p>
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest font-sans">Photo & Video Proof</p>
             </div>
+        </div>
+    </div>
+</section>
+
+<!-- Thaagam Style 3-Step Proof & Transparency Section -->
+<section class="reveal bg-warm-section py-20 border-b border-[#e8e2d8]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
+        <span class="text-blue-700 font-extrabold tracking-widest uppercase text-xs block mb-3">100% Verified Transparency</span>
+        <h2 class="font-serif text-3xl md:text-5xl font-black text-slate-900 uppercase tracking-tight">How Your Donation Works</h2>
+        <div class="h-1.5 w-20 bg-gradient-to-r from-blue-600 to-indigo-600 mx-auto mt-4 rounded-full shadow-sm"></div>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-3 gap-8">
+        <div class="card-foundation p-8 text-center">
+            <div class="w-14 h-14 bg-blue-600 text-white rounded-2xl flex items-center justify-center font-black text-xl mx-auto mb-6 shadow-md shadow-blue-500/20">1</div>
+            <h3 class="text-lg font-black uppercase text-slate-900 mb-2">Choose Cause & Donate</h3>
+            <p class="text-xs text-slate-600 font-medium leading-relaxed">Select a specific mission—like providing warm meals, medical aid, or school kits to children.</p>
+        </div>
+
+        <div class="card-foundation p-8 text-center">
+            <div class="w-14 h-14 bg-indigo-600 text-white rounded-2xl flex items-center justify-center font-black text-xl mx-auto mb-6 shadow-md shadow-indigo-500/20">2</div>
+            <h3 class="text-lg font-black uppercase text-slate-900 mb-2">Direct Ground Execution</h3>
+            <p class="text-xs text-slate-600 font-medium leading-relaxed">NavSahaay's verified volunteer team directly executes the drive on ground in villages & slum clusters.</p>
+        </div>
+
+        <div class="card-foundation p-8 text-center">
+            <div class="w-14 h-14 bg-emerald-600 text-white rounded-2xl flex items-center justify-center font-black text-xl mx-auto mb-6 shadow-md shadow-emerald-500/20">3</div>
+            <h3 class="text-lg font-black uppercase text-slate-900 mb-2">Receive Photo & Video Proof</h3>
+            <p class="text-xs text-slate-600 font-medium leading-relaxed">Get 100% transparent proof with actual photos, videos, and instant 80G tax receipt on your WhatsApp & Email.</p>
         </div>
     </div>
 </section>
 
 <!-- Ground Reports (Live Updates) -->
 {% if ground_reports %}
-<section class="reveal ambient-mesh-light py-24 overflow-hidden border-b border-blue-100/60">
+<section class="reveal bg-warm-canvas py-24 border-b border-[#e8e2d8] overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center space-x-3 mb-12">
             <div class="w-3.5 h-3.5 bg-blue-600 rounded-full animate-ping"></div>
@@ -135,7 +209,7 @@
             {% for r in ground_reports %}
             <div class="flex-shrink-0 w-80 group cursor-pointer hover-lift">
                 <div class="relative h-[400px] rounded-2xl overflow-hidden shadow-xl border border-slate-200/80 bg-slate-950">
-                    <img src="{{ r.image_url }}" class="absolute inset-0 w-full h-full object-cover opacity-70 transition-transform duration-[3s] group-hover:scale-105">
+                    <img src="{{ r.image_url }}" alt="{{ r.title }}" class="absolute inset-0 w-full h-full object-cover opacity-70 transition-transform duration-[3s] group-hover:scale-105">
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent"></div>
                     <div class="absolute bottom-8 left-6 right-6 text-white">
                         <p class="text-[10px] font-black uppercase tracking-widest text-sky-400 mb-2 flex items-center gap-1.5">
@@ -154,23 +228,23 @@
 {% endif %}
 
 <!-- Our Programmes -->
-<section id="programs" class="reveal ambient-mesh-light py-24 border-b border-blue-100/60">
+<section id="programs" class="reveal bg-warm-canvas py-24 border-b border-[#e8e2d8]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
-        <span class="text-primary-600 font-extrabold tracking-widest uppercase text-xs block mb-3">Core Focus Areas</span>
+        <span class="text-blue-700 font-extrabold tracking-widest uppercase text-xs block mb-3">Core Focus Areas</span>
         <h2 class="font-serif text-3xl md:text-5xl font-black text-slate-900 uppercase tracking-tight">Our Programmes</h2>
         <div class="h-1.5 w-20 bg-gradient-to-r from-blue-600 to-indigo-600 mx-auto mt-4 rounded-full shadow-sm"></div>
     </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {% for prog in programmes %}
-        <div class="card-glass p-8 rounded-2xl flex items-start space-x-6 group">
-            <div class="flex-shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-md bg-gradient-to-br from-blue-500/10 to-indigo-500/10 border border-blue-500/20 text-primary-600">
+        <div class="card-foundation p-8 flex items-start space-x-6 group">
+            <div class="flex-shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-md bg-blue-500/10 border border-blue-500/20 text-blue-700">
                 <div class="w-6 h-6">
                     {{ prog.svg | safe }}
                 </div>
             </div>
             <div>
-                <h3 class="text-lg font-black uppercase mb-2 tracking-tight text-slate-900 group-hover:text-primary-600 transition-colors">{{ prog.title }}</h3>
+                <h3 class="text-lg font-black uppercase mb-2 tracking-tight text-slate-900 group-hover:text-blue-700 transition-colors">{{ prog.title }}</h3>
                 <p class="text-slate-600 leading-relaxed text-sm font-medium">{{ prog.description }}</p>
             </div>
         </div>
@@ -178,17 +252,17 @@
     </div>
 </section>
 
-<!-- Donation Causes & Conversion -->
-<section id="causes" class="reveal ambient-mesh-light py-24 border-b border-blue-100/60">
+<!-- Donation Causes & Conversion (Thaagam Style Itemized Cause Cards) -->
+<section id="causes" class="reveal bg-warm-canvas py-24 border-b border-[#e8e2d8]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
-        <span class="text-primary-600 font-extrabold tracking-widest uppercase text-xs block mb-3">Direct Ground Action</span>
+        <span class="text-blue-700 font-extrabold tracking-widest uppercase text-xs block mb-3">Itemized Micro-Donations</span>
         <h2 class="font-serif text-3xl md:text-5xl font-black text-slate-900 uppercase tracking-tight">Support an Active Cause</h2>
         <p class="mt-4 text-base text-slate-600 max-w-2xl mx-auto font-medium">Select a certified mission to see exactly how and where your contribution makes a direct difference.</p>
     </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         {% for pkg in packages %}
-        <div class="card-glass rounded-2xl overflow-hidden group flex flex-col h-full border border-slate-200/80 hover:border-blue-500/40">
+        <div class="card-foundation overflow-hidden group flex flex-col h-full border border-[#e8e2d8] hover:border-blue-600/50">
             <div class="relative h-72 sm:h-80 overflow-hidden bg-slate-950">
                 <img class="w-full h-full object-{{ pkg.fit | default('cover') }} object-{{ pkg.img_position | default('center') }} opacity-90 transition-transform duration-[2s] group-hover:scale-105" src="{{ pkg.image_url }}" alt="{{ pkg.title }}">
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
@@ -198,12 +272,12 @@
             </div>
             <div class="p-6 flex flex-col flex-1 justify-between">
                 <div>
-                    <h3 class="text-base font-black text-slate-900 mb-3 leading-snug group-hover:text-primary-600 transition-colors">{{ pkg.title }}</h3>
+                    <h3 class="text-base font-black text-slate-900 mb-3 leading-snug group-hover:text-blue-700 transition-colors">{{ pkg.title }}</h3>
 
                     {% if pkg.show_goal == 'yes' and pkg.target_amount and pkg.target_amount > 0 %}
                     <div class="mb-6">
                         <div class="flex justify-between text-[9px] font-black uppercase tracking-widest mb-2">
-                            <span class="text-primary-600">₹{{ pkg.raised_amount|int }} Raised</span>
+                            <span class="text-blue-700">₹{{ pkg.raised_amount|int }} Raised</span>
                             <span class="text-slate-400">Goal: ₹{{ pkg.target_amount|int }}</span>
                         </div>
                         <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/50">
@@ -217,14 +291,14 @@
                 <div>
                     <div class="flex items-center justify-between mb-6 pt-2 border-t border-slate-100">
                         <div class="flex flex-col">
-                            <span class="text-2xl font-black text-primary-600">₹{{ pkg.amount|int }}</span>
+                            <span class="text-2xl font-black text-blue-700">₹{{ pkg.amount|int }}</span>
                             {% if pkg.slug %}
                             <a href="{{ url_for('main.cause_detail', slug=pkg.slug) }}" class="text-[10px] font-black text-blue-600 hover:text-blue-700 uppercase tracking-widest mt-1 transition-colors flex items-center gap-1">
                                 View Details &rarr;
                             </a>
                             {% endif %}
                         </div>
-                        <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest bg-slate-100 px-2.5 py-1 rounded-full">Impact Unit</span>
+                        <span class="text-[9px] font-black text-slate-500 uppercase tracking-widest bg-slate-100 px-2.5 py-1 rounded-full">Impact Unit</span>
                     </div>
                     <button onclick="quickDonate('{{ pkg.title }}', {{ pkg.amount }})" class="w-full py-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl font-black uppercase text-xs tracking-widest shadow-md shadow-blue-500/30 hover:shadow-blue-500/50 transition-all hover:scale-[1.02] active:scale-95">Donate Now</button>
                 </div>
@@ -235,7 +309,7 @@
 </section>
 
 <!-- Donor Messages & Blessings -->
-<section class="reveal ambient-mesh-dark py-24 text-white relative overflow-hidden border-b border-blue-900/40">
+<section class="reveal bg-foundation-dark py-24 text-white relative overflow-hidden border-b border-blue-900/40">
     <!-- Blue Motion Elements -->
     <div class="footer-motion-container">
         <div class="footer-blob-1"></div>
@@ -260,7 +334,7 @@
         {% if recent_wishes %}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 text-left max-w-6xl mx-auto">
             {% for wish in recent_wishes[:3] %}
-            <div class="card-glass-dark p-7 rounded-3xl flex flex-col justify-between group">
+            <div class="card-foundation-dark p-7 rounded-3xl flex flex-col justify-between group">
                 <div>
                     <div class="flex items-center justify-between mb-4">
                         <span class="text-blue-400 font-serif text-3xl font-black leading-none">“</span>
@@ -293,10 +367,10 @@
 </section>
 
 <!-- Transparency Leaderboard (Monthly Champions) -->
-<section class="reveal ambient-mesh-light py-20 border-b border-blue-100/60">
+<section class="reveal bg-warm-canvas py-20 border-b border-[#e8e2d8]">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-10">
-            <span class="text-primary-600 font-black tracking-[0.2em] uppercase text-xs block mb-2">Transparency Leaderboard</span>
+            <span class="text-blue-700 font-black tracking-[0.2em] uppercase text-xs block mb-2">Transparency Leaderboard</span>
             <h2 class="text-3xl md:text-5xl font-serif font-black text-slate-900 uppercase tracking-tight">Monthly Champions</h2>
             <p class="text-slate-600 text-xs md:text-sm font-medium mt-2 max-w-xl mx-auto">Honoring our top supporters and donors who lead by example in driving social impact this month.</p>
         </div>
@@ -309,30 +383,30 @@
                 {% set name = item.name if item.name else 'Kindness Hero' %}
                 {% set total = item.amount if item.amount else 5000 %}
             {% endif %}
-            <div class="card-glass p-5 rounded-2xl flex items-center justify-between group">
+            <div class="card-foundation p-5 flex items-center justify-between group">
                 <div class="flex items-center space-x-4">
                     <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white flex items-center justify-center font-black text-sm shadow-md shadow-blue-500/20">#{{ loop.index }}</div>
                     <div>
-                        <p class="font-black text-black uppercase text-sm tracking-wider">{{ name }}</p>
-                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-0.5">Kindness Champion</p>
+                        <p class="font-black text-slate-900 uppercase text-sm tracking-wider">{{ name }}</p>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-0.5">Kindness Champion</p>
                     </div>
                 </div>
-                <p class="text-lg font-black text-primary-600">₹{{ total|int }}</p>
+                <p class="text-lg font-black text-blue-700">₹{{ total|int }}</p>
             </div>
             {% endfor %}
         </div>
     </div>
 </section>
 
-<!-- Adoption & Donation -->
-<section id="adopt" class="reveal ambient-mesh-light py-24 border-b border-blue-100/60">
+<!-- Adoption & Direct Donation -->
+<section id="adopt" class="reveal bg-warm-canvas py-24 border-b border-[#e8e2d8]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-16 items-start">
         <div class="lg:sticky lg:top-32">
-            <span class="text-primary-600 font-extrabold tracking-widest uppercase text-xs block mb-3">Get Involved Today</span>
+            <span class="text-blue-700 font-extrabold tracking-widest uppercase text-xs block mb-3">Get Involved Today</span>
             <h2 class="text-4xl md:text-5xl font-serif font-black text-slate-900 leading-tight uppercase tracking-tight mb-8">Make a<br><span class="text-gradient-primary">Difference</span></h2>
 
             <!-- Adopt a Day Mini Block -->
-            <div class="card-glass-dark p-8 rounded-2xl text-white relative overflow-hidden group mb-8">
+            <div class="card-foundation-dark p-8 rounded-2xl text-white relative overflow-hidden group mb-8">
                 <h3 class="text-xl font-black uppercase mb-2 tracking-wide text-white">Adopt a Day</h3>
                 <p class="text-slate-300 text-sm font-medium leading-relaxed mb-6">Sponsor all foundation activities for one full day of your choice.</p>
                 <a href="{{ url_for('main.adopt_a_day') }}" class="inline-flex items-center space-x-2 text-sky-400 font-black uppercase text-[10px] tracking-widest transition-all hover:text-sky-300 hover:translate-x-1">
@@ -340,29 +414,10 @@
                     <span>&rarr;</span>
                 </a>
             </div>
-
-            <!-- Sacrifice Widget -->
-            <div class="card-glass p-8 rounded-2xl">
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 text-center">Luxury Swap Calculator</p>
-                <div class="flex items-center justify-between gap-4 overflow-x-auto pb-2 scrollbar-hide">
-                    <button type="button" onclick="swapLuxury('Chai', 20, 1)" class="flex-shrink-0 flex flex-col items-center group">
-                        <div class="w-12 h-12 rounded-2xl bg-blue-50/80 border border-blue-100 flex items-center justify-center text-xl shadow-inner transition-all group-hover:scale-110 group-hover:bg-blue-100">☕</div>
-                        <span class="text-[9px] font-black mt-2 uppercase text-slate-500">Chai</span>
-                    </button>
-                    <button type="button" onclick="swapLuxury('Pizza', 500, 8)" class="flex-shrink-0 flex flex-col items-center group">
-                        <div class="w-12 h-12 rounded-2xl bg-blue-50/80 border border-blue-100 flex items-center justify-center text-xl shadow-inner transition-all group-hover:scale-110 group-hover:bg-blue-100">🍕</div>
-                        <span class="text-[9px] font-black mt-2 uppercase text-slate-500">Pizza</span>
-                    </button>
-                    <button type="button" onclick="swapLuxury('Dinner', 1500, 25)" class="flex-shrink-0 flex flex-col items-center group">
-                        <div class="w-12 h-12 rounded-2xl bg-blue-50/80 border border-blue-100 flex items-center justify-center text-xl shadow-inner transition-all group-hover:scale-110 group-hover:bg-blue-100">🍱</div>
-                        <span class="text-[9px] font-black mt-2 uppercase text-slate-500">Dinner</span>
-                    </button>
-                </div>
-            </div>
         </div>
 
         <div class="reveal">
-            <form id="donationForm" class="card-glass p-8 rounded-3xl" method="post" action="{{url_for('main.donate')}}">
+            <form id="donationForm" class="card-foundation p-8 md:p-10" method="post" action="{{url_for('main.donate')}}">
                 <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
 
                 {% if matching.active %}
@@ -377,8 +432,8 @@
 
                 <div class="space-y-6">
                     <div>
-                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Impact Amount (₹)</label>
-                        <input id="donationAmount" name="amount" type="number" min="100" placeholder="Enter amount..." required oninput="updateImpact()" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-2xl font-black text-slate-900 focus:ring-2 focus:ring-blue-500 focus:bg-white focus:outline-none transition-all">
+                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Impact Amount (₹)</label>
+                        <input id="donationAmount" name="amount" type="number" min="100" placeholder="Enter amount..." required oninput="updateImpact()" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-2xl font-black text-slate-900 focus:ring-2 focus:ring-blue-600 focus:bg-white focus:outline-none transition-all">
 
                         <div id="impactDisplay" class="hidden mt-4 p-4 bg-slate-950 rounded-2xl flex items-center space-x-4 border border-blue-500/30">
                             <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-sm text-white">✨</div>
@@ -387,8 +442,8 @@
                     </div>
 
                     <div>
-                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Choose Mission</label>
-                        <select id="donationCause" name="cause" onchange="updateImpact()" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 focus:bg-white focus:outline-none outline-none transition-all">
+                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Choose Mission</label>
+                        <select id="donationCause" name="cause" onchange="updateImpact()" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm font-bold text-slate-900 focus:ring-2 focus:ring-blue-600 focus:bg-white focus:outline-none outline-none transition-all">
                             <option value="General Fund" data-unit="" data-cost="0">General Welfare</option>
                             {% for pkg in packages %}
                             <option value="{{ pkg.title }}" data-unit="{{ pkg.impact_unit_name }}" data-cost="{{ pkg.impact_unit_cost }}">{{ pkg.title }}</option>
@@ -397,11 +452,11 @@
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <input name="donor_name" placeholder="Full Name" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 focus:bg-white focus:outline-none transition-all">
-                        <input name="email" type="email" placeholder="Email" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 focus:bg-white focus:outline-none transition-all">
+                        <input name="donor_name" placeholder="Full Name" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm font-bold text-slate-900 focus:ring-2 focus:ring-blue-600 focus:bg-white focus:outline-none transition-all">
+                        <input name="email" type="email" placeholder="Email" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm font-bold text-slate-900 focus:ring-2 focus:ring-blue-600 focus:bg-white focus:outline-none transition-all">
                     </div>
 
-                    <textarea name="wish" rows="2" placeholder="Leave a wish or prayer..." class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 focus:bg-white focus:outline-none transition-all"></textarea>
+                    <textarea name="wish" rows="2" placeholder="Leave a wish or prayer..." class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm font-bold text-slate-900 focus:ring-2 focus:ring-blue-600 focus:bg-white focus:outline-none transition-all"></textarea>
 
                     <button class="w-full py-5 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-500 text-white rounded-2xl font-black uppercase text-xs tracking-widest shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all hover:scale-[1.02] active:scale-95">Initiate Donation</button>
                 </div>
@@ -411,21 +466,21 @@
 </section>
 
 <!-- Transparency Dashboard -->
-<section class="reveal ambient-mesh-light py-24 border-b border-blue-100/60">
+<section class="reveal bg-warm-canvas py-24 border-b border-[#e8e2d8]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-                <span class="text-primary-600 font-extrabold tracking-widest uppercase text-xs block mb-3">Financial Accountability</span>
+                <span class="text-blue-700 font-extrabold tracking-widest uppercase text-xs block mb-3">Financial Accountability</span>
                 <h2 class="font-serif text-3xl md:text-5xl font-black text-slate-900 uppercase tracking-tight mb-6">Every Rupee Tracked.</h2>
                 <div class="mt-8 space-y-6">
-                    <div class="card-glass p-5 rounded-2xl flex items-center space-x-4">
-                        <div class="w-12 h-12 bg-blue-50 border border-blue-100 rounded-2xl flex items-center justify-center text-xl text-primary-600 shadow-inner">🌱</div>
+                    <div class="card-foundation p-5 flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-blue-50 border border-blue-100 rounded-2xl flex items-center justify-center text-xl text-blue-700 shadow-inner">🌱</div>
                         <div>
                             <p class="text-lg font-black text-slate-900">{{ transparency.programmes }}% Ground Impact</p>
                             <p class="text-sm text-slate-500 font-medium">Sent directly to beneficiaries and fieldwork operations.</p>
                         </div>
                     </div>
-                    <div class="card-glass p-5 rounded-2xl flex items-center space-x-4">
+                    <div class="card-foundation p-5 flex items-center space-x-4">
                         <div class="w-12 h-12 bg-slate-100 border border-slate-200 rounded-2xl flex items-center justify-center text-xl text-slate-800 shadow-inner">📊</div>
                         <div>
                             <p class="text-lg font-black text-slate-900">{{ transparency.admin }}% Administration</p>
@@ -436,11 +491,11 @@
             </div>
 
             <div class="relative">
-                <div class="card-glass p-8 rounded-3xl relative z-10 text-center">
+                <div class="card-foundation p-8 text-center">
                     <canvas id="transparencyChart" class="mx-auto max-w-[240px]"></canvas>
                     <div class="mt-8">
                         <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Total Funds Distributed</p>
-                        <p class="text-2xl font-black text-primary-600 mt-1 uppercase tracking-tight">100% Certified Audit</p>
+                        <p class="text-2xl font-black text-blue-700 mt-1 uppercase tracking-tight">100% Certified Audit</p>
                     </div>
                 </div>
             </div>
@@ -450,7 +505,7 @@
 
 <!-- Testimonials -->
 {% if testimonials %}
-<section class="reveal ambient-mesh-light py-24 border-b border-blue-100/60">
+<section class="reveal bg-warm-canvas py-24 border-b border-[#e8e2d8]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
         <h2 class="font-serif text-3xl md:text-5xl font-black text-slate-900 uppercase tracking-tight">Voices of Impact</h2>
     </div>
@@ -459,7 +514,7 @@
             <div class="swiper-wrapper">
                 {% for item in testimonials %}
                 <div class="swiper-slide px-2">
-                    <div class="card-glass p-8 rounded-2xl relative text-center">
+                    <div class="card-foundation p-8 text-center">
                         <p class="text-base text-slate-700 font-medium leading-relaxed mb-6 italic">"{{ item.quote }}"</p>
                         <div class="flex items-center justify-center space-x-4">
                             {% if item.img %}
@@ -467,7 +522,7 @@
                             {% endif %}
                             <div class="text-left">
                                 <p class="font-black text-slate-900 uppercase text-xs tracking-wider">{{ item.name }}</p>
-                                <p class="text-[10px] text-primary-600 font-bold uppercase mt-0.5 tracking-wider">{{ item.role }}</p>
+                                <p class="text-[10px] text-blue-700 font-bold uppercase mt-0.5 tracking-wider">{{ item.role }}</p>
                             </div>
                         </div>
                     </div>
@@ -482,17 +537,17 @@
 
 <!-- FAQ -->
 {% if faqs %}
-<section class="reveal ambient-mesh-light py-24 border-b border-blue-100/60">
+<section class="reveal bg-warm-canvas py-24 border-b border-[#e8e2d8]">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="font-serif text-3xl md:text-5xl font-black text-slate-900 uppercase tracking-tight">Common Queries</h2>
         </div>
         <div class="space-y-4">
             {% for item in faqs %}
-            <div class="card-glass rounded-2xl overflow-hidden group border border-slate-200/80">
-                <button class="w-full flex items-center justify-between p-6 text-left bg-slate-50/50 hover:bg-white transition-all" onclick="toggleFaq(this)">
+            <div class="card-foundation overflow-hidden group border border-[#e8e2d8]">
+                <button class="w-full flex items-center justify-between p-6 text-left bg-white hover:bg-slate-50 transition-all" onclick="toggleFaq(this)">
                     <span class="text-base font-black text-slate-900 uppercase tracking-tight">{{ item.question }}</span>
-                    <div class="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-primary-600 shadow-sm transition-transform duration-300">
+                    <div class="w-8 h-8 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-blue-700 shadow-sm transition-transform duration-300">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
                     </div>
                 </button>
@@ -565,17 +620,6 @@ const testimonialSwiper = new Swiper('.testimonial-swiper', {
         1024: { slidesPerView: 3 }
     }
 });
-
-function swapLuxury(item, amount, kids) {
-    const el = document.getElementById('donationAmount');
-    el.value = amount;
-    const msg = document.getElementById('swapMessage');
-    document.getElementById('swapItem').innerText = item;
-    document.getElementById('swapKids').innerText = kids;
-    msg.classList.remove('hidden');
-    updateImpact();
-    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
 
 function updateImpact() {
     const amount = document.getElementById('donationAmount').value;

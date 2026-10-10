@@ -51,20 +51,27 @@
 
     <style>
         :root {
-            --brand-primary: #2563eb;
-            --brand-accent: #3b82f6;
-            --brand-navy: #0b1329;
-            --brand-navy-deep: #060b19;
-            --bg-light: #f8fafc;
-            --bg-soft: #f1f5f9;
+            --brand-primary: #1d4ed8;
+            --brand-saffron: #ea580c;
+            --brand-navy: #0f172a;
+            --brand-navy-deep: #020617;
+            --bg-warm: #faf8f5;
+            --bg-cream: #f4efea;
             --text-main: #0f172a;
         }
+
+        body {
+            background-color: var(--bg-warm);
+            color: var(--text-main);
+        }
+
         .glass-nav {
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 253, 249, 0.92);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
-            border-bottom: 1px solid rgba(37, 99, 235, 0.1);
+            border-bottom: 1px solid rgba(232, 226, 216, 0.8);
         }
+
         .ticker-wrap {
             width: 100%;
             overflow: hidden;
@@ -74,62 +81,82 @@
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* Ambient Light & Mesh Backgrounds */
-        .ambient-mesh-light {
-            background-color: #f8fafc;
+        /* Thaagam Style Warm Canvas & Section Backgrounds */
+        .ambient-mesh-light, .bg-warm-canvas {
+            background-color: #faf8f5;
             background-image:
-                radial-gradient(circle at 10% 15%, rgba(37, 99, 235, 0.07) 0%, transparent 45%),
-                radial-gradient(circle at 90% 85%, rgba(99, 102, 241, 0.07) 0%, transparent 45%),
-                radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.04) 0%, transparent 60%);
+                radial-gradient(circle at 12% 12%, rgba(29, 78, 216, 0.05) 0%, transparent 45%),
+                radial-gradient(circle at 88% 88%, rgba(234, 88, 12, 0.04) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.03) 0%, transparent 60%);
         }
 
-        .ambient-mesh-dark {
-            background-color: #070c18;
+        .bg-warm-section {
+            background-color: #f5f0e8;
             background-image:
-                radial-gradient(circle at 20% 10%, rgba(37, 99, 235, 0.22) 0%, transparent 55%),
-                radial-gradient(circle at 80% 90%, rgba(30, 64, 175, 0.18) 0%, transparent 55%),
-                radial-gradient(circle at 50% 40%, rgba(14, 165, 233, 0.10) 0%, transparent 60%);
+                radial-gradient(circle at 80% 20%, rgba(29, 78, 216, 0.06) 0%, transparent 45%),
+                radial-gradient(circle at 20% 80%, rgba(234, 88, 12, 0.05) 0%, transparent 45%);
         }
 
-        /* Glassmorphic Card Utilities */
-        .card-glass {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            box-shadow: 0 10px 30px -5px rgba(37, 99, 235, 0.06), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        .ambient-mesh-dark, .bg-foundation-dark {
+            background-color: #070d1e;
+            background-image:
+                radial-gradient(circle at 20% 10%, rgba(29, 78, 216, 0.28) 0%, transparent 55%),
+                radial-gradient(circle at 80% 90%, rgba(234, 88, 12, 0.15) 0%, transparent 55%),
+                radial-gradient(circle at 50% 40%, rgba(14, 165, 233, 0.12) 0%, transparent 60%);
         }
-        .card-glass:hover {
-            border-color: rgba(37, 99, 235, 0.35);
-            box-shadow: 0 20px 40px -10px rgba(37, 99, 235, 0.15), 0 8px 20px -4px rgba(0, 0, 0, 0.05);
+
+        /* Glassmorphic & Foundation Cards */
+        .card-glass, .card-foundation {
+            background: #ffffff;
+            border: 1px solid #e8e2d8;
+            border-radius: 1.25rem;
+            box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.04), 0 4px 12px -2px rgba(0, 0, 0, 0.02);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-glass:hover, .card-foundation:hover {
+            border-color: rgba(29, 78, 216, 0.35);
+            box-shadow: 0 20px 40px -10px rgba(29, 78, 216, 0.12), 0 8px 20px -4px rgba(0, 0, 0, 0.04);
             transform: translateY(-4px);
         }
 
-        .card-glass-dark {
-            background: rgba(15, 23, 42, 0.85);
+        .card-glass-dark, .card-foundation-dark {
+            background: rgba(15, 23, 42, 0.90);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.5);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.4);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .card-glass-dark:hover {
+        .card-glass-dark:hover, .card-foundation-dark:hover {
             border-color: rgba(56, 189, 248, 0.4);
-            box-shadow: 0 20px 45px -5px rgba(37, 99, 235, 0.25);
+            box-shadow: 0 20px 45px -5px rgba(29, 78, 216, 0.25);
             transform: translateY(-4px);
         }
 
         .text-gradient-primary {
-            background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #38bdf8 100%);
+            background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #0284c7 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .text-gradient-amber {
-            background: linear-gradient(135deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
+        .text-gradient-saffron {
+            background: linear-gradient(135deg, #c2410c 0%, #ea580c 50%, #f97316 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+
+        /* Live Donation Ticker Animation */
+        @keyframes tickerMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .ticker-animate {
+            display: flex;
+            width: max-content;
+            animation: tickerMove 35s linear infinite;
+        }
+        .ticker-animate:hover {
+            animation-play-state: paused;
         }
     </style>
 
@@ -138,14 +165,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <style>
-        .site-theme { background: var(--bg-light); color: var(--text-main); }
+        .site-theme { background: var(--bg-warm); color: var(--text-main); }
         .site-theme .bg-white { background-color: #ffffff; }
-        .site-theme .bg-gray-50 { background-color: var(--bg-soft); }
+        .site-theme .bg-gray-50 { background-color: #f5f0e8; }
         .site-theme .bg-gray-900 { background-color: var(--brand-navy); }
         .site-theme .bg-gray-950 { background-color: var(--brand-navy-deep); }
-        .site-theme .text-gray-900 { color: #000000; }
-        .site-theme .text-gray-700 { color: #111111; }
-        .site-theme .border-gray-100 { border-color: rgba(0,0,0,0.05); }
+        .site-theme .text-gray-900 { color: #0f172a; }
+        .site-theme .text-gray-700 { color: #1e293b; }
+        .site-theme .border-gray-100 { border-color: #e8e2d8; }
         .site-theme .shadow-xl, .site-theme .shadow-2xl { box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05); }
 
         /* Modern Button Refinement */
