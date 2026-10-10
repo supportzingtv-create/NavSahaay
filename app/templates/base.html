@@ -511,6 +511,21 @@
         </div>
     </footer>
 
+    <!-- Floating Live Donation Toast Notification (Bottom Left) -->
+    <div id="donationToast" class="fixed bottom-6 left-6 z-50 transition-all duration-500 transform translate-y-24 opacity-0 pointer-events-none max-w-xs sm:max-w-sm">
+        <div class="card-foundation p-4 bg-white/95 backdrop-blur-md border border-blue-100 rounded-2xl shadow-2xl flex items-center space-x-3.5 relative">
+            <button onclick="hideDonationToast()" class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-slate-800 text-white text-xs flex items-center justify-center shadow-md hover:bg-slate-900 transition-colors">&times;</button>
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white flex items-center justify-center font-black text-sm shrink-0 shadow-md shadow-blue-500/20">
+                <span class="animate-pulse">✨</span>
+            </div>
+            <div class="pr-2">
+                <p class="text-xs font-black text-slate-900 leading-tight" id="toastDonorName">Rajesh K. donated ₹600</p>
+                <p class="text-[10px] font-bold text-blue-700 mt-0.5 uppercase tracking-wide" id="toastCauseName">Homeless Meal Drive</p>
+                <p class="text-[9px] font-bold text-slate-400 mt-0.5" id="toastTime">2 mins ago • Verified Donor</p>
+            </div>
+        </div>
+    </div>
+
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
@@ -530,6 +545,46 @@
         window.addEventListener("scroll", reveal);
         // Run once on load
         reveal();
+
+        // Bottom Left Live Donation Toast
+        const donationPopups = [
+            { name: 'Rajesh K. donated ₹600', cause: 'Homeless Meal Drive', time: '2 mins ago' },
+            { name: 'Sunita P. donated ₹1,200', cause: 'Child Education Kit', time: '5 mins ago' },
+            { name: 'Amit B. donated ₹2,500', cause: 'Rural Health Camp', time: '12 mins ago' },
+            { name: 'Meera S. donated ₹500', cause: 'Tree Plantation Drive', time: '18 mins ago' },
+            { name: 'Priya R. donated ₹3,000', cause: 'Women Skill Workshop', time: '25 mins ago' }
+        ];
+        let popupIndex = 0;
+
+        function showDonationToast() {
+            const toast = document.getElementById('donationToast');
+            if (!toast) return;
+            const data = donationPopups[popupIndex];
+            document.getElementById('toastDonorName').innerText = data.name;
+            document.getElementById('toastCauseName').innerText = data.cause;
+            document.getElementById('toastTime').innerText = data.time + ' • Verified Donor';
+
+            toast.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+
+            setTimeout(() => {
+                hideDonationToast();
+            }, 5000);
+
+            popupIndex = (popupIndex + 1) % donationPopups.length;
+        }
+
+        function hideDonationToast() {
+            const toast = document.getElementById('donationToast');
+            if (!toast) return;
+            toast.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+            toast.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+        }
+
+        setTimeout(() => {
+            showDonationToast();
+            setInterval(showDonationToast, 9000);
+        }, 3000);
     </script>
 
     {% block extra_js %}{% endblock %}

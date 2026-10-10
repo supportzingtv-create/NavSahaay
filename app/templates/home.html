@@ -59,54 +59,6 @@
     </div>
 </section>
 
-<!-- Thaagam Style Live Donation Ticker -->
-<section class="bg-slate-950 text-white py-3 border-y border-white/10 overflow-hidden relative z-20">
-    <div class="ticker-wrap flex items-center">
-        <div class="ticker-animate space-x-12 text-xs font-bold uppercase tracking-wider text-slate-300">
-            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> ✨ Rajesh K. donated ₹600 for Homeless Meals</span>
-            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span> 🎓 Sunita P. donated ₹1,200 for Child Education</span>
-            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span> 🏥 Amit B. donated ₹2,500 for Medical Camp</span>
-            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> 🌳 Meera S. donated ₹500 for Tree Plantation</span>
-            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> ✨ Rajesh K. donated ₹600 for Homeless Meals</span>
-            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span> 🎓 Sunita P. donated ₹1,200 for Child Education</span>
-            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span> 🏥 Amit B. donated ₹2,500 for Medical Camp</span>
-            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> 🌳 Meera S. donated ₹500 for Tree Plantation</span>
-        </div>
-    </div>
-</section>
-
-<!-- Thaagam Style Category Quick Selection Pills Bar -->
-<section class="bg-warm-canvas py-8 border-b border-[#e8e2d8]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-center gap-3 overflow-x-auto pb-2 scrollbar-hide">
-            <a href="#causes" class="px-5 py-3 rounded-2xl bg-white border border-[#e8e2d8] shadow-sm hover:border-blue-600 hover:shadow-md transition-all flex items-center space-x-2 text-xs font-black uppercase text-slate-800 shrink-0">
-                <span class="text-base">🍲</span>
-                <span>Food & Meals</span>
-            </a>
-            <a href="#causes" class="px-5 py-3 rounded-2xl bg-white border border-[#e8e2d8] shadow-sm hover:border-blue-600 hover:shadow-md transition-all flex items-center space-x-2 text-xs font-black uppercase text-slate-800 shrink-0">
-                <span class="text-base">👧</span>
-                <span>Child Welfare</span>
-            </a>
-            <a href="#causes" class="px-5 py-3 rounded-2xl bg-white border border-[#e8e2d8] shadow-sm hover:border-blue-600 hover:shadow-md transition-all flex items-center space-x-2 text-xs font-black uppercase text-slate-800 shrink-0">
-                <span class="text-base">📚</span>
-                <span>Education</span>
-            </a>
-            <a href="#causes" class="px-5 py-3 rounded-2xl bg-white border border-[#e8e2d8] shadow-sm hover:border-blue-600 hover:shadow-md transition-all flex items-center space-x-2 text-xs font-black uppercase text-slate-800 shrink-0">
-                <span class="text-base">🏥</span>
-                <span>Healthcare</span>
-            </a>
-            <a href="#causes" class="px-5 py-3 rounded-2xl bg-white border border-[#e8e2d8] shadow-sm hover:border-blue-600 hover:shadow-md transition-all flex items-center space-x-2 text-xs font-black uppercase text-slate-800 shrink-0">
-                <span class="text-base">🌳</span>
-                <span>Environment</span>
-            </a>
-            <a href="#causes" class="px-5 py-3 rounded-2xl bg-white border border-[#e8e2d8] shadow-sm hover:border-blue-600 hover:shadow-md transition-all flex items-center space-x-2 text-xs font-black uppercase text-slate-800 shrink-0">
-                <span class="text-base">🎂</span>
-                <span>Birthday Cause</span>
-            </a>
-        </div>
-    </div>
-</section>
-
 <!-- Impact Counters -->
 <section class="reveal bg-warm-canvas py-16 border-b border-[#e8e2d8]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -252,17 +204,53 @@
     </div>
 </section>
 
-<!-- Donation Causes & Conversion (Thaagam Style Itemized Cause Cards) -->
+<!-- Donation Causes & Conversion (Thaagam Style Itemized Cause Cards with Filter & Search) -->
 <section id="causes" class="reveal bg-warm-canvas py-24 border-b border-[#e8e2d8]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-10">
         <span class="text-blue-700 font-extrabold tracking-widest uppercase text-xs block mb-3">Itemized Micro-Donations</span>
         <h2 class="font-serif text-3xl md:text-5xl font-black text-slate-900 uppercase tracking-tight">Support an Active Cause</h2>
         <p class="mt-4 text-base text-slate-600 max-w-2xl mx-auto font-medium">Select a certified mission to see exactly how and where your contribution makes a direct difference.</p>
     </div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- Category Filter Pills & Instant Search Bar -->
+    <div class="max-w-4xl mx-auto px-4 mb-12">
+        <!-- Search Bar -->
+        <div class="relative max-w-xl mx-auto mb-6">
+            <span class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            </span>
+            <input type="text" id="causeSearchInput" onkeyup="filterCausesByText()" placeholder="Search causes (e.g. Meals, Education, Trees, Health...)" class="w-full pl-14 pr-6 py-4 bg-white border border-[#e8e2d8] rounded-2xl text-sm font-bold text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-all">
+        </div>
+
+        <!-- Category Pills -->
+        <div class="flex items-center justify-center gap-2.5 overflow-x-auto pb-2 scrollbar-hide">
+            <button onclick="filterCategory('ALL')" class="cause-cat-btn active px-5 py-2.5 rounded-2xl bg-blue-600 text-white border border-blue-600 shadow-sm hover:shadow-md transition-all text-xs font-black uppercase shrink-0">
+                ✨ All Causes
+            </button>
+            <button onclick="filterCategory('Food')" class="cause-cat-btn px-5 py-2.5 rounded-2xl bg-white border border-[#e8e2d8] text-slate-800 hover:border-blue-600 shadow-sm hover:shadow-md transition-all text-xs font-black uppercase shrink-0 flex items-center gap-1.5">
+                <span>🍲</span> Food & Meals
+            </button>
+            <button onclick="filterCategory('Child')" class="cause-cat-btn px-5 py-2.5 rounded-2xl bg-white border border-[#e8e2d8] text-slate-800 hover:border-blue-600 shadow-sm hover:shadow-md transition-all text-xs font-black uppercase shrink-0 flex items-center gap-1.5">
+                <span>👧</span> Child Welfare
+            </button>
+            <button onclick="filterCategory('Education')" class="cause-cat-btn px-5 py-2.5 rounded-2xl bg-white border border-[#e8e2d8] text-slate-800 hover:border-blue-600 shadow-sm hover:shadow-md transition-all text-xs font-black uppercase shrink-0 flex items-center gap-1.5">
+                <span>📚</span> Education
+            </button>
+            <button onclick="filterCategory('Healthcare')" class="cause-cat-btn px-5 py-2.5 rounded-2xl bg-white border border-[#e8e2d8] text-slate-800 hover:border-blue-600 shadow-sm hover:shadow-md transition-all text-xs font-black uppercase shrink-0 flex items-center gap-1.5">
+                <span>🏥</span> Healthcare
+            </button>
+            <button onclick="filterCategory('Environment')" class="cause-cat-btn px-5 py-2.5 rounded-2xl bg-white border border-[#e8e2d8] text-slate-800 hover:border-blue-600 shadow-sm hover:shadow-md transition-all text-xs font-black uppercase shrink-0 flex items-center gap-1.5">
+                <span>🌳</span> Environment
+            </button>
+            <button onclick="filterCategory('Birthday')" class="cause-cat-btn px-5 py-2.5 rounded-2xl bg-white border border-[#e8e2d8] text-slate-800 hover:border-blue-600 shadow-sm hover:shadow-md transition-all text-xs font-black uppercase shrink-0 flex items-center gap-1.5">
+                <span>🎂</span> Birthday Cause
+            </button>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 lg:grid-cols-4 gap-6" id="causesGrid">
         {% for pkg in packages %}
-        <div class="card-foundation overflow-hidden group flex flex-col h-full border border-[#e8e2d8] hover:border-blue-600/50">
+        <div class="cause-card-item card-foundation overflow-hidden group flex flex-col h-full border border-[#e8e2d8] hover:border-blue-600/50" data-title="{{ pkg.title }}" data-tag="{{ pkg.tag or '' }}">
             <div class="relative h-72 sm:h-80 overflow-hidden bg-slate-950">
                 <img class="w-full h-full object-{{ pkg.fit | default('cover') }} object-{{ pkg.img_position | default('center') }} opacity-90 transition-transform duration-[2s] group-hover:scale-105" src="{{ pkg.image_url }}" alt="{{ pkg.title }}">
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
@@ -644,6 +632,41 @@ function updateImpact() {
 function setAmount(amt) {
     document.getElementById('donationAmount').value = amt;
     updateImpact();
+}
+
+let currentCategory = 'ALL';
+
+function filterCategory(cat) {
+    currentCategory = cat;
+    document.querySelectorAll('.cause-cat-btn').forEach(btn => {
+        btn.classList.remove('bg-blue-600', 'text-white', 'border-blue-600');
+        btn.classList.add('bg-white', 'text-slate-800', 'border-[#e8e2d8]');
+    });
+    if (window.event && window.event.currentTarget) {
+        window.event.currentTarget.classList.remove('bg-white', 'text-slate-800', 'border-[#e8e2d8]');
+        window.event.currentTarget.classList.add('bg-blue-600', 'text-white', 'border-blue-600');
+    }
+    filterCausesByText();
+}
+
+function filterCausesByText() {
+    const input = document.getElementById('causeSearchInput');
+    const query = input ? (input.value || '').toLowerCase().trim() : '';
+    const cards = document.querySelectorAll('.cause-card-item');
+
+    cards.forEach(card => {
+        const title = (card.getAttribute('data-title') || '').toLowerCase();
+        const tag = (card.getAttribute('data-tag') || '').toLowerCase();
+
+        const matchesCat = (currentCategory === 'ALL') || tag.includes(currentCategory.toLowerCase()) || title.includes(currentCategory.toLowerCase());
+        const matchesQuery = !query || title.includes(query) || tag.includes(query);
+
+        if (matchesCat && matchesQuery) {
+            card.style.display = 'flex';
+        } else {
+            card.style.display = 'none';
+        }
+    });
 }
 </script>
 {% endblock %}
