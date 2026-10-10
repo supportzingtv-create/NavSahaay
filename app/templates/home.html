@@ -213,7 +213,7 @@
     </div>
 
     <!-- Category Filter Pills & Instant Search Bar -->
-    <div class="max-w-4xl mx-auto px-4 mb-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
         <!-- Search Bar -->
         <div class="relative max-w-xl mx-auto mb-6">
             <span class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400">
@@ -222,27 +222,27 @@
             <input type="text" id="causeSearchInput" onkeyup="filterCausesByText()" placeholder="Search causes (e.g. Meals, Education, Trees, Health...)" class="w-full pl-14 pr-6 py-4 bg-white border border-[#e8e2d8] rounded-2xl text-sm font-bold text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-all">
         </div>
 
-        <!-- Category Pills -->
-        <div class="flex items-center justify-center gap-2.5 overflow-x-auto pb-2 scrollbar-hide">
-            <button onclick="filterCategory('ALL')" class="cause-cat-btn active px-5 py-2.5 rounded-2xl bg-blue-600 text-white border border-blue-600 shadow-sm hover:shadow-md transition-all text-xs font-black uppercase shrink-0">
+        <!-- Category Pills (Fully Responsive & Wrapped - No Side Cut-off) -->
+        <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 py-1">
+            <button onclick="filterCategory('ALL')" class="cause-cat-btn active px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl bg-blue-600 text-white border border-blue-600 shadow-sm hover:shadow-md transition-all text-xs font-black uppercase flex items-center gap-1.5">
                 ✨ All Causes
             </button>
-            <button onclick="filterCategory('Food')" class="cause-cat-btn px-5 py-2.5 rounded-2xl bg-white border border-[#e8e2d8] text-slate-800 hover:border-blue-600 shadow-sm hover:shadow-md transition-all text-xs font-black uppercase shrink-0 flex items-center gap-1.5">
+            <button onclick="filterCategory('Food')" class="cause-cat-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl bg-white border border-[#e8e2d8] text-slate-800 hover:border-blue-600 shadow-sm hover:shadow-md transition-all text-xs font-black uppercase flex items-center gap-1.5">
                 <span>🍲</span> Food & Meals
             </button>
-            <button onclick="filterCategory('Child')" class="cause-cat-btn px-5 py-2.5 rounded-2xl bg-white border border-[#e8e2d8] text-slate-800 hover:border-blue-600 shadow-sm hover:shadow-md transition-all text-xs font-black uppercase shrink-0 flex items-center gap-1.5">
+            <button onclick="filterCategory('Child')" class="cause-cat-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl bg-white border border-[#e8e2d8] text-slate-800 hover:border-blue-600 shadow-sm hover:shadow-md transition-all text-xs font-black uppercase flex items-center gap-1.5">
                 <span>👧</span> Child Welfare
             </button>
-            <button onclick="filterCategory('Education')" class="cause-cat-btn px-5 py-2.5 rounded-2xl bg-white border border-[#e8e2d8] text-slate-800 hover:border-blue-600 shadow-sm hover:shadow-md transition-all text-xs font-black uppercase shrink-0 flex items-center gap-1.5">
+            <button onclick="filterCategory('Education')" class="cause-cat-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl bg-white border border-[#e8e2d8] text-slate-800 hover:border-blue-600 shadow-sm hover:shadow-md transition-all text-xs font-black uppercase flex items-center gap-1.5">
                 <span>📚</span> Education
             </button>
-            <button onclick="filterCategory('Healthcare')" class="cause-cat-btn px-5 py-2.5 rounded-2xl bg-white border border-[#e8e2d8] text-slate-800 hover:border-blue-600 shadow-sm hover:shadow-md transition-all text-xs font-black uppercase shrink-0 flex items-center gap-1.5">
+            <button onclick="filterCategory('Healthcare')" class="cause-cat-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl bg-white border border-[#e8e2d8] text-slate-800 hover:border-blue-600 shadow-sm hover:shadow-md transition-all text-xs font-black uppercase flex items-center gap-1.5">
                 <span>🏥</span> Healthcare
             </button>
-            <button onclick="filterCategory('Environment')" class="cause-cat-btn px-5 py-2.5 rounded-2xl bg-white border border-[#e8e2d8] text-slate-800 hover:border-blue-600 shadow-sm hover:shadow-md transition-all text-xs font-black uppercase shrink-0 flex items-center gap-1.5">
+            <button onclick="filterCategory('Environment')" class="cause-cat-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl bg-white border border-[#e8e2d8] text-slate-800 hover:border-blue-600 shadow-sm hover:shadow-md transition-all text-xs font-black uppercase flex items-center gap-1.5">
                 <span>🌳</span> Environment
             </button>
-            <button onclick="filterCategory('Birthday')" class="cause-cat-btn px-5 py-2.5 rounded-2xl bg-white border border-[#e8e2d8] text-slate-800 hover:border-blue-600 shadow-sm hover:shadow-md transition-all text-xs font-black uppercase shrink-0 flex items-center gap-1.5">
+            <button onclick="filterCategory('Birthday')" class="cause-cat-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl bg-white border border-[#e8e2d8] text-slate-800 hover:border-blue-600 shadow-sm hover:shadow-md transition-all text-xs font-black uppercase flex items-center gap-1.5">
                 <span>🎂</span> Birthday Cause
             </button>
         </div>
