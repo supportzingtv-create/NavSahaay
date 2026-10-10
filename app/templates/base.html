@@ -51,19 +51,19 @@
 
     <style>
         :root {
-            --brand-primary: #000000;
-            --brand-accent: #2563eb;
-            --brand-navy: #000000;
-            --brand-navy-deep: #000000;
-            --bg-light: #ffffff;
-            --bg-soft: #f8fafc;
-            --text-main: #000000;
+            --brand-primary: #2563eb;
+            --brand-accent: #3b82f6;
+            --brand-navy: #0b1329;
+            --brand-navy-deep: #060b19;
+            --bg-light: #f8fafc;
+            --bg-soft: #f1f5f9;
+            --text-main: #0f172a;
         }
         .glass-nav {
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(37, 99, 235, 0.1);
         }
         .ticker-wrap {
             width: 100%;
@@ -72,6 +72,64 @@
             color: white;
             padding: 10px 0;
             border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Ambient Light & Mesh Backgrounds */
+        .ambient-mesh-light {
+            background-color: #f8fafc;
+            background-image:
+                radial-gradient(circle at 10% 15%, rgba(37, 99, 235, 0.07) 0%, transparent 45%),
+                radial-gradient(circle at 90% 85%, rgba(99, 102, 241, 0.07) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.04) 0%, transparent 60%);
+        }
+
+        .ambient-mesh-dark {
+            background-color: #070c18;
+            background-image:
+                radial-gradient(circle at 20% 10%, rgba(37, 99, 235, 0.22) 0%, transparent 55%),
+                radial-gradient(circle at 80% 90%, rgba(30, 64, 175, 0.18) 0%, transparent 55%),
+                radial-gradient(circle at 50% 40%, rgba(14, 165, 233, 0.10) 0%, transparent 60%);
+        }
+
+        /* Glassmorphic Card Utilities */
+        .card-glass {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 10px 30px -5px rgba(37, 99, 235, 0.06), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-glass:hover {
+            border-color: rgba(37, 99, 235, 0.35);
+            box-shadow: 0 20px 40px -10px rgba(37, 99, 235, 0.15), 0 8px 20px -4px rgba(0, 0, 0, 0.05);
+            transform: translateY(-4px);
+        }
+
+        .card-glass-dark {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-glass-dark:hover {
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 20px 45px -5px rgba(37, 99, 235, 0.25);
+            transform: translateY(-4px);
+        }
+
+        .text-gradient-primary {
+            background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #38bdf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .text-gradient-amber {
+            background: linear-gradient(135deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
     </style>
 
@@ -238,16 +296,16 @@
 <body class="site-theme font-sans text-slate-900 antialiased bg-white overflow-x-hidden">
     <!-- Urgent Appeal Banner -->
     {% if urgent_appeal.active %}
-    <div class="bg-black text-white py-3 px-4 relative z-[60] shadow-xl">
+    <div class="bg-gradient-to-r from-slate-950 via-blue-950 to-slate-950 text-white py-3 px-4 relative z-[60] shadow-xl border-b border-blue-500/20">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
             <div class="flex items-center space-x-3">
                 <span class="flex h-2.5 w-2.5 relative">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-500"></span>
                 </span>
-                <p class="text-xs sm:text-sm font-extrabold uppercase tracking-widest">{{ urgent_appeal.text }}</p>
+                <p class="text-xs sm:text-sm font-extrabold uppercase tracking-widest text-slate-100">{{ urgent_appeal.text }}</p>
             </div>
-            <a href="{{ urgent_appeal.link }}" class="px-6 py-2 bg-white text-black rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-slate-100 transition-all shadow-lg hover:scale-105 active:scale-95">
+            <a href="{{ urgent_appeal.link }}" class="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-full text-[10px] font-black uppercase tracking-widest transition-all shadow-md shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-105 active:scale-95">
                 {{ urgent_appeal.btn_text or 'Donate Now' }}
             </a>
         </div>
@@ -255,7 +313,7 @@
     {% endif %}
 
     <!-- Navbar -->
-    <header class="sticky top-0 w-full z-50 glass-nav border-b border-gray-100/10 shadow-sm transition-all duration-500">
+    <header class="sticky top-0 w-full z-50 glass-nav shadow-sm transition-all duration-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex justify-start lg:w-0 lg:flex-1 h-full">
@@ -264,31 +322,34 @@
                             <img class="h-10 md:h-12 w-auto object-contain" src="{{ url_for('static', filename='images/logo2.png') }}" alt="NavSahaay Logo">
                         </div>
                         <div class="leading-none flex flex-col justify-center">
-                            <span class="text-xl md:text-2xl font-bold text-black tracking-tight uppercase font-serif">NAVSAHAAY</span>
+                            <span class="text-xl md:text-2xl font-black text-slate-900 tracking-tight uppercase font-serif group-hover:text-primary-600 transition-colors">NAVSAHAAY</span>
                             <span class="block text-[9px] font-bold text-primary-500 uppercase tracking-[0.4em] mt-0.5">Foundation</span>
                         </div>
                     </a>
                 </div>
 
-                <nav class="hidden lg:flex space-x-6 items-center h-full">
-                    <a href="{{ url_for('main.home') }}" class="text-[10px] font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">Home</a>
-                    <a href="#about" class="text-[10px] font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">About Us</a>
+                <nav class="hidden lg:flex space-x-3 items-center h-full">
+                    <a href="{{ url_for('main.home') }}" class="text-[10px] font-extrabold text-slate-800 hover:text-primary-600 hover:bg-blue-50/80 px-3.5 py-2 rounded-full transition-all uppercase tracking-widest">Home</a>
+                    <a href="#about" class="text-[10px] font-extrabold text-slate-800 hover:text-primary-600 hover:bg-blue-50/80 px-3.5 py-2 rounded-full transition-all uppercase tracking-widest">About Us</a>
 
                     <!-- Mega Menu for Causes -->
                     <div class="relative group h-full flex items-center">
-                        <button class="text-[10px] font-bold text-black group-hover:text-primary-500 transition-colors uppercase tracking-widest flex items-center">
+                        <button class="text-[10px] font-extrabold text-slate-800 group-hover:text-primary-600 group-hover:bg-blue-50/80 px-3.5 py-2 rounded-full transition-all uppercase tracking-widest flex items-center">
                             Causes
-                            <svg class="h-3 w-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+                            <svg class="h-3 w-3 ml-1 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
-                        <div class="absolute left-1/2 -translate-x-1/2 top-full w-screen max-w-6xl bg-white shadow-xl border border-gray-100 py-10 px-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-[100]">
+                        <div class="absolute left-1/2 -translate-x-1/2 top-full w-screen max-w-6xl bg-white/95 backdrop-blur-xl shadow-2xl border border-slate-200/80 rounded-2xl py-8 px-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-[100] mt-2">
                             <div class="grid grid-cols-5 gap-8">
                                 {% for category in ['Food', 'Child', 'Education', 'Special Events', 'Others'] %}
                                 <div>
-                                    <h4 class="text-[10px] font-bold text-black uppercase tracking-wider mb-6 pb-2 border-b border-gray-100">{{ category }}</h4>
-                                    <ul class="space-y-4">
+                                    <h4 class="text-[10px] font-black text-slate-900 uppercase tracking-wider mb-4 pb-2 border-b border-blue-100 flex items-center gap-1.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                                        {{ category }}
+                                    </h4>
+                                    <ul class="space-y-3">
                                         {% for cause in mega_menu_causes.get(category, []) %}
                                         <li>
-                                            <a href="{{ url_for('main.cause_detail', slug=cause.slug) }}" class="text-[10px] text-gray-600 hover:text-primary-500 transition-colors block font-medium">
+                                            <a href="{{ url_for('main.cause_detail', slug=cause.slug) }}" class="text-[10px] text-slate-600 hover:text-primary-600 transition-colors block font-bold hover:translate-x-1 transform duration-200">
                                                 {{ cause.title }}
                                             </a>
                                         </li>
@@ -300,19 +361,19 @@
                         </div>
                     </div>
 
-                    <a href="#" class="text-[10px] font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">Blog</a>
-                    <a href="#" class="text-[10px] font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">CSR</a>
-                    <a href="{{ url_for('main.gallery') }}" class="text-[10px] font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">Gallery</a>
-                    <a href="{{ url_for('main.home') }}#contact" class="text-[10px] font-bold text-black hover:text-primary-500 transition-colors uppercase tracking-widest">Contact</a>
+                    <a href="#" class="text-[10px] font-extrabold text-slate-800 hover:text-primary-600 hover:bg-blue-50/80 px-3.5 py-2 rounded-full transition-all uppercase tracking-widest">Blog</a>
+                    <a href="#" class="text-[10px] font-extrabold text-slate-800 hover:text-primary-600 hover:bg-blue-50/80 px-3.5 py-2 rounded-full transition-all uppercase tracking-widest">CSR</a>
+                    <a href="{{ url_for('main.gallery') }}" class="text-[10px] font-extrabold text-slate-800 hover:text-primary-600 hover:bg-blue-50/80 px-3.5 py-2 rounded-full transition-all uppercase tracking-widest">Gallery</a>
+                    <a href="{{ url_for('main.home') }}#contact" class="text-[10px] font-extrabold text-slate-800 hover:text-primary-600 hover:bg-blue-50/80 px-3.5 py-2 rounded-full transition-all uppercase tracking-widest">Contact</a>
 
-                    <a href="tel:{{ general.phone_number or general.phone or '+919876543210' }}" class="text-[10px] font-extrabold text-primary-600 hover:text-primary-700 transition-colors uppercase tracking-widest flex items-center space-x-1">
-                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+                    <a href="tel:{{ general.phone_number or general.phone or '+919876543210' }}" class="text-[10px] font-black text-primary-600 hover:text-primary-700 bg-blue-50 px-3.5 py-2 rounded-full transition-colors uppercase tracking-widest flex items-center space-x-1.5 border border-blue-100">
+                        <svg class="w-3.5 h-3.5 text-primary-600" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
                         <span>Call: {{ general.phone_number or general.phone or '+91 98765 43210' }}</span>
                     </a>
 
-                    <div class="h-8 w-px bg-gray-100 mx-2"></div>
+                    <div class="h-6 w-px bg-slate-200 mx-1"></div>
 
-                    <a href="{{ url_for('main.donate') }}" class="inline-flex items-center justify-center px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-full shadow-lg text-[10px] font-black uppercase tracking-widest transform transition-all hover:scale-105 active:scale-95">Donate Now</a>
+                    <a href="{{ url_for('main.donate') }}" class="inline-flex items-center justify-center px-6 py-2.5 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-500 text-white rounded-full shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 text-[10px] font-black uppercase tracking-widest transform transition-all hover:scale-105 active:scale-95">Donate Now</a>
                 </nav>
 
                 <div class="md:hidden flex items-center space-x-4">
