@@ -81,28 +81,100 @@
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* Thaagam Style Warm Canvas & Section Backgrounds */
+        /* Thaagam Style Warm Canvas & Section Backgrounds with Luxurious Flowing Motion */
+        @keyframes meshDrift1 {
+            0% { transform: translate(0px, 0px) scale(1); opacity: 0.7; }
+            50% { transform: translate(50px, -40px) scale(1.15); opacity: 1; }
+            100% { transform: translate(-30px, 40px) scale(0.9); opacity: 0.7; }
+        }
+
+        @keyframes meshDrift2 {
+            0% { transform: translate(0px, 0px) scale(1); opacity: 0.6; }
+            50% { transform: translate(-60px, 50px) scale(1.2); opacity: 0.9; }
+            100% { transform: translate(40px, -30px) scale(0.95); opacity: 0.6; }
+        }
+
         .ambient-mesh-light, .bg-warm-canvas {
             background-color: #faf8f5;
-            background-image:
-                radial-gradient(circle at 12% 12%, rgba(29, 78, 216, 0.05) 0%, transparent 45%),
-                radial-gradient(circle at 88% 88%, rgba(234, 88, 12, 0.04) 0%, transparent 45%),
-                radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.03) 0%, transparent 60%);
+            position: relative;
+            overflow: hidden;
+        }
+        .ambient-mesh-light::before, .bg-warm-canvas::before {
+            content: "";
+            position: absolute;
+            top: -20%;
+            left: -20%;
+            width: 70%;
+            height: 70%;
+            background: radial-gradient(circle, rgba(29, 78, 216, 0.07) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+            animation: meshDrift1 18s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+        .ambient-mesh-light::after, .bg-warm-canvas::after {
+            content: "";
+            position: absolute;
+            bottom: -20%;
+            right: -20%;
+            width: 70%;
+            height: 70%;
+            background: radial-gradient(circle, rgba(234, 88, 12, 0.06) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(70px);
+            animation: meshDrift2 22s ease-in-out infinite alternate;
+            pointer-events: none;
         }
 
         .bg-warm-section {
             background-color: #f5f0e8;
-            background-image:
-                radial-gradient(circle at 80% 20%, rgba(29, 78, 216, 0.06) 0%, transparent 45%),
-                radial-gradient(circle at 20% 80%, rgba(234, 88, 12, 0.05) 0%, transparent 45%);
+            position: relative;
+            overflow: hidden;
+        }
+        .bg-warm-section::before {
+            content: "";
+            position: absolute;
+            top: 10%;
+            right: -10%;
+            width: 60%;
+            height: 80%;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.08) 0%, transparent 65%);
+            border-radius: 50%;
+            filter: blur(65px);
+            animation: meshDrift1 20s ease-in-out infinite alternate;
+            pointer-events: none;
         }
 
         .ambient-mesh-dark, .bg-foundation-dark {
             background-color: #070d1e;
-            background-image:
-                radial-gradient(circle at 20% 10%, rgba(29, 78, 216, 0.28) 0%, transparent 55%),
-                radial-gradient(circle at 80% 90%, rgba(234, 88, 12, 0.15) 0%, transparent 55%),
-                radial-gradient(circle at 50% 40%, rgba(14, 165, 233, 0.12) 0%, transparent 60%);
+            position: relative;
+            overflow: hidden;
+        }
+        .ambient-mesh-dark::before, .bg-foundation-dark::before {
+            content: "";
+            position: absolute;
+            top: -30%;
+            left: -20%;
+            width: 80%;
+            height: 80%;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.32) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(90px);
+            animation: meshDrift1 16s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+        .ambient-mesh-dark::after, .bg-foundation-dark::after {
+            content: "";
+            position: absolute;
+            bottom: -30%;
+            right: -20%;
+            width: 80%;
+            height: 80%;
+            background: radial-gradient(circle, rgba(234, 88, 12, 0.18) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(100px);
+            animation: meshDrift2 20s ease-in-out infinite alternate;
+            pointer-events: none;
         }
 
         /* Glassmorphic & Foundation Cards */
