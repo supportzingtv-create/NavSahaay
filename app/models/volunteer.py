@@ -49,14 +49,24 @@ class Volunteer:
     def count():
         from app.firebase import db
         if db is None: return 0
-        return len(db.collection("volunteers").get())
+        try:
+            return len(db.collection("volunteers").get())
+        except Exception:
+            return 0
 
     @staticmethod
     def get_all():
         from app.firebase import db
         if db is None: return []
-        docs = db.collection("volunteers").order_by("created_at", direction="DESCENDING").stream()
-        return [Volunteer(id=doc.id, **doc.to_dict()) for doc in docs]
+        try:
+            docs = db.collection("volunteers").order_by("created_at", direction="DESCENDING").stream()
+            return [Volunteer(id=doc.id, **doc.to_dict()) for doc in docs]
+        except Exception:
+            try:
+                docs = db.collection("volunteers").stream()
+                return [Volunteer(id=doc.id, **doc.to_dict()) for doc in docs]
+            except Exception:
+                return []
 
     def save(self):
         from app.firebase import db

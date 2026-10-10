@@ -24,14 +24,24 @@ class Contact:
     def count():
         from app.firebase import db
         if db is None: return 0
-        return len(db.collection("contacts").get())
+        try:
+            return len(db.collection("contacts").get())
+        except Exception:
+            return 0
 
     @staticmethod
     def get_all():
         from app.firebase import db
         if db is None: return []
-        docs = db.collection("contacts").order_by("created_at", direction="DESCENDING").stream()
-        return [Contact(id=doc.id, **doc.to_dict()) for doc in docs]
+        try:
+            docs = db.collection("contacts").order_by("created_at", direction="DESCENDING").stream()
+            return [Contact(id=doc.id, **doc.to_dict()) for doc in docs]
+        except Exception:
+            try:
+                docs = db.collection("contacts").stream()
+                return [Contact(id=doc.id, **doc.to_dict()) for doc in docs]
+            except Exception:
+                return []
 
     def save(self):
         from app.firebase import db

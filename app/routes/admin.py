@@ -5,45 +5,96 @@ from app.utils.security import roles_required
 from werkzeug.utils import secure_filename
 from app.services.r2_service import r2_service
 import os
+from datetime import datetime
 from collections import defaultdict
 
 admin_bp=Blueprint("admin",__name__)
 HERO_SLIDER_R2_KEY = "settings/hero_slider.json"
 
+@admin_bp.route("")
+@admin_bp.route("/")
+def admin_root():
+    if current_user.is_authenticated:
+        return redirect(url_for("admin.dashboard"))
+    return redirect(url_for("auth.login"))
+
 @admin_bp.route("/dashboard")
 @login_required
 def dashboard():
-    all_donations = Donation.get_all()
+    try:
+        all_donations = Donation.get_all()
+    except Exception as e:
+        all_donations = []
 
     # Process donation trends for Chart.js
     trends = defaultdict(float)
     for d in all_donations:
-        month_year = d.created_at.strftime("%b %Y")
-        trends[month_year] += d.amount
+        try:
+            ca = getattr(d, "created_at", None)
+            if isinstance(ca, str):
+                try:
+                    ca = datetime.fromisoformat(ca.replace('Z', '+00:00'))
+                except Exception:
+                    ca = datetime.now()
+            elif not ca or not hasattr(ca, "strftime"):
+                ca = datetime.now()
+            month_year = ca.strftime("%b %Y")
+            trends[month_year] += float(d.amount or 0)
+        except Exception:
+            pass
 
-    # Sort trends by date (simplified)
-    sorted_months = sorted(trends.keys(), key=lambda x: x) # Not perfectly sorted by date but good for demo
+    sorted_months = sorted(trends.keys(), key=lambda x: x)
     chart_labels = sorted_months
     chart_data = [trends[m] for m in sorted_months]
 
+    try:
+        d_count = Donation.count()
+    except Exception:
+        d_count = len(all_donations)
+    try:
+        v_count = Volunteer.count()
+    except Exception:
+        v_count = 0
+    try:
+        e_count = Event.count()
+    except Exception:
+        e_count = 0
+    try:
+        c_count = Contact.count()
+    except Exception:
+        c_count = 0
+    try:
+        recent_donations = Donation.get_recent(8)
+    except Exception:
+        recent_donations = all_donations[:8]
+
     return render_template("admin/dashboard.html",
-        donation_count=Donation.count(), volunteer_count=Volunteer.count(),
-        event_count=Event.count(), contact_count=Contact.count(),
-        recent_donations=Donation.get_recent(8),
+        donation_count=d_count, volunteer_count=v_count,
+        event_count=e_count, contact_count=c_count,
+        recent_donations=recent_donations,
         chart_labels=chart_labels, chart_data=chart_data)
 
 @admin_bp.route("/donations")
 @login_required
 def donations():
-    return render_template("admin/donations.html", donations=Donation.get_all())
+    try:
+        dons = Donation.get_all()
+    except Exception:
+        dons = []
+    return render_template("admin/donations.html", donations=dons)
 
 @admin_bp.route("/users")
 @login_required
 @roles_required("SUPER_ADMIN")
 def users():
     from app.firebase import db
-    docs = db.collection("users").stream()
-    users_list = [User(id=doc.id, **doc.to_dict()) for doc in docs]
+    if db is None:
+        return render_template("admin/users.html", users=[])
+    try:
+        docs = db.collection("users").stream()
+        users_list = [User(id=doc.id, **doc.to_dict()) for doc in docs]
+    except Exception:
+        users_list = []
     return render_template("admin/users.html", users=users_list)
 
 @admin_bp.route("/settings", methods=["GET", "POST"])

@@ -68,41 +68,68 @@ class Donation:
     def count():
         from app.firebase import db
         if db is None: return 0
-        return len(db.collection("donations").get())
+        try:
+            return len(db.collection("donations").get())
+        except Exception:
+            return 0
 
     @staticmethod
     def get_recent(limit=8):
         from app.firebase import db
         if db is None: return []
-        docs = db.collection("donations").order_by("created_at", direction="DESCENDING").limit(limit).stream()
-        return [Donation(id=doc.id, **doc.to_dict()) for doc in docs]
+        try:
+            docs = db.collection("donations").order_by("created_at", direction="DESCENDING").limit(limit).stream()
+            return [Donation(id=doc.id, **doc.to_dict()) for doc in docs]
+        except Exception:
+            try:
+                docs = db.collection("donations").limit(limit).stream()
+                return [Donation(id=doc.id, **doc.to_dict()) for doc in docs]
+            except Exception:
+                return []
 
     @staticmethod
     def get_all():
         from app.firebase import db
         if db is None: return []
-        docs = db.collection("donations").order_by("created_at", direction="DESCENDING").stream()
-        return [Donation(id=doc.id, **doc.to_dict()) for doc in docs]
+        try:
+            docs = db.collection("donations").order_by("created_at", direction="DESCENDING").stream()
+            return [Donation(id=doc.id, **doc.to_dict()) for doc in docs]
+        except Exception:
+            try:
+                docs = db.collection("donations").stream()
+                return [Donation(id=doc.id, **doc.to_dict()) for doc in docs]
+            except Exception:
+                return []
 
     @staticmethod
     def get_recent_verified(limit=5):
         from app.firebase import db
         if db is None: return []
-        docs = db.collection("donations").where("status", "==", "VERIFIED").order_by("created_at", direction="DESCENDING").limit(limit).stream()
-        return [Donation(id=doc.id, **doc.to_dict()) for doc in docs]
+        try:
+            docs = db.collection("donations").where("status", "==", "VERIFIED").order_by("created_at", direction="DESCENDING").limit(limit).stream()
+            return [Donation(id=doc.id, **doc.to_dict()) for doc in docs]
+        except Exception:
+            try:
+                docs = db.collection("donations").where("status", "==", "VERIFIED").limit(limit).stream()
+                return [Donation(id=doc.id, **doc.to_dict()) for doc in docs]
+            except Exception:
+                return []
 
     @staticmethod
     def get_recent_wishes(limit=15):
         from app.firebase import db
         if db is None: return []
-        docs = db.collection("donations").where("status", "==", "VERIFIED").order_by("created_at", direction="DESCENDING").limit(limit * 2).stream()
-        wishes = []
-        for doc in docs:
-            data = doc.to_dict()
-            if data.get("wish"):
-                wishes.append(Donation(id=doc.id, **data))
-            if len(wishes) >= limit: break
-        return wishes
+        try:
+            docs = db.collection("donations").where("status", "==", "VERIFIED").order_by("created_at", direction="DESCENDING").limit(limit * 2).stream()
+            wishes = []
+            for doc in docs:
+                data = doc.to_dict()
+                if data.get("wish"):
+                    wishes.append(Donation(id=doc.id, **data))
+                if len(wishes) >= limit: break
+            return wishes
+        except Exception:
+            return []
 
     def save(self):
         from app.firebase import db

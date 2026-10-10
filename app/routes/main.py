@@ -529,3 +529,15 @@ def gallery():
     response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
     return response
 
+@main_bp.route("/admin")
+@main_bp.route("/admin/")
+def admin_redirect():
+    from flask_login import current_user
+    if current_user.is_authenticated:
+        return redirect(url_for("admin.dashboard"))
+    return redirect(url_for("auth.login"))
+
+@main_bp.route("/login")
+def login_redirect():
+    return redirect(url_for("auth.login"))
+

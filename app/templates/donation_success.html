@@ -64,6 +64,24 @@
 </section>
 
 <script>
+// Save latest donation to localStorage so toast reflects instantly
+try {
+    const rawName = "{{ ('A Generous Soul' if donation.anonymous else (donation.donor_name or 'Supporter')) }}";
+    const parts = rawName.trim().split(" ");
+    let maskedName = rawName;
+    if (parts.length > 1 && !rawName.toLowerCase().includes("generous")) {
+        maskedName = parts[0] + " " + parts[1].charAt(0).toUpperCase() + ".";
+    }
+    const myDonation = {
+        name: maskedName + " donated ₹{{ donation.amount|int }}",
+        cause: "{{ donation.cause or 'General Welfare' }}",
+        time: "Just now",
+        id: "{{ donation.id or donation.donation_id or '' }}",
+        instant: true
+    };
+    localStorage.setItem('navsahaay_latest_donation', JSON.stringify(myDonation));
+} catch(e) {}
+
 function shareOnWhatsApp() {
     const text = "I just made a difference! I donated ₹{{ donation.amount|int }} to NavSahaay Foundation for {{ donation.cause }}. Join me in bringing hope: {{ url_for('main.home', _external=True) }}";
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');

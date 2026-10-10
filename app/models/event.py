@@ -45,17 +45,31 @@ class Event:
     def count():
         from app.firebase import db
         if db is None: return 0
-        return len(db.collection("events").get())
+        try:
+            return len(db.collection("events").get())
+        except Exception:
+            return 0
 
     @staticmethod
     def get_all(active_only=False):
         from app.firebase import db
         if db is None: return []
-        query = db.collection("events")
-        if active_only:
-            query = query.where("active", "==", True)
-        docs = query.order_by("event_date", direction="ASCENDING").stream()
-        return [Event(id=doc.id, **doc.to_dict()) for doc in docs]
+        try:
+            query = db.collection("events")
+            if active_only:
+                query = query.where("active", "==", True)
+            docs = query.order_by("event_date", direction="ASCENDING").stream()
+            return [Event(id=doc.id, **doc.to_dict()) for doc in docs]
+        except Exception:
+            try:
+                query = db.collection("events")
+                docs = query.stream()
+                events = [Event(id=doc.id, **doc.to_dict()) for doc in docs]
+                if active_only:
+                    events = [e for e in events if e.active]
+                return events
+            except Exception:
+                return []
 
     def save(self):
         from app.firebase import db
