@@ -370,6 +370,23 @@ def settings():
                 print(f"R2 gallery save error: {e}")
             flash(f"Gallery updated successfully. {len(gallery)} album group(s) active.", "success")
 
+        elif action == "update_stats":
+            lives = request.form.get("lives_impacted", "50,000+")
+            volunteers = request.form.get("volunteers_count", "1,200+")
+            total_donations = request.form.get("total_donations", "₹10 Cr+")
+            stats_dict = {
+                "lives_impacted": lives,
+                "volunteers_count": volunteers,
+                "total_donations": total_donations
+            }
+            Setting.set("impact_stats", stats_dict)
+            try:
+                r2_service.save_json("settings/impact_stats.json", stats_dict)
+            except Exception:
+                pass
+            flash("Impact statistics numbers updated successfully.", "success")
+            return redirect(url_for("admin.settings"))
+
         return redirect(url_for("admin.settings"))
 
     from app.firebase import db as settings_db
