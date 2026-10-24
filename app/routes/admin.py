@@ -479,10 +479,9 @@ def new_volunteer():
             age=int(request.form.get("age", 25)),
             interest=request.form.get("interest", "General Fieldwork"),
             availability="Full-time",
-            status="ACTIVE"
+            status="ACTIVE",
+            password=password
         )
-        # Store temporary password attribute for reference
-        setattr(v, 'password', password)
         v.save()
         flash(f"Volunteer created! Login Email: {v.email} | Password: {password}", "success")
     except Exception as e:

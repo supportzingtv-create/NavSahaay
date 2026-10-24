@@ -3,7 +3,7 @@ from datetime import datetime
 class Volunteer:
     def __init__(self, id=None, reference_id=None, name=None, email=None, phone=None,
                  city=None, age=None, interest=None, availability=None, skills=None,
-                 experience=None, source=None, status="NEW", created_at=None):
+                 experience=None, source=None, status="NEW", password=None, created_at=None):
         self.id = id
         self.reference_id = reference_id
         self.name = name
@@ -17,6 +17,7 @@ class Volunteer:
         self.experience = experience
         self.source = source
         self.status = status
+        self.password = password
         self.created_at = created_at or datetime.now()
 
     def to_dict(self):
@@ -33,6 +34,7 @@ class Volunteer:
             "experience": self.experience,
             "source": self.source,
             "status": self.status,
+            "password": self.password,
             "created_at": self.created_at
         }
 
