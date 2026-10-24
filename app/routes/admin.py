@@ -469,6 +469,7 @@ def volunteers():
 def new_volunteer():
     try:
         import secrets
+        password = request.form.get("password", "Admin@123").strip()
         v = Volunteer(
             reference_id="VOL-" + secrets.token_hex(4).upper(),
             name=request.form["name"],
@@ -480,8 +481,10 @@ def new_volunteer():
             availability="Full-time",
             status="ACTIVE"
         )
+        # Store temporary password attribute for reference
+        setattr(v, 'password', password)
         v.save()
-        flash("Volunteer created successfully with Active App Access.", "success")
+        flash(f"Volunteer created! Login Email: {v.email} | Password: {password}", "success")
     except Exception as e:
         flash(f"Error creating volunteer: {e}", "error")
     return redirect(url_for("admin.volunteers"))
