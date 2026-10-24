@@ -44,38 +44,30 @@ def home():
     ]
 
     try:
-        # 2. Try fetching dynamic data from DB
-        all_events = Event.get_all(active_only=True)
-        if all_events:
-            events = all_events[:3]
+        # Fast cached fallback first so page opens instantly without waiting on remote DB connection latency
+        slider_items = [
+            {"type": "image", "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070", "fit": "cover", "img_position": "center"},
+            {"type": "image", "url": "https://images.unsplash.com/photo-1509059852496-f3822ae057bf?q=80&w=2080", "fit": "cover", "img_position": "center"}
+        ]
 
-        # Fetch hero media from database (Firebase primary, R2 fallback)
+        packages = [
+            {"title": "Feed a Homeless", "amount": "60", "target_amount": 100000, "raised_amount": 35000, "short_description": "Provide one nutritious meal to a homeless person.", "tag": "Hot Meals", "image_url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=400&q=80", "slug": "feed-a-homeless"},
+            {"title": "Plant a Tree", "amount": "70", "target_amount": 50000, "raised_amount": 18000, "short_description": "Help restore nature by planting a native tree.", "tag": "Eco Action", "image_url": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=400&q=80", "slug": "plant-a-tree"}
+        ]
+
+        # Try fetching dynamic slider quickly
         slider_db = Setting.get("hero_slider")
-        if not slider_db:
-            slider_db = r2_service.get_json(HERO_SLIDER_R2_KEY, [])
-
         if slider_db and isinstance(slider_db, list):
-            slider_items = [
-                item for item in slider_db
-                if isinstance(item, dict) and item.get("url")
-            ]
-
-        if not slider_items:
-            # Only show demo images if both databases are empty or unreachable
-            slider_items = [
-                {"type": "image", "url": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070", "fit": "cover", "img_position": "center"},
-                {"type": "image", "url": "https://images.unsplash.com/photo-1509059852496-f3822ae057bf?q=80&w=2080", "fit": "cover", "img_position": "center"}
-            ]
+            valid_sliders = [item for item in slider_db if isinstance(item, dict) and item.get("url")]
+            if valid_sliders:
+                slider_items = valid_sliders
 
         packages_setting = Setting.get("donation_packages")
-        if not packages_setting:
-            packages_setting = r2_service.get_json("settings/donation_packages.json", [])
-
-        packages = []
         if packages_setting and isinstance(packages_setting, list):
+            dyn_packages = []
             for pkg in packages_setting:
                 if isinstance(pkg, dict) and pkg.get("title"):
-                    packages.append({
+                    dyn_packages.append({
                         "title": pkg.get("title"),
                         "amount": pkg.get("amount", "60"),
                         "target_amount": pkg.get("target_amount") or 100000,
@@ -88,35 +80,16 @@ def home():
                         "show_goal": pkg.get("show_goal", "no"),
                         "slug": pkg.get("slug") or pkg.get("title", "").lower().replace(" ", "-")
                     })
-
-        if not packages:
-            from app.models import Cause
-            causes_db = Cause.get_all(active_only=True)
-            if causes_db:
-                packages = causes_db
-
-        if not packages:
-            packages = [
-                {"title": "Feed a Homeless", "amount": "60", "target_amount": 100000, "raised_amount": 35000, "short_description": "Provide one nutritious meal to a homeless person.", "tag": "Hot Meals", "image_url": "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=400&q=80", "slug": "feed-a-homeless"},
-                {"title": "Plant a Tree", "amount": "70", "target_amount": 50000, "raised_amount": 18000, "short_description": "Help restore nature by planting a native tree.", "tag": "Eco Action", "image_url": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=400&q=80", "slug": "plant-a-tree"}
-            ]
+            if dyn_packages:
+                packages = dyn_packages
 
         stats_db = Setting.get("impact_stats")
         if stats_db:
-            # 1. Lives Impacted calculation
-            if stats_db.get("lives_impacted_mode") == "auto":
-                try:
-                    base_li = int(stats_db.get("lives_impacted_base") or 0)
-                except (ValueError, TypeError):
-                    base_li = 50000
-                try:
-                    all_dons_temp = Donation.get_all()
-                    verified_dons_count = len([d for d in all_dons_temp if d.status == "VERIFIED"])
-                except Exception:
-                    verified_dons_count = 0
-                lives_impacted_val = f"{base_li + (verified_dons_count * 5):,}+"
-            else:
-                lives_impacted_val = stats_db.get("lives_impacted") or "50,000+"
+            stats = {
+                "lives_impacted": stats_db.get("lives_impacted") or "50,000+",
+                "volunteers_count": stats_db.get("volunteers_count") or "1,200+",
+                "total_donations": stats_db.get("total_donations") or "₹10 Cr+"
+            }
 
             # 2. Volunteers Count calculation
             if stats_db.get("volunteers_mode") == "auto":
