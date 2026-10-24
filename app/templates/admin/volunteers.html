@@ -7,8 +7,11 @@
     <div class="px-8 py-6 border-b border-zinc-800 flex justify-between items-center">
         <div>
             <h3 class="text-lg font-black text-white uppercase tracking-tight">Registered Volunteers</h3>
-            <p class="text-xs text-zinc-400 font-medium">Approve applications to grant Volunteer App login access.</p>
+            <p class="text-xs text-zinc-400 font-medium">Approve applications or manually add new volunteers to grant App access.</p>
         </div>
+        <button onclick="document.getElementById('addVolunteerModal').classList.remove('hidden')" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all shadow-md">
+            + Add New Volunteer
+        </button>
     </div>
 
     <div class="overflow-x-auto">
@@ -69,4 +72,51 @@
         </table>
     </div>
 </div>
+</div>
+
+<!-- Add New Volunteer Modal -->
+<div id="addVolunteerModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl max-w-lg w-full p-8 shadow-2xl relative">
+        <button onclick="document.getElementById('addVolunteerModal').classList.add('hidden')" class="absolute top-6 right-6 text-zinc-400 hover:text-white">&times;</button>
+        <h3 class="text-xl font-black text-white uppercase tracking-tight mb-2">Add New Volunteer</h3>
+        <p class="text-xs text-zinc-400 mb-6">Create credentials so this volunteer can instantly login to the mobile app.</p>
+
+        <form method="post" action="{{ url_for('admin.new_volunteer') }}" class="space-y-4">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div>
+                <label class="block text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-1.5">Full Name</label>
+                <input type="text" name="name" required class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 font-bold" placeholder="Rahul Sharma">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-1.5">Email Address (Login ID)</label>
+                    <input type="email" name="email" required class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 font-bold" placeholder="rahul@navsahaay.org">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-1.5">Phone Number</label>
+                    <input type="text" name="phone" required class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 font-bold" placeholder="+91 98765 43210">
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-1.5">City / Region</label>
+                    <input type="text" name="city" required class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 font-bold" placeholder="Jaipur">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-1.5">Age</label>
+                    <input type="number" name="age" value="25" required class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 font-bold">
+                </div>
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-1.5">Primary Interest / Role</label>
+                <input type="text" name="interest" value="Field Delivery & QR Scan" required class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 font-bold">
+            </div>
+            <div class="pt-4 flex justify-end space-x-3">
+                <button type="button" onclick="document.getElementById('addVolunteerModal').classList.add('hidden')" class="px-5 py-3 rounded-xl bg-zinc-800 text-zinc-300 text-xs font-black uppercase">Cancel</button>
+                <button type="submit" class="px-6 py-3 rounded-xl bg-blue-600 text-white text-xs font-black uppercase tracking-wider hover:bg-blue-500 transition-all shadow-lg">Save & Grant Access</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 {% endblock %}

@@ -463,6 +463,29 @@ def receipt(id):
 def volunteers():
     return render_template("admin/volunteers.html", volunteers=Volunteer.get_all())
 
+@admin_bp.route("/volunteers/new", methods=["POST"])
+@login_required
+@roles_required("SUPER_ADMIN", "EDITOR")
+def new_volunteer():
+    try:
+        import secrets
+        v = Volunteer(
+            reference_id="VOL-" + secrets.token_hex(4).upper(),
+            name=request.form["name"],
+            email=request.form["email"].strip().lower(),
+            phone=request.form["phone"],
+            city=request.form["city"],
+            age=int(request.form.get("age", 25)),
+            interest=request.form.get("interest", "General Fieldwork"),
+            availability="Full-time",
+            status="ACTIVE"
+        )
+        v.save()
+        flash("Volunteer created successfully with Active App Access.", "success")
+    except Exception as e:
+        flash(f"Error creating volunteer: {e}", "error")
+    return redirect(url_for("admin.volunteers"))
+
 @admin_bp.route("/volunteers/<string:id>/status", methods=["POST"])
 @login_required
 @roles_required("SUPER_ADMIN","EDITOR")
@@ -471,6 +494,7 @@ def volunteer_status(id):
     if v:
         v.status=request.form["status"]
         v.save()
+        flash("Volunteer status updated.", "success")
     return redirect(url_for("admin.volunteers"))
 
 @admin_bp.route("/events")
